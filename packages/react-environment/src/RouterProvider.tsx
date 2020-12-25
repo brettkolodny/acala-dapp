@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 
 import { StoreData, usePageTitle } from './store';
 
-/* HOC for auto set page title */
+/* HOC for set page title */
 const withTitle = (component: RouterConfigData['element'], title: string): FC => {
   const Inner: FC = () => {
     usePageTitle({ content: title });

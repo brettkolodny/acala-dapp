@@ -1,4 +1,4 @@
-import React, { createContext, FC, useEffect, useContext, useMemo, ReactNode } from 'react';
+import React, { createContext, FC, useContext, useMemo, ReactNode, useLayoutEffect, useEffect } from 'react';
 
 import { useApi, useMemorized } from '@acala-dapp/react-hooks';
 import { BareProps } from '@acala-dapp/ui-components/types';
@@ -59,6 +59,8 @@ export function usePageTitle (config: { content: ReactNode; breadcrumb?: UIData[
   const ui = useStore('ui');
 
   useEffect(() => {
+    if (!_config.content && !_config.breadcrumb) return;
+
     ui.setTitle(_config);
   /* eslint-disable-next-line */
   }, [_config]);
@@ -68,8 +70,10 @@ export function useSubMenu (config: SubMenu | null): void {
   const _config = useMemorized(config);
   const ui = useStore('ui');
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     ui.setSubMenu(_config);
+
+    return (): void => ui.setSubMenu(null);
   /* eslint-disable-next-line */
   }, [_config]);
 }

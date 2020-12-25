@@ -48,7 +48,7 @@ export const config: RouterConfigData[] = [
       {
         element: <CSuspense><PageSwap /></CSuspense>,
         path: 'swap/:tab',
-        title: 'Swap'
+        title: ''
       },
       {
         element: <CSuspense><PageIncentives /></CSuspense>,

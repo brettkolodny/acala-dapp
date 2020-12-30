@@ -38,7 +38,7 @@ const CardHeader = styled.div<{ divider: boolean }>`
   display: flex;
   justify-content: space-between;
   padding: 22px 24px 24px 24px;
-  border-bottom: ${({ divider }): string => divider ? '1px solid #ecf0f2' : 'none'}
+  border-bottom: ${({ divider }): string => divider ? '1px solid #ecf0f2' : 'none'};
   color: var(--text-color-primary);
   font-size: 16px;
   line-height: 1.1875;

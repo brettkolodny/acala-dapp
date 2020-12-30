@@ -2,7 +2,7 @@ import React, { FC, useState, ReactNode, useCallback, useMemo, useEffect } from 
 import clsx from 'clsx';
 
 import { CurrencyId } from '@acala-network/types/interfaces';
-import { Dialog, ArrowIcon, CheckedCircleIcon, FormItem, Button, Condition, InlineBlockBox } from '@acala-dapp/ui-components';
+import { Dialog, ArrowIcon, CheckedCircleIcon, FormItem, Button, InlineBlockBox } from '@acala-dapp/ui-components';
 import { useModal, useAccounts, useConstants, useLPCurrencies, useBalance } from '@acala-dapp/react-hooks';
 import { useInputValue } from '@acala-dapp/react-hooks/useInputValue';
 import { FixedPointNumber } from '@acala-network/sdk-core';
@@ -247,26 +247,28 @@ export const TransferModal: FC<TransferModalProps> = ({
   return (
     <Dialog
       action={
-        <Condition condition={!isOpenSelect}>
-          <Button
-            onClick={onClose}
-            size='small'
-            style='normal'
-            type='border'
-          >
-              Close
-          </Button>
-          <TxButton
-            disabled={isDisabled}
-            method='transfer'
-            onInblock={onClose}
-            params={params}
-            section='currencies'
-            size='small'
-          >
-              Confirm
-          </TxButton>
-        </Condition>
+        !isOpenSelect ? (
+          <>
+            <Button
+              onClick={onClose}
+              size='small'
+              style='normal'
+              type='border'
+            >
+                Close
+            </Button>
+            <TxButton
+              disabled={isDisabled}
+              method='transfer'
+              onInblock={onClose}
+              params={params}
+              section='currencies'
+              size='small'
+            >
+                Confirm
+            </TxButton>
+          </>
+        ) : null
       }
       onCancel={onClose}
       title={renderHeader()}

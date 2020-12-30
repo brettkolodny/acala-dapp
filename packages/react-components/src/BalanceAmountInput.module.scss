@@ -29,13 +29,13 @@
   .balanceInput {
     height: 48px;
     border-bottom: 1px solid #E9E9E9 !important;
-    padding-left: 0;
+    padding-left: 16px;
   }
 
   .amountDisplay {
     height: 48px;
     display: flex;
-    padding-right: 16px;
+    padding: 0 16px;
     justify-content: space-between;
     align-items: center;
 
@@ -52,7 +52,7 @@
   }
 
   .balanceDisplay {
-    padding-left: 0 !important;
+    padding: 0 16px;
     height: 46px !important;
     color: var(--text-color-second);
     border: none;
@@ -65,7 +65,8 @@
 
   .lpSize {
     display: block;
-    padding: 8px;
+    padding-left: 16px;
     height: 48px;
+    line-height: 48px;
   }
 }

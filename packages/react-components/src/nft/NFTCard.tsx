@@ -3,7 +3,9 @@ import { styled } from '@acala-dapp/ui-components';
 import { BareProps } from '@acala-dapp/ui-components/types';
 import nftPeopleIcon from '../assets/nft-people-icon.svg';
 
-const NFTCardRoot: FC = styled.div``;
+const NFTCardRoot: FC<{ onClick?: () => void }> = styled.div<{ onClick: () => void}>`
+  cursor: pointer;
+`;
 
 export const NFTImage = styled(({ className, src }) => {
   return (
@@ -85,6 +87,7 @@ interface NFTCardProps {
   externalUrl?: string; // NFT resource url
   publisher?: string;
   artist?: string;
+  onClick?: () => void;
 }
 
 const NFTInfo = styled<FC<BareProps & NFTCardProps>>(({
@@ -118,9 +121,9 @@ const NFTInfo = styled<FC<BareProps & NFTCardProps>>(({
   padding: 16px 0 0 34px;
 `;
 
-export const NFTCard: FC<NFTCardProps> = ({ externalUrl, name }) => {
+export const NFTCard: FC<NFTCardProps> = ({ externalUrl, name, onClick }) => {
   return (
-    <NFTCardRoot>
+    <NFTCardRoot onClick={onClick}>
       <NFTImage src={externalUrl} />
       <NFTInfo
         name={name}

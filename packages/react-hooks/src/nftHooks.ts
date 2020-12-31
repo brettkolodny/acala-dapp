@@ -32,11 +32,16 @@ export const useAllNFTTokens = (): { data: [ClassInfoOf, TokenInfoOf][]; loading
             api.query.ormlNft.classes<Option<ClassInfoOf>>(item.classes),
             api.query.ormlNft.tokens<Option<TokenInfoOf>>(item.classes, item.tokenId)
           ]);
-        }));
-      }),
-      map((result) => result.map((item) => [item[0].unwrap(), item[1].unwrap()]) as unknown as [ClassInfoOf, TokenInfoOf][])
+        })).pipe(
+          map((result) => {
+            return result.map((item) => [item[0].unwrapOrDefault(), item[1].unwrapOrDefault()]) as unknown as [ClassInfoOf, TokenInfoOf][];
+          })
+        );
+      })
     ).subscribe({
-      error: () => {
+      error: (e) => {
+        console.log(e);
+
         setLoading(false);
         setResult([]);
       },

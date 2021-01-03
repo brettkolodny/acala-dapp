@@ -46,17 +46,22 @@ export const subscribeStakingPool = (api: ApiRx): Observable<StakingPoolData> =>
         bondingDuration: data.bondingDuration.toNumber(),
         currentEra: data.currentEra.toNumber(),
         defaultExchangeRate: FixedPointNumber.fromInner(data.defaultExchangeRate.toString()),
-        freeUnbonded: FixedPointNumber.fromInner(data.freeUnbonded.toString()),
-        liquidTotalIssuance: FixedPointNumber.fromInner(data.liquidTokenIssuance.toString()),
-        stakingPoolParams: {
-          baseFeeRate: FixedPointNumber.fromInner(data.stakingPoolParams.baseFeeRate.toString()),
-          targetMaxFreeUnbondedRatio: FixedPointNumber.fromInner(data.stakingPoolParams.targetMaxFreeUnbondedRatio.toString()),
-          targetMinFreeUnbondedRatio: FixedPointNumber.fromInner(data.stakingPoolParams.targetMinFreeUnbondedRatio.toString()),
-          targetUnbondingToFreeRatio: FixedPointNumber.fromInner(data.stakingPoolParams.targetUnbondingToFreeRatio.toString())
+        ledger: {
+          bonded: FixedPointNumber.fromInner(data.ledger.bonded.toString()),
+          freePool: FixedPointNumber.fromInner(data.ledger.freePool.toString()),
+          toUnbondNextEra: [
+            FixedPointNumber.fromInner(data.ledger.toUnbondNextEra[0].toString()),
+            FixedPointNumber.fromInner(data.ledger.toUnbondNextEra[1].toString())
+          ],
+          unbondingToFree: FixedPointNumber.fromInner(data.ledger.unbondingToFree.toString())
         },
-        totalBonded: FixedPointNumber.fromInner(data.totalBonded.toString()),
-        unbondNextEra: FixedPointNumber.fromInner(data.nextEraUnbond[0].toString()),
-        unbondingToFree: FixedPointNumber.fromInner(data.unbondingToFree.toString())
+        liquidTotalIssuance: FixedPointNumber.fromInner((data as any).liquidTokenIssuance.toString()),
+        params: {
+          baseFeeRate: FixedPointNumber.fromInner(data.params.baseFeeRate.toString()),
+          targetMaxFreeUnbondedRatio: FixedPointNumber.fromInner(data.params.targetMaxFreeUnbondedRatio.toString()),
+          targetMinFreeUnbondedRatio: FixedPointNumber.fromInner(data.params.targetMinFreeUnbondedRatio.toString()),
+          targetUnbondingToFreeRatio: FixedPointNumber.fromInner(data.params.targetUnbondingToFreeRatio.toString())
+        }
       });
 
       return {

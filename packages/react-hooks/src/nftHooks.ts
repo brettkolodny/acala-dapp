@@ -17,7 +17,7 @@ export const useAllNFTTokens = (): { data: [ClassInfoOf, TokenInfoOf][]; loading
     if (!api || !active) return;
 
     setLoading(true);
-    const unsub = api.query.ormlNft.tokensByOwner.entries(active.address).pipe(
+    const unsub = api.query.ormlNft.tokensByOwner.entries('5Fn31WJG1xWJ4FnPCCUY8Gpr9giSicoC8iBUQ7xfNE2r9Fx4').pipe(
       map((result: any) => result.map((item: any) => {
         return {
           classes: item[0].args[1][0].toString(),
@@ -25,6 +25,8 @@ export const useAllNFTTokens = (): { data: [ClassInfoOf, TokenInfoOf][]; loading
         };
       })),
       mergeMap((result: { classes: string; tokenId: string }[]) => {
+        console.log(result);
+
         if (result.length === 0) return of([]);
 
         return combineLatest(result.map((item) => {

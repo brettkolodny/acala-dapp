@@ -15,6 +15,11 @@ export interface ApiContextData {
   chainInfo: {
     chainName: string;
   };
+  properties: {
+    ss58Format: string;
+    tokenDecimals: number;
+    tokenSymbol: string;
+  };
   init: (endpoint: string, allEndpoint: string[]) => void; // connect to network
 }
 
@@ -37,6 +42,13 @@ export const ApiProvider: FC<Props> = ({
 
   // chain information
   const [chainName, setChainName] = useState<string>('');
+
+  // chain properties
+  const [properties, setProperties] = useState<ApiContextData['properties']>({
+    ss58Format: '',
+    tokenDecimals: 18,
+    tokenSymbol: 'ACA'
+  });
 
   // status
   const [connected, setConnected] = useState<boolean>(false);
@@ -69,8 +81,18 @@ export const ApiProvider: FC<Props> = ({
   useEffect(() => {
     if (!connected) return;
 
+    console.log(api);
+
     api.rpc.system.chain().subscribe((result) => {
       setChainName(result.toString());
+    });
+
+    api.rpc.system.properties().subscribe((result) => {
+      setProperties({
+        ss58Format: result.ss58Format.unwrapOrDefault().toString(),
+        tokenDecimals: result.tokenDecimals.unwrapOrDefault().toNumber(),
+        tokenSymbol: result.tokenSymbol.unwrapOrDefault().toString()
+      });
     });
   }, [api, connected]);
 
@@ -101,7 +123,8 @@ export const ApiProvider: FC<Props> = ({
         connected,
         error,
         init,
-        loading
+        loading,
+        properties
       }}
     >
       {children}

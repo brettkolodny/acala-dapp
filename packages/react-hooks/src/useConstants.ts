@@ -39,7 +39,7 @@ export type HooksReturnType = {
 }
 
 export const useConstants = (): HooksReturnType => {
-  const { api } = useApi();
+  const { api, properties } = useApi();
 
   // all currencies id
   const allCurrencies = useMemo((): CurrencyId[] => {
@@ -67,7 +67,7 @@ export const useConstants = (): HooksReturnType => {
   const stableCurrency = useMemo(() => api.consts.cdpEngine.getStableCurrencyId as unknown as CurrencyId, [api]);
 
   // native currency id
-  const nativeCurrency = useMemo(() => api.consts.currencies.nativeCurrencyId as unknown as CurrencyId, [api]);
+  const nativeCurrency = useMemo(() => api.createType('CurrencyId' as any, { Token: properties.tokenSymbol }), [api, properties]);
 
   // expect block time
   const expectedBlockTime = useMemo(() => api.consts.babe.expectedBlockTime.toNumber(), [api]);

@@ -124,6 +124,10 @@ export function getCurrencyIdFromToken (api: ApiRx, token: Token | Token[]): Cur
 }
 
 export function getDexShareFromCurrencyId (api: ApiRx, token1: CurrencyId, token2: CurrencyId): CurrencyId {
+  if (!token1 || !token2) {
+    throw new Error('token1 or token2 is required in getDexShareCurrencyIdFromCurrencyId');
+  }
+
   if (!(token1.isToken && token2.isToken)) {
     throw new Error('token1 and token2 should be TokenSymbol type in getDexShareCurrencyIdFromCurrencyId');
   }

@@ -1,6 +1,5 @@
-import { useMemo, useCallback } from 'react';
+import { useMemo, useCallback, useEffect, useState } from 'react';
 
-import { Vec } from '@polkadot/types';
 import { AccountData } from '@polkadot/types/interfaces';
 import { CurrencyId, TradingPair, Balance, AccountId } from '@acala-network/types/interfaces';
 import { DerivedDexPool } from '@acala-network/api-derive';
@@ -9,10 +8,35 @@ import { FixedPointNumber, TokenPair, currencyId2Token } from '@acala-network/sd
 import { useApi } from './useApi';
 import { useCall } from './useCall';
 
-export const useEnableLPs = (): TokenPair[] => {
+export const useAllTradingPairs = (): TradingPair[] => {
   const { api } = useApi();
+  const [result, setResult] = useState<TradingPair[]>([]);
 
-  return (api.consts.dex.enabledTradingPairs as Vec<TradingPair>).map((item) => {
+  useEffect(() => {
+    const subscriber = api.query.dex.tradingPairStatuses.entries().subscribe((result) => {
+      const enabled = result.filter((item) => (item[1] as any).isEnabled);
+
+      if (enabled) {
+        setResult(
+          enabled.map((item) => {
+            api.createType('TradingPair' as any, []);
+          })
+        );
+      }
+    });
+
+    return (): void => {
+      subscriber.unsubscribe();
+    };
+  }, [api]);
+
+  return result;
+}
+
+export const useEnableLPs = (): TokenPair[] => {
+  const tradingPairs = useAllTradingPairs();
+
+  return tradingPairs.map((item) => {
     return new TokenPair(currencyId2Token(item[0]), currencyId2Token(item[1]));
   });
 };
@@ -52,9 +76,7 @@ export const useLPSize = (token1?: CurrencyId, token2?: CurrencyId): LPSize => {
 };
 
 export const useLPEnabledCurrencies = (): CurrencyId[] => {
-  const { api } = useApi();
-
-  const allTradingPirs = api.consts.dex.enabledTradingPairs as Vec<TradingPair>;
+  const allTradingPirs = useAllTradingPairs();
 
   const temp = allTradingPirs.reduce((acc, cur): Record<string, CurrencyId> => {
     acc[cur[0].asToken.toString()] = cur[0];
@@ -68,8 +90,7 @@ export const useLPEnabledCurrencies = (): CurrencyId[] => {
 
 export const useLPCurrencies = (): CurrencyId[] => {
   const { api } = useApi();
-
-  const allTradingPirs = api.consts.dex.enabledTradingPairs as Vec<TradingPair>;
+  const allTradingPirs = useAllTradingPairs();
 
   return allTradingPirs.map((item): CurrencyId => api.createType('CurrencyId' as any, { DEXShare: [item[0].asToken.toString(), item[1].asToken.toString()] }));
 };

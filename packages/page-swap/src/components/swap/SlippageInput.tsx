@@ -1,27 +1,38 @@
 import React, { FC, ReactElement, useContext, useCallback, useState } from 'react';
 
-import { TagGroup, Tag } from '@acala-dapp/ui-components';
+import { TagGroup, Tag, styled } from '@acala-dapp/ui-components';
 import { TagInput } from '@acala-dapp/ui-components/TagInput';
 
-import classes from './SlippageInput.module.scss';
 import { SwapContext } from './SwapProvider';
-import { FixedPointNumber } from '@acala-network/sdk-core';
 
 const SLIPPAGE_MAX = 50;
 const SLIPPAGE_MIN = 0;
 const SUGGEST_VALUES = [0.001, 0.005, 0.01];
 const SUGGESTED_INDEX = 1; // suggest slippage positions
 
+const Root = styled.div`
+  padding: 16px 24px;
+  background: #eff1f7;
+  border-radius: 12px;
+  border: 1px solid #ecf0f2;
+`;
+
+const Title = styled.div`
+  margin-bottom: 16px;
+  font-size: 16px;
+  line-height: 19px;
+  font-weight: 500;
+  color: var(--text-color-primary);
+`;
+
 export const SlippageInput: FC = () => {
-  const { updateUserInput, userInput } = useContext(SwapContext);
+  const { acceptSlippage, setAcceptSlippage } = useContext(SwapContext);
   const [custom, setCustom] = useState<number>(0);
 
   const handleClick = useCallback((num: number): void => {
-    updateUserInput({
-      acceptSlippage: new FixedPointNumber(num),
-      updateOrigin: 'outset'
-    });
-  }, [updateUserInput]);
+    setAcceptSlippage(num);
+    setCustom(0);
+  }, [setAcceptSlippage]);
 
   const renderSuggest = useCallback((num: number): string => {
     return `${num * 100}%${num === SUGGEST_VALUES[SUGGESTED_INDEX] ? ' (suggested)' : ''}`;
@@ -31,14 +42,12 @@ export const SlippageInput: FC = () => {
     const value = Number(_value);
 
     setCustom(value);
-    updateUserInput({
-      acceptSlippage: new FixedPointNumber(value / 100),
-      updateOrigin: 'outset'
-    });
-  }, [updateUserInput, setCustom]);
+    setAcceptSlippage(value / 100);
+  }, [setAcceptSlippage, setCustom]);
 
   return (
-    <div className={classes.root}> <p className={classes.title}>Limit addtion price slippage</p>
+    <Root>
+      <Title>Limit addtion price slippage</Title>
       <TagGroup>
         {
           SUGGEST_VALUES.map((suggest): ReactElement => {
@@ -46,7 +55,7 @@ export const SlippageInput: FC = () => {
               <Tag
                 key={`suggest-${suggest}`}
                 onClick={(): void => handleClick(suggest) }
-                style={userInput.acceptSlippage.isEqualTo(new FixedPointNumber(suggest)) ? 'primary' : 'normal'}
+                style={acceptSlippage === suggest ? 'primary' : 'normal'}
               >
                 {renderSuggest(suggest)}
               </Tag>
@@ -64,6 +73,6 @@ export const SlippageInput: FC = () => {
           value={custom}
         />
       </TagGroup>
-    </div>
+    </Root>
   );
 };

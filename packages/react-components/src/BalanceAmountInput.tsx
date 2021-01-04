@@ -24,7 +24,7 @@ export interface BalanceAmountInputProps {
   currency: CurrencyId;
   error?: string;
   mode?: 'token' | 'lp-token';
-  onChange: (value: BalanceAmountValue) => void;
+  onChange: (value: Partial<BalanceAmountValue>) => void;
 }
 
 export const BalanceAmountInput: FC<BalanceAmountInputProps> = ({
@@ -81,6 +81,7 @@ export const BalanceAmountInput: FC<BalanceAmountInputProps> = ({
 
   const balanceForAmount = useMemo(() => {
     if (!price) return FixedPointNumber.ZERO;
+    if (!amountValue.amount) return FixedPointNumber.ZERO;
 
     return new FixedPointNumber(amountValue.amount).div(price);
   }, [price, amountValue]);
@@ -162,9 +163,9 @@ export const BalanceAmountInput: FC<BalanceAmountInputProps> = ({
       <div className={classes.inputArea}>
         <Condition condition={inputType === 'balance'}>
           <BalanceInput
-            border={false}
             className={classes.balanceInput}
             error={balanceError}
+            noBorder={true}
             onBlur={hanleBlur}
             onChange={setBalanceValue}
             onFocus={handleFocus}
@@ -174,7 +175,7 @@ export const BalanceAmountInput: FC<BalanceAmountInputProps> = ({
             value={balanceValue}
           />
           {
-            mode === 'token' ? (
+            mode === 'token' && balanceValue.token ? (
               <div className={classes.amountDisplay}>
                 <FormatValue data={amountForBalance} />
                 <TokenName currency={stableCurrency} />
@@ -182,17 +183,17 @@ export const BalanceAmountInput: FC<BalanceAmountInputProps> = ({
             ) : (
               <LPAmountWithShare
                 className={classes.lpSize}
-                lp={balanceValue.token}
-                share={balanceValue.amount}
+                lp={balanceValue.token as CurrencyId}
+                share={balanceValue.amount as number}
               />
             )
           }
         </Condition>
         <Condition condition={inputType === 'amount'}>
           <BalanceInput
-            border={false}
             className={classes.balanceInput}
             error={amountError}
+            noBorder={true}
             onChange={setAmountValue}
             onMax={handleAmountMax}
             showIcon={false}

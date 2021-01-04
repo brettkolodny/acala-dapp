@@ -44,6 +44,7 @@ export const AirDrop: FC = () => {
         columns={tableConfig}
         dataSource={airdropTypes}
         pagination={false}
+        rowKey='token'
       />
     </Card>
   );

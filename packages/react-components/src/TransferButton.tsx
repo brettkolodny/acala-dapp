@@ -28,12 +28,16 @@ export const TransferButton: FC<Props> = memo(({
       >
         {children || 'Transfer'}
       </Button>
-      <TransferModal
-        defaultCurrency={currency}
-        mode={mode}
-        onClose={close}
-        visiable={status}
-      />
+      {
+        status ? (
+          <TransferModal
+            defaultCurrency={currency}
+            mode={mode}
+            onClose={close}
+            visiable={status}
+          />
+        ) : null
+      }
     </>
   );
 });

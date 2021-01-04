@@ -4,13 +4,12 @@ import clsx from 'clsx';
 import { Alert, Row, Col, IconButton, styled } from '@acala-dapp/ui-components';
 import { BalanceInputValue, BalanceInput, formatBalance, tokenEq } from '@acala-dapp/react-components';
 import { useApi, useSubscription, useBalance, useBalanceValidator, useInputValue, useConstants, useModal } from '@acala-dapp/react-hooks';
-import { CurrencyId } from '@acala-network/types/interfaces';
+import { token2CurrencyId, currencyId2Token, FixedPointNumber } from '@acala-network/sdk-core';
+import { TradeParameters } from '@acala-network/sdk-swap/trade-parameters';
 
 import { SwapInfo } from './SwapInfo';
 import { SlippageInput } from './SlippageInput';
 import { SwapProvider, SwapContext } from './SwapProvider';
-import { token2CurrencyId, currencyId2Token, FixedPointNumber } from '@acala-network/sdk-core';
-import { TradeParameters } from '@acala-network/sdk-swap/trade-parameters';
 import { ReactComponent as SettingIcon } from '../../assets/setting.svg';
 import { CardRoot, Addon, CTxButton } from '../common';
 
@@ -129,13 +128,13 @@ export const Inner: FC = () => {
   const selectableInputCurrencies = useMemo(() => {
     if (!output.token) return availableCurrencies;
 
-    return availableCurrencies.filter((item) => !tokenEq(item, output.token as CurrencyId));
+    return availableCurrencies.filter((item) => !tokenEq(item, output?.token));
   }, [availableCurrencies, output]);
 
   const selectableOutputCurrencies = useMemo(() => {
     if (!input.token) return selectableInputCurrencies;
 
-    return selectableInputCurrencies.filter((item) => !tokenEq(item, input.token as CurrencyId));
+    return selectableInputCurrencies.filter((item) => !tokenEq(item, input?.token));
   }, [selectableInputCurrencies, input]);
 
   const handleInputFocus = useCallback(() => {
@@ -185,6 +184,8 @@ export const Inner: FC = () => {
   }, [parameters, tradeMode]);
 
   useSubscription(() => {
+    console.log(changeFlag.value, tradeMode, input.amount);
+
     if (changeFlag.value === false) {
       if (tradeMode === 'EXACT_INPUT' && input.amount === 0) return;
 
@@ -193,13 +194,15 @@ export const Inner: FC = () => {
       if (tradeMode === 'EXACT_INPUT' &&
         input.amount === parametersRef.current?.input.amount.toNumber() &&
         input.token &&
-        parametersRef.current?.input.isEqual(currencyId2Token(input.token))
+        parametersRef.current?.input.isEqual(currencyId2Token(input.token)) &&
+        (output.token ? parametersRef.current?.output.isEqual(currencyId2Token(output.token)) : true)
       ) return;
 
       if (tradeMode === 'EXACT_OUTPUT' &&
         output.amount === parametersRef.current?.output.amount.toNumber() &&
         output.token &&
-        parametersRef.current?.output.isEqual(currencyId2Token(output.token))
+        parametersRef.current?.output.isEqual(currencyId2Token(output.token)) &&
+        (input.token ? parametersRef.current?.input.isEqual(currencyId2Token(input.token)) : true)
       ) return;
     }
 
@@ -296,7 +299,6 @@ export const Inner: FC = () => {
                   />
                 ) : (
                   <SwapInfo
-                    input={input}
                     output={output}
                     parameters={parameters}
                   />

@@ -9,6 +9,7 @@ import { useInputValue } from '@acala-dapp/react-hooks/useInputValue';
 import { TokenInput } from '@acala-dapp/react-components/TokenInput';
 
 import { CardRoot, CardTitle, CardSubTitle, CTxButton, WithdrawnTitle, AmountTitle, CAlert, CMaxBtn } from '../common';
+import { DepositInfo } from './DepositInfo';
 
 export const DepositConsole: FC = () => {
   const lpEnableCurrencies = useLPEnabledCurrencies();
@@ -34,13 +35,13 @@ export const DepositConsole: FC = () => {
   const token1Currencies = useMemo(() => {
     if (!token2.token) return lpEnableCurrencies;
 
-    return lpEnableCurrencies.filter((item) => !tokenEq(item, token2.token as CurrencyId));
+    return lpEnableCurrencies.filter((item) => !tokenEq(item, token2.token as any as CurrencyId));
   }, [token2.token, lpEnableCurrencies]);
 
   const token2Currencies = useMemo(() => {
     if (!token1.token) return lpEnableCurrencies;
 
-    return lpEnableCurrencies.filter((item) => !tokenEq(item, token1.token as CurrencyId));
+    return lpEnableCurrencies.filter((item) => !tokenEq(item, token1.token as any as CurrencyId));
   }, [token1.token, lpEnableCurrencies]);
 
   const {
@@ -100,8 +101,8 @@ export const DepositConsole: FC = () => {
   const handleMax = useCallback(() => {
     if (!isAvailableLP || !token1.token || !token2.token) return;
 
-    const token1Amount = token1.amount || token1Balance.toNumber();
-    const token2Amount = token2.amount || token2Balance.toNumber();
+    const token1Amount = token1Balance.toNumber();
+    const token2Amount = token2Balance.toNumber();
 
     const suggestToken2ByToken1 = getAddLPSuggestAmount(token1.token, token1Amount);
     const suggestToken1ByToken2 = getAddLPSuggestAmount(token2.token, token2Amount);
@@ -131,7 +132,11 @@ export const DepositConsole: FC = () => {
   const handleToken1AmountChange = useCallback(({ amount, token }: Partial<BalanceInputValue>) => {
     setToken1({ amount });
 
-    if (!token || !amount) return;
+    if (!token || !amount) {
+      setToken2({ amount: 0 });
+
+      return;
+    }
 
     setToken2({
       amount: getAddLPSuggestAmount(token, amount).toNumber()
@@ -141,7 +146,11 @@ export const DepositConsole: FC = () => {
   const handleToken2AmountChange = useCallback(({ amount, token }: Partial<BalanceInputValue>) => {
     setToken2({ amount });
 
-    if (!token || !amount) return;
+    if (!token || !amount) {
+      setToken1({ amount: 0 });
+
+      return;
+    }
 
     setToken1({
       amount: getAddLPSuggestAmount(token, amount).toNumber()
@@ -237,6 +246,16 @@ export const DepositConsole: FC = () => {
                 />
               </Col>
             </>
+          ) : null
+        }
+        {
+          isAvailableLP && token1.token && token2.token ? (
+            <Col span={24}>
+              <DepositInfo
+                token1={token1 as any as BalanceInputValue}
+                token2={token2 as any as BalanceInputValue}
+              />
+            </Col>
           ) : null
         }
         <Col span={24}>

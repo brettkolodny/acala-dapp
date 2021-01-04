@@ -5,10 +5,11 @@ import { BalanceInput, BalanceInputValue, getCurrenciesFromDexShare, eliminateGa
 import { useLPCurrencies, useApi, useBalance, useBalanceValidator } from '@acala-dapp/react-hooks';
 import { FixedPointNumber } from '@acala-network/sdk-core';
 import { CurrencyId } from '@acala-network/types/interfaces';
-
-import { useInputValue } from '@acala-dapp/react-hooks/useInputValue';
-import { AmountTitle, CardRoot, CardSubTitle, CardTitle, CTxButton, WithdrawnTitle, CMaxBtn } from '../common';
 import { TokenInput } from '@acala-dapp/react-components/TokenInput';
+import { useInputValue } from '@acala-dapp/react-hooks/useInputValue';
+
+import { WithdrawInfo } from './WithdrawInfo';
+import { AmountTitle, CardRoot, CardSubTitle, CardTitle, CTxButton, WithdrawnTitle, CMaxBtn } from '../common';
 
 export const WithdrawConsole: FC = () => {
   const { api } = useApi();
@@ -107,6 +108,13 @@ export const WithdrawConsole: FC = () => {
             value={selectedLP}
           />
         </Col>
+        {
+          selectedLP.token ? (
+            <Col span={24}>
+              <WithdrawInfo token={selectedLP as any as BalanceInputValue} />
+            </Col>
+          ) : null
+        }
         <Col span={24}>
           <CTxButton
             disabled={isDisabled}

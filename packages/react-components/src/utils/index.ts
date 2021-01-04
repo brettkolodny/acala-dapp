@@ -15,7 +15,7 @@ export const numToFixed18Inner = (num: number | string): string => {
   return Fixed18.fromNatural(num).innerToString();
 };
 
-export const tokenEq = (base: CurrencyId | string, target: CurrencyId | string): boolean => {
+export const tokenEq = (base?: CurrencyId | string, target?: CurrencyId | string): boolean => {
   if (!target || !base) {
     return false;
   }

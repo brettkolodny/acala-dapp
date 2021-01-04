@@ -1,41 +1,62 @@
 import React, { FC, ReactNode } from 'react';
-import clsx from 'clsx';
 
-import { Tag, ArrowRightOutlined, styled } from '@acala-dapp/ui-components';
+import { ArrowRightOutlined, styled } from '@acala-dapp/ui-components';
 import { BalanceInputValue, FormatBalance, getCurrencyIdFromName, TokenImage } from '@acala-dapp/react-components';
 import { useApi } from '@acala-dapp/react-hooks';
-
-import classes from './SwapConsole.module.scss';
 import { TradeParameters } from '@acala-network/sdk-swap/trade-parameters';
+import { InfoItem, InfoItemLabel, InfoItemValue, InfoRoot } from '../common';
 
 interface SwapRouteProps {
   parameters: TradeParameters;
 }
 
+const SwapRouteRoot = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.1875;
+
+  .swap-route__content {
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+  }
+
+  .swap-route__token-image {
+    width: 16px;
+    height: 16px;
+  }
+
+  .swap-route__arrow {
+    margin: 4px;
+  }
+`;
+
 const SwapRoute: FC<SwapRouteProps> = ({ parameters }) => {
   const { api } = useApi();
 
   return (
-    <div className={clsx(classes.info, classes.swapRoute)}>
+    <SwapRouteRoot>
       Swap Route is
-      <div className={classes.content}>
+      <div className='swap-route__content'>
         {
           parameters.path.map((item, index): ReactNode[] => {
             return [
               <TokenImage
-                className={classes.token}
+                className='swap-route__token-image'
                 currency={getCurrencyIdFromName(api, item.name)}
                 key={`${item.toString()}`}
               />,
               index < parameters.path.length - 1 ? <ArrowRightOutlined
-                className={classes.arrow}
+                className='swap-route__arrow'
                 key={`${item.toString()}-arrow`}
               /> : null
             ];
           })
         }
       </div>
-    </div>
+    </SwapRouteRoot>
   );
 };
 
@@ -49,31 +70,12 @@ const SwapRoute: FC<SwapRouteProps> = ({ parameters }) => {
 //   );
 // };
 
-const InfoRoot = styled.div`
-  padding: 16px;
-  border-radius: 10px;
-  background: #EDF3FF;
-  font-size: 16px;
-  line-height: 1.1875;
-  color: var(--text-color-primary);
-`;
-
-const InfoContent = styled.div`
-  & > span {
-    line-height: 32px;
-    display: inline-block;
-    vertical-align: top;
-  }
-`;
-
 interface Props {
-  input: Partial<BalanceInputValue>;
   output: Partial<BalanceInputValue>;
   parameters: TradeParameters;
 }
 
 export const SwapInfo: FC<Props> = ({
-  input,
   output,
   parameters
 }) => {
@@ -81,23 +83,25 @@ export const SwapInfo: FC<Props> = ({
 
   return (
     <InfoRoot>
-      <InfoContent>
-        <span>You are selling</span>
-        <Tag>
-          <FormatBalance balance={parameters.input.amount}
-            currency={input.token} />
-        </Tag>
-        <span>for at least</span>
-        <Tag>
+      <InfoItem>
+        <InfoItemLabel>Minimum received</InfoItemLabel>
+        <InfoItemValue>
           <FormatBalance
             balance={parameters.output.amount}
             currency={output.token}
           />
-        </Tag>
-      </InfoContent>
+        </InfoItemValue>
+      </InfoItem>
       {
         parameters.path.length > 2 ? (
-          <SwapRoute parameters={parameters} />
+          <InfoItem>
+            <InfoItemLabel>
+              Route
+            </InfoItemLabel>
+            <InfoItemValue>
+              <SwapRoute parameters={parameters} />
+            </InfoItemValue>
+          </InfoItem>
         ) : null
       }
     </InfoRoot>

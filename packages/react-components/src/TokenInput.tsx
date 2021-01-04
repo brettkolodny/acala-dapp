@@ -173,6 +173,7 @@ export const TokenInput: FC<TokenInputProps> = styled<FC<TokenInputProps>>(({
   display: block;
   height: 58px;
   padding: 0;
+  user-select: none;
 
   .token-input__content__icon {
     position: relative;

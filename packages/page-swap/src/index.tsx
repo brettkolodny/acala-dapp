@@ -7,7 +7,7 @@ import { useSubMenu } from '@acala-dapp/react-environment';
 import { SwapConsole } from './components/swap';
 import { DepositConsole } from './components/deposit';
 import { WithdrawConsole } from './components/withdraw';
-import { LiquidityInformation } from './components/LiquidityInformation';
+import { LiquidityInformation } from './components/common';
 
 type SwapTabType = 'add-liquidity' | 'withdraw-liquidity';
 type SwapPageType = 'swap' | 'liquidity';

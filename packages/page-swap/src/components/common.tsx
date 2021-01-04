@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Alert, Card, styled, Button } from '@acala-dapp/ui-components';
+import { Alert, Card, styled, Button, Information } from '@acala-dapp/ui-components';
 import { BareProps } from '@acala-dapp/ui-components/types';
 import { TxButton } from '@acala-dapp/react-components';
 
@@ -98,8 +98,22 @@ export const InfoRoot = styled.div`
 `;
 
 export const InfoItem = styled.div`
+  margin-bottom: 8px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+`;
+
+export const InfoItemLabel = styled.div`
+  color: var(--color-primary);
+`;
+
+export const InfoItemValue = styled.div`
+  color: var(--information-content-color);
 `;
 
 export const CardRoot = styled(Card)`
@@ -146,3 +160,12 @@ export const CMaxBtn = styled(Button)`
   min-width: auto;
   font-weight: bold;
 `;
+
+export const LiquidityInformation: FC = () => {
+  return (
+    <Information
+      content='Liquidity Providers (LPs) earn a x.x% fee on trades proportional to their contribution share of the liquidity pool. Fees are automatically claimed when you withdraw your liquidity. Additional rewards can be earned through the LP Staking program.'
+      title='Rewards for Providing Liquidity'
+    />
+  );
+};

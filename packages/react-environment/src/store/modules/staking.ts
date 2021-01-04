@@ -55,7 +55,7 @@ export const subscribeStakingPool = (api: ApiRx): Observable<StakingPoolData> =>
           ],
           unbondingToFree: FixedPointNumber.fromInner(data.ledger.unbondingToFree.toString())
         },
-        liquidTotalIssuance: FixedPointNumber.fromInner((data as any).liquidTokenIssuance.toString()),
+        liquidTotalIssuance: FixedPointNumber.fromInner(data.liquidIssuance.toString()),
         params: {
           baseFeeRate: FixedPointNumber.fromInner(data.params.baseFeeRate.toString()),
           targetMaxFreeUnbondedRatio: FixedPointNumber.fromInner(data.params.targetMaxFreeUnbondedRatio.toString()),

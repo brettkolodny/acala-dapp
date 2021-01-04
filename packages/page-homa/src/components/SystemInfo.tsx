@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 
 import { Card, List } from '@acala-dapp/ui-components';
 import { FormatRatio, FormatBalance } from '@acala-dapp/react-components';
@@ -9,6 +9,11 @@ import { useStakingPool, useConstants } from '@acala-dapp/react-hooks';
 export const SystemInfo: FC = () => {
   const { liquidCurrency, stakingCurrency } = useConstants();
   const stakingPool = useStakingPool();
+  const bondedRatio = useMemo(() => {
+    return stakingPool?.stakingPool.ledger.bondedBelongToLiquidHolders.div(
+      stakingPool?.stakingPool.ledger.totalBelongToLiquidHolders
+    );
+  }, [stakingPool]);
 
   if (!stakingPool) return null;
 
@@ -38,13 +43,13 @@ export const SystemInfo: FC = () => {
         <List.Item
           label='Bonded Ratio'
           value={
-            <FormatRatio data={stakingPool.stakingPool.getBondedRatio()} />
+            <FormatRatio data={bondedRatio} />
           }
         />
         <List.Item
           label='Free Ratio'
           value={
-            <FormatRatio data={stakingPool.stakingPool.getFreeUnbondedRatio()} />
+            <FormatRatio data={stakingPool.stakingPool.ledger.freePoolRatio} />
           }
         />
       </List>

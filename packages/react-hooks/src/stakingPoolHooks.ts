@@ -79,7 +79,7 @@ export const useRedeemList = (): RedeemItem[] => {
     const eraArray = new Array(duration + 1).fill(undefined).map((_i, index) => start + index + 1);
 
     return combineLatest(
-      eraArray.map((era: number) => api.query.stakingPool.claimedUnbond<Balance>(active.address, era))
+      eraArray.map((era: number) => api.query.stakingPool.unbondings<Balance>(active.address, era))
     ).pipe(
       map((result) => eraArray.map((era, index) => ({
         balance: result[index].isEmpty ? FixedPointNumber.ZERO : FixedPointNumber.fromInner(result[index].toString()),

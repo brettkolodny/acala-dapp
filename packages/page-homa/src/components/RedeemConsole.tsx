@@ -32,7 +32,7 @@ export const RedeemConsole: FC = () => {
   const freeLiquidityCurrencyAmount = useMemo((): FixedPointNumber => {
     if (!stakingPool) return FixedPointNumber.ZERO;
 
-    return stakingPool.stakingPool.getFreeUnbondedRatio().times(stakingPool.stakingPool.getTotalCommunalBalance());
+    return stakingPool.stakingPool.ledger.freePool.div(stakingPool.stakingPool.liquidExchangeRate());
   }, [stakingPool]);
 
   const freeLiquidityCurrencyAmountInTarget = useMemo((): FixedPointNumber => {

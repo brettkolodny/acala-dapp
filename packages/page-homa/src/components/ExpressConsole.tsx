@@ -140,7 +140,7 @@ const UnstakePanel: FC = () => {
   const maxToUnstake = useMemo<FixedPointNumber>((): FixedPointNumber => {
     if (!stakingPool) return FixedPointNumber.ZERO;
 
-    return FixedPointNumber.fromInner(stakingPool?.derive.freeUnbonded.toString()).min(liquidCurrencyBalance);
+    return FixedPointNumber.fromInner(stakingPool?.derive.ledger.freePool.toString()).min(liquidCurrencyBalance);
   }, [stakingPool, liquidCurrencyBalance]);
 
   useBalanceValidator({

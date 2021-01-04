@@ -93,7 +93,8 @@ export const DepositConsole: FC = () => {
       eliminateGap(
         new FixedPointNumber(token2.amount),
         token2Balance
-      ).toChainData()
+      ).toChainData(),
+      false
     ];
   }, [token1, token2, token1Balance, token2Balance]);
 

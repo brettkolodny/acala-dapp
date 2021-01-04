@@ -21,29 +21,29 @@ export const StakingPool: FC = () => {
     },
     {
       /* eslint-disable-next-line react/display-name */
-      render: (value: StakingPoolData): ReactNode => <FormatBalance balance={value.stakingPool.getTotalCommunalBalance()} />,
+      render: (value: StakingPoolData): ReactNode => <FormatBalance balance={value.stakingPool.ledger.totalBelongToLiquidHolders} />,
       title: 'Total'
     },
     {
       /* eslint-disable-next-line react/display-name */
-      render: (value: StakingPoolData): ReactNode => <FormatBalance balance={value.stakingPool.getCommunalBonded()} />,
+      render: (value: StakingPoolData): ReactNode => <FormatBalance balance={value.stakingPool.ledger.bondedBelongToLiquidHolders} />,
       title: 'Total Bonded'
     },
     {
       /* eslint-disable-next-line react/display-name */
-      render: (value: StakingPoolData): ReactNode => <FormatBalance balance={value.stakingPool.getFreeUnbondedRatio().times(value.stakingPool.getTotalCommunalBalance())} />,
+      render: (value: StakingPoolData): ReactNode => <FormatBalance balance={value.stakingPool.ledger.freePool}/>,
       title: 'Total Free'
     },
     {
       /* eslint-disable-next-line react/display-name */
-      render: (value: StakingPoolData): ReactNode => <FormatBalance balance={value.stakingPool.getUnbondingToFreeRatio().times(value.stakingPool.getTotalCommunalBalance())} />,
+      render: (value: StakingPoolData): ReactNode => <FormatBalance balance={value.stakingPool.ledger.unbondingToFree} />,
       title: 'Unbonding'
     },
     {
       align: 'right',
       /* eslint-disable-next-line react/display-name */
       render: (value: StakingPoolData): ReactNode => (
-        <FormatRatio data={value.stakingPool.getBondedRatio()} />
+        <FormatRatio data={value.stakingPool.ledger.bondedBelongToLiquidHolders.div(value.stakingPool.ledger.total)} />
       ),
       title: 'Bond Ratio'
     }

@@ -184,8 +184,6 @@ export const Inner: FC = () => {
   }, [parameters, tradeMode]);
 
   useSubscription(() => {
-    console.log(changeFlag.value, tradeMode, input.amount);
-
     if (changeFlag.value === false) {
       if (tradeMode === 'EXACT_INPUT' && input.amount === 0) return;
 

@@ -8,7 +8,7 @@ import { Token, TokenPair, FixedPointNumber, currencyId2Token } from '@acala-net
 import { SwapTrade } from '@acala-network/sdk-swap';
 import { Fee, SwapTradeMode } from '@acala-network/sdk-swap/help';
 
-import { useApi } from '@acala-dapp/react-hooks';
+import { useAllTradingPairs, useApi, useEnableLPs } from '@acala-dapp/react-hooks';
 import { TradeParameters } from '@acala-network/sdk-swap/trade-parameters';
 
 export interface PoolData {
@@ -87,11 +87,7 @@ export const SwapProvider: FC<PropsWithChildren<{}>> = memo(({ children }) => {
     };
   }, [api]);
 
-  const enableTokenPairs = useMemo((): TokenPair[] => {
-    if (!api) return [];
-
-    return SwapTrade.getAvailableTokenPairs(api);
-  }, [api]);
+  const enableTokenPairs = useEnableLPs();
 
   const maxTradePathLength = useMemo((): number => {
     if (!api) return 0;

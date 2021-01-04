@@ -18,9 +18,7 @@ export const useAllTradingPairs = (): TradingPair[] => {
 
       if (enabled) {
         setResult(
-          enabled.map((item) => {
-            api.createType('TradingPair' as any, []);
-          })
+          enabled.map((item) => api.createType('TradingPair' as any, item[0].args[0]))
         );
       }
     });
@@ -31,7 +29,7 @@ export const useAllTradingPairs = (): TradingPair[] => {
   }, [api]);
 
   return result;
-}
+};
 
 export const useEnableLPs = (): TokenPair[] => {
   const tradingPairs = useAllTradingPairs();

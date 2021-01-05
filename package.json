@@ -14,7 +14,8 @@
     "@acala-network/api": "^0.4.0-beta.34",
     "@acala-network/types": "^0.4.0-beta.34",
     "@acala-network/app-util": "^0.4.0-beta.34",
-    "@acala-network/api-derive": "^0.4.0-beta.34"
+    "@acala-network/api-derive": "^0.4.0-beta.34",
+    "@acala-network/sdk-core": "^0.4.0-beta.34"
   },
   "scripts": {
     "bump-version": "node scripts/bump-version.js",

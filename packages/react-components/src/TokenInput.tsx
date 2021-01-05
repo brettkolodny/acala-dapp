@@ -160,7 +160,7 @@ export const TokenInput: FC<TokenInputProps> = styled<FC<TokenInputProps>>(({
                   showCurrencyName
                 />
               </Current>
-            ) : <div className='token-input__content__content'>{placeholder || 'Pleace Select Token'}</div>
+            ) : <div className='token-input__content__content'>{placeholder || 'Please Select Token'}</div>
           }
           <div className='token-input__content__icon'>
             <ArrowPixelIcon />

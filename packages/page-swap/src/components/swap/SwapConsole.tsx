@@ -190,13 +190,14 @@ export const Inner: FC = () => {
       if (tradeMode === 'EXACT_OUTPUT' && output.amount === 0) return;
 
       if (tradeMode === 'EXACT_INPUT' &&
-        input.amount === parametersRef.current?.input.amount.toNumber() &&
+        _input.isEqualTo(parametersRef.current?.input.amount || FixedPointNumber.ZERO) &&
         input.token &&
         parametersRef.current?.input.isEqual(currencyId2Token(input.token)) &&
         (output.token ? parametersRef.current?.output.isEqual(currencyId2Token(output.token)) : true)
       ) return;
 
       if (tradeMode === 'EXACT_OUTPUT' &&
+        _output.isEqualTo(parametersRef.current?.output.amount || FixedPointNumber.ZERO) &&
         output.amount === parametersRef.current?.output.amount.toNumber() &&
         output.token &&
         parametersRef.current?.output.isEqual(currencyId2Token(output.token)) &&

@@ -142,7 +142,7 @@ const YEAR = 365 * 24 * 60 * 60 * 1000;
 
 export const useStakingRewardAPR = (): FixedPointNumber => {
   const { api } = useApi();
-  const subAccountStatus = useCall<SubAccountStatus>('query.polkadotBridge.subAccounts', [1]);
+  const { data: subAccountStatus } = useCall<SubAccountStatus>('query.polkadotBridge.subAccounts', [1]);
 
   const arp = useMemo<FixedPointNumber>(() => {
     if (!subAccountStatus) return FixedPointNumber.ZERO;
@@ -158,7 +158,7 @@ export const useStakingRewardAPR = (): FixedPointNumber => {
 };
 
 export const useStakingRewardERA = (): FixedPointNumber => {
-  const subAccountStatus = useCall<SubAccountStatus>('query.polkadotBridge.subAccounts', [1]);
+  const { data: subAccountStatus } = useCall<SubAccountStatus>('query.polkadotBridge.subAccounts', [1]);
 
   const arp = useMemo<FixedPointNumber>(() => {
     if (!subAccountStatus) return FixedPointNumber.ZERO;

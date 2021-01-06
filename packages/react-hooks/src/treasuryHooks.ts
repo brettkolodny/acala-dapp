@@ -30,7 +30,7 @@ export const useTreasuryOverview = (): WithNull<TreasuryOverview> => {
   ), [api]);
 
   const { loanCurrencies, stableCurrency } = useConstants();
-  const surplusPool = useCall<Balance>('query.cdpTreasury.debitPool');
+  const { data: surplusPool } = useCall<Balance>('query.cdpTreasury.debitPool');
   const debitPool = useBalance(stableCurrency, moduleAccount);
   const [result, setResult] = useState<WithNull<TreasuryOverview>>(null);
 

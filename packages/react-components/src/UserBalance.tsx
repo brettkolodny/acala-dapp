@@ -24,8 +24,7 @@ export const UserBalance: FC<Props> = ({
 }) => {
   const { active } = useAccounts();
   const _account = account !== undefined ? account : active ? active.address : '';
-  // FIXME: need fix api-derive type
-  const result = useCall<Balance>('derive.currencies.balance', [_account, currency]);
+  const { data: result } = useCall<Balance>('derive.currencies.balance', [_account, currency]);
   const price = usePrice(currency);
 
   if (!result) return null;

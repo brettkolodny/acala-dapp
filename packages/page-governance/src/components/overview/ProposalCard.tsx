@@ -5,7 +5,7 @@ import { upperFirst } from 'lodash';
 import { Card, Row, Col, styled, FlexBox, Button } from '@acala-dapp/ui-components';
 import { BareProps } from '@acala-dapp/ui-components/types';
 import { ProposalData, useAccounts, useCouncilMembers } from '@acala-dapp/react-hooks';
-import { CouncilsColor, CouncilType } from '../config';
+import { CouncilsColor, CouncilType } from '../../config';
 
 const Title = styled(({ className, council, title }: { title: string; council: string } & BareProps) => {
   const _council = useMemo(() => council.replace('Council', ''), [council]);

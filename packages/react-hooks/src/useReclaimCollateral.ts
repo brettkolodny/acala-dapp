@@ -17,7 +17,7 @@ export interface ReclaimCollateralData {
 export const useReclaimCollateral = (): ReclaimCollateralData => {
   const { stableCurrency } = useConstants();
   const treasury = useTreasuryOverview();
-  const totalIssuance = useCall<Balance>('query.tokens.totalIssuance', [stableCurrency]);
+  const { data: totalIssuance } = useCall<Balance>('query.tokens.totalIssuance', [stableCurrency]);
 
   const collaterals = useMemo<ReclaimCollateralAmount>(() => {
     if (!treasury) return {};

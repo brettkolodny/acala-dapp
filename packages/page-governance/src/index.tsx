@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 import { Route, Routes } from 'react-router';
-import { CouncilPage } from './components/CouncilPage';
+// import { CouncilPage } from './components/CouncilPage';
 
-import { Overview } from './components/Overview';
-import { ProposalPage } from './components/ProposalPage';
-import { CouncilProposalDetail } from './components/CouncilProposalDetail';
+import { Overview } from './components/overview';
+// import { ProposalPage } from './components/ProposalPage';
+// import { CouncilProposalDetail } from './components/CouncilProposalDetail';
 
 const PageGovernance: FC = () => {
   return (
@@ -13,7 +13,7 @@ const PageGovernance: FC = () => {
         element={<Overview />}
         path='/'
       />
-      <Route
+      {/* <Route
         element={<ProposalPage />}
         path='/proposals'
       />
@@ -24,7 +24,7 @@ const PageGovernance: FC = () => {
       <Route
         element={<CouncilPage />}
         path='/councils'
-      />
+      /> */}
     </Routes>
   );
 };

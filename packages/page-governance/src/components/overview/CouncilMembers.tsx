@@ -5,7 +5,7 @@ import { FixedPointNumber } from '@acala-network/sdk-core';
 import { Card, Table, ColumnsType, styled } from '@acala-dapp/ui-components';
 import { useCouncilMembers } from '@acala-dapp/react-hooks';
 import { FormatAddress, FormatRatio } from '@acala-dapp/react-components';
-import { CouncilType } from '../config';
+import { CouncilType } from '../../config';
 
 interface Props {
   council: CouncilType;

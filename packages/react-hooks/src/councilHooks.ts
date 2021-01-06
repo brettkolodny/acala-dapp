@@ -61,7 +61,7 @@ export const useCouncilList = (): string[] => {
 
 export const useCouncilMembers = (council: string): Vec<AccountId> | undefined => {
   const _council = council.endsWith('Council') ? council : council + 'Council';
-  const members = useCall<Vec<AccountId>>(`query.${_council}.members`, []);
+  const { data: members } = useCall<Vec<AccountId>>(`query.${_council}.members`, []);
 
   return members;
 };

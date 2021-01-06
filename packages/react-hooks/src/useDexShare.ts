@@ -13,8 +13,8 @@ interface DexShareData {
 export const useDexShare = (token: CurrencyLike, account?: AccountId | string): DexShareData => {
   const { active } = useAccounts();
   const _account = account || (active ? active.address : '');
-  const share = useCall<Share>('query.dex.shares', [token, _account]);
-  const totalShares = useCall<Share>('query.dex.totalShares', [token]);
+  const { data: share } = useCall<Share>('query.dex.shares', [token, _account]);
+  const { data: totalShares } = useCall<Share>('query.dex.totalShares', [token]);
 
   return { share, totalShares };
 };

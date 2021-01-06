@@ -24,7 +24,7 @@ export type BalanceData = { currency: CurrencyId ; balance: FixedPointNumber };
 export const useBalance = (currency?: CurrencyId, account?: AccountLike): FixedPointNumber => {
   const { active } = useAccounts();
   const _account = useMemo(() => account || (active ? active.address : '_'), [account, active]);
-  const balance = useCall<Balance>('derive.currencies.balance', [_account, currency]);
+  const { data: balance } = useCall<Balance>('derive.currencies.balance', [_account, currency]);
   const result = useMemo<FixedPointNumber>((): FixedPointNumber => {
     if (!currency || !balance) {
       return FixedPointNumber.ZERO;
@@ -130,7 +130,7 @@ export const useTotalValue = (account?: AccountLike): FixedPointNumber => {
 };
 
 export const useIssuance = (currency: CurrencyId): FixedPointNumber => {
-  const issuance = useCall<Balance>('query.tokens.totalIssuance', [currency]);
+  const { data: issuance } = useCall<Balance>('query.tokens.totalIssuance', [currency]);
 
   return issuance ? FixedPointNumber.fromInner(issuance.toString()) : FixedPointNumber.ZERO;
 };

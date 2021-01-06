@@ -17,10 +17,10 @@ export interface AuctionOverview {
 }
 
 export const useAuctionOverview = (): WithNull<AuctionOverview> => {
-  const totalCollateralInAuction = useCall<[StorageKey, Balance][]>('query.auctionManager.totalCollateralInAuction.entries');
-  const totalDebitInAuction = useCall<Balance>('query.auctionManager.totalDebitInAuction');
-  const totalSurplusInAuction = useCall<Balance>('query.auctionManager.totalSurplusInAuction');
-  const totalTargetInAuction = useCall<Balance>('query.auctionManager.totalTargetInAuction');
+  const { data: totalCollateralInAuction } = useCall<[StorageKey, Balance][]>('query.auctionManager.totalCollateralInAuction.entries');
+  const { data: totalDebitInAuction } = useCall<Balance>('query.auctionManager.totalDebitInAuction');
+  const { data: totalSurplusInAuction } = useCall<Balance>('query.auctionManager.totalSurplusInAuction');
+  const { data: totalTargetInAuction } = useCall<Balance>('query.auctionManager.totalTargetInAuction');
   const [result, setResult] = useState<WithNull<AuctionOverview>>(null);
 
   useEffect(() => {
@@ -52,12 +52,10 @@ export interface CollateralAuction {
 export const useCollateralAuctions = (): CollateralAuction[] => {
   const api = useApi();
   const [cacheKey, setCacheKey] = useState('');
-  const collateralAuction = useCall<[StorageKey, Option<CollateralAuctionItem>][]>(
+  const { data: collateralAuction } = useCall<[StorageKey, Option<CollateralAuctionItem>][]>(
     'query.auctionManager.collateralAuctions.entries',
     [],
-    {
-      cacheKey
-    }
+    { cacheKey }
   );
   const [result, setResult] = useState<CollateralAuction[]>([]);
 
@@ -95,7 +93,7 @@ export interface DebitAuction {
 }
 
 export const useDebitAuctions = (): DebitAuction[] => {
-  const debitAuction = useCall<[StorageKey, Option<DebitAuctionItem>][]>('query.auctionManager.debitAuctions.entries');
+  const { data: debitAuction } = useCall<[StorageKey, Option<DebitAuctionItem>][]>('query.auctionManager.debitAuctions.entries');
   const [result, setResult] = useState<DebitAuction[]>([]);
 
   useEffect(() => {
@@ -121,7 +119,7 @@ export interface SurplusAuction {
 }
 
 export const useSurplusAuction = (): SurplusAuction[] => {
-  const surplusAuction = useCall<[StorageKey, Option<SurplusAuctionItem>][]>('query.auctionManager.surplusAuctions.entries');
+  const { data: surplusAuction } = useCall<[StorageKey, Option<SurplusAuctionItem>][]>('query.auctionManager.surplusAuctions.entries');
   const [result, setResult] = useState<SurplusAuction[]>([]);
 
   useEffect(() => {

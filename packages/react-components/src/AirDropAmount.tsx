@@ -17,13 +17,13 @@ export const AirDropAmount: FC<Props> = ({
 }) => {
   const { active } = useAccounts();
   const _account = account || (active ? active.address : '');
-  const result = useCall('query.airDrop.airDrops', [_account, currency]);
+  const { data } = useCall<Balance>('query.airDrop.airDrops', [_account, currency]);
 
-  if (!result) {
+  if (!data) {
     return null;
   }
 
   return (
-    <FormatBalance balance={result as Balance} />
+    <FormatBalance balance={data} />
   );
 };

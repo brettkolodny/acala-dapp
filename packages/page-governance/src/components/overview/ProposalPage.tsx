@@ -3,7 +3,7 @@ import { usePageTitle } from '@acala-dapp/react-environment';
 import { CouncilesTab } from './CouncliTab';
 import { useProposals } from '@acala-dapp/react-hooks';
 import { Col, Row } from '@acala-dapp/ui-components';
-import { CouncilType } from '../config';
+import { CouncilType } from '../../config';
 import { ProposalCard } from './ProposalCard';
 
 const ProposalList: FC<{ council: string }> = ({ council }) => {

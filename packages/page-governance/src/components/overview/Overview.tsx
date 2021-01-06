@@ -11,7 +11,7 @@ import { GovernanceStage } from './GovernanceStage';
 import { GovernanceIntro } from './GovernanceIntro';
 import { RecentProposals } from './RecentProposals';
 import { CouncilMembers } from './CouncilMembers';
-import { CouncilType } from '../config';
+import { CouncilType } from '../../config';
 
 const OverviewSubTitleExtra = styled<FC<{ content: string } & BareProps & ClickAbleProps >>(({ className, content, onClick }) => {
   return (

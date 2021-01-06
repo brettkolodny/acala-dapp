@@ -11,7 +11,7 @@ import React, { FC, useMemo } from 'react';
 import classes from './CollateralAuctionList.module.scss';
 
 const AuctionLastBid: FC<{ id: string }> = ({ id }) => {
-  const info = useCall<Option<AuctionInfo>>('query.auction.auctions', [id]);
+  const { data: info } = useCall<Option<AuctionInfo>>('query.auction.auctions', [id]);
 
   if (info) {
     console.log('!!', info.toHuman());
@@ -36,7 +36,7 @@ const AuctionLastBid: FC<{ id: string }> = ({ id }) => {
 };
 
 const AuctionPayment: FC<{ id: string; target: Fixed18 }> = ({ id, target }) => {
-  const info = useCall<Option<AuctionInfo>>('query.auction.auctions', [id]);
+  const { data: info } = useCall<Option<AuctionInfo>>('query.auction.auctions', [id]);
 
   if (info) {
     console.log('!!', info.toHuman());
@@ -58,7 +58,7 @@ const AuctionPayment: FC<{ id: string; target: Fixed18 }> = ({ id, target }) => 
 };
 
 const AuctionReceiveCollateral: FC<{ id: string; target: Fixed18; amount: Fixed18 }> = ({ amount, id, target }) => {
-  const info = useCall<Option<AuctionInfo>>('query.auction.auctions', [id]);
+  const { data: info } = useCall<Option<AuctionInfo>>('query.auction.auctions', [id]);
 
   if (info) {
     console.log('!!', info.toHuman());

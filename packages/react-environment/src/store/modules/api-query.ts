@@ -1,21 +1,62 @@
-import { createStore, ManipulationsConfig, ManipulationParams } from '../createStore';
+import { useCallback, useMemo, useReducer } from 'react';
 
-type ApiQueryStoreState = Record<string, any>;
-
-interface ApiQueryStoreManipulate<T = ApiQueryStoreState> extends ManipulationsConfig<T> {
-  get: (params: ManipulationParams<T>) => (key: string) => any;
-  set: (params: ManipulationParams<T>) => (key: string, value: any) => void;
+type ApiQueryData = {
+  data: any;
+  status?: {
+    loading: boolean;
+  };
 }
 
-export const useApiQueryStore = createStore<ApiQueryStoreState, ApiQueryStoreManipulate<ApiQueryStoreState>>({}, {
-  get: ({ state }) => (key: string): any => {
-    return state[key];
-  },
-  set: ({ setState, stateRef }) => (key: string, value: any): void => {
-    // update query result
-    setState({
-      ...stateRef.current,
-      [key]: value
-    });
+type ApiQueryState = Record<string, ApiQueryData>;
+
+type ApiQueryAction = {
+  type: 'receive_result';
+  data: {
+    key: string;
+    value: {
+      data: any;
+      status?: {
+        loading: boolean;
+      };
+    };
+  };
+}
+
+const reducer = (state: ApiQueryState, action: ApiQueryAction): ApiQueryState => {
+  switch (action.type) {
+    case 'receive_result': {
+      return {
+        ...state,
+        [action.data.key]: action.data.value
+      };
+    }
+
+    default: {
+      return state;
+    }
   }
-});
+};
+
+type UseApiQueryStoreResult = {
+  get: (key: string) => ApiQueryData;
+  set: (key: string, data: ApiQueryData) => void;
+}
+
+const initState: ApiQueryState = {};
+
+export const useApiQueryStore = (): UseApiQueryStoreResult => {
+  const [state, dispatch] = useReducer(reducer, initState);
+
+  const set = useCallback((key: string, value: ApiQueryData) => {
+    dispatch({
+      data: { key, value },
+      type: 'receive_result'
+    });
+  }, [dispatch]);
+
+  const get = useCallback((key: string): ApiQueryData => {
+    return state[key];
+  }, [state]);
+
+  return useMemo(() => ({ get, set }), [set, get]);
+};

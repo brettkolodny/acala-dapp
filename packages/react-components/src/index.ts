@@ -10,7 +10,6 @@ export * from './AppSettings';
 export * from './TxButton';
 export * from './TransferButton';
 export * from './EventsWatcher';
-export * from './WatchStorage';
 export * from './ChainName';
 export * from './SelectNetwork';
 export * from './Network';

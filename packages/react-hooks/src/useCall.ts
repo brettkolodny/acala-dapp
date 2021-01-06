@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { get, isEmpty } from 'lodash';
 import { Observable, Subscription } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { ApiRx } from '@polkadot/api';
 
 import { useStore } from '@acala-dapp/react-environment';
@@ -25,7 +26,7 @@ class Tracker {
   ): void {
     if (isEmpty(api)) return;
 
-    if (!path) return;
+    if (!path || path === '__phantomdata') return;
 
     // update tracker list
     if (this.trackerList[key]) {
@@ -38,8 +39,15 @@ class Tracker {
 
     if (!fn) throw new Error(`can't find method:${path} in api`);
 
-    const subscriber = (fn(...params) as Observable<unknown>).subscribe({
-      next: (result: any) => callback(key, result)
+    const subscriber = (fn(...params) as Observable<unknown>).pipe(
+      tap(() => {
+        callback(key, { data: undefined, status: { loading: true } });
+      })
+    ).subscribe({
+      error: () => {
+        console.error(`Error in fetch ${key} data`);
+      },
+      next: (result: any) => callback(key, { data: result, status: { loading: false } })
     });
 
     // update tracker list
@@ -58,30 +66,54 @@ class Tracker {
 
 const tracker = new Tracker();
 
-export function useCall <T> (path: string, params: CallParams = [], options?: {
+type UseCallResult<T> = {
+  data: T;
+  status: {
+    loading: boolean;
+    init: boolean;
+  };
+}
+
+export function useCall<T> (path: string, params: CallParams = [], options?: {
   cacheKey: string;
-}): T | undefined {
+}): UseCallResult<T | undefined> {
   const { api } = useApi();
   const isAppReady = useIsAppReady();
   const { get, set } = useStore('apiQuery');
-  const key = useMemo(
-    () =>
-      `${path}${params.toString() ? '-' + JSON.stringify(params) : ''}${options?.cacheKey ? '-' + options.cacheKey : ''}`,
-    [path, params, options]
-  );
+  const key = useMemo(() => `${path}.${JSON.stringify(params) || 'empty'}.${options?.cacheKey || 'no_cached'}`, [path, params, options]);
 
   // on changes, re-subscribe
   useEffect(() => {
     // check if we have a function & that we are mounted
     if (!isAppReady) return;
 
-    // if path equal __mock, doesn't du anything
-    if (path === '__mock') return;
+    // if path is __phantomdata, pass
+    if (path === '__phantomdata') return;
 
     tracker.subscribe(api, path, params, key, set);
 
     return (): void => tracker.unsubscribe(key);
   }, [isAppReady, api, path, params, key, set]);
 
-  return get(key);
+  return useMemo(() => {
+    const data = get(key);
+
+    if (!data) {
+      return {
+        data: undefined,
+        status: {
+          init: false,
+          loading: false
+        }
+      };
+    }
+
+    return {
+      data: data.data,
+      status: {
+        init: true,
+        loading: data?.status?.loading || false
+      }
+    };
+  }, [key, get]);
 }

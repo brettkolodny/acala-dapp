@@ -9,4 +9,4 @@
  * 7. submit the proposal
  */
 
-export const __phantomdata = 'mock';
+export * from './CreateProposal';

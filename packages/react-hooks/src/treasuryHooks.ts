@@ -5,7 +5,7 @@ import { FixedPointNumber } from '@acala-network/sdk-core';
 import { Balance, CurrencyId } from '@acala-network/types/interfaces';
 import { AccountData } from '@polkadot/types/interfaces';
 
-import { useCall } from './useCall';
+import { useQuery } from './useQuery';
 import { WithNull } from './types';
 import { useApi } from './useApi';
 import { combineLatest } from 'rxjs';
@@ -30,7 +30,7 @@ export const useTreasuryOverview = (): WithNull<TreasuryOverview> => {
   ), [api]);
 
   const { loanCurrencies, stableCurrency } = useConstants();
-  const { data: surplusPool } = useCall<Balance>('query.cdpTreasury.debitPool');
+  const { data: surplusPool } = useQuery<Balance>('query.cdpTreasury.debitPool');
   const debitPool = useBalance(stableCurrency, moduleAccount);
   const [result, setResult] = useState<WithNull<TreasuryOverview>>(null);
 

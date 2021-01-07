@@ -1,5 +1,5 @@
 import { bool } from '@polkadot/types';
-import { useCall } from './useCall';
+import { useQuery } from './useQuery';
 
 interface EmergencyShutdownData {
   canRefund: boolean;
@@ -7,8 +7,8 @@ interface EmergencyShutdownData {
 }
 
 export function useEmergencyShutdown (): EmergencyShutdownData {
-  const { data: _isShutdown } = useCall<bool>('query.emergencyShutdown.isShutdown', []);
-  const { data: _canRefund } = useCall<bool>('query.emergencyShutdown.canRefund', []);
+  const { data: _isShutdown } = useQuery<bool>('query.emergencyShutdown.isShutdown', []);
+  const { data: _canRefund } = useQuery<bool>('query.emergencyShutdown.canRefund', []);
 
   return {
     canRefund: _canRefund ? _canRefund.isTrue : false,

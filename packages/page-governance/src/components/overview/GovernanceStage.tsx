@@ -1,5 +1,6 @@
 import React, { FC, useMemo } from 'react';
-import { styled, Step } from '@acala-dapp/ui-components';
+import { NavLink } from 'react-router-dom';
+import { styled, Step, FlexBox, Button } from '@acala-dapp/ui-components';
 
 const CStep = styled(Step)`
   width: 382px;
@@ -67,10 +68,19 @@ export const GovernanceStage: FC = () => {
   }, []);
 
   return (
-    <CStep
-      config={data}
-      current={'poa'}
-      showIndex={false}
-    />
+    <FlexBox justifyContent='space-between'>
+      <CStep
+        config={data}
+        current={'poa'}
+        showIndex={false}
+      />
+      <Button
+        style='primary'
+      >
+        <NavLink to='/governance/create'>
+          Create Proposal
+        </NavLink>
+      </Button>
+    </FlexBox>
   );
 };

@@ -8,7 +8,7 @@ import { Proposal, Hash, Votes } from '@polkadot/types/interfaces';
 import { ApiRx } from '@polkadot/api';
 
 import { useApi } from './useApi';
-import { useCall } from './useCall';
+import { useQuery, useQueryMulti } from './useQuery';
 
 export interface ProposalData {
   proposal: Proposal;
@@ -59,9 +59,30 @@ export const useCouncilList = (): string[] => {
   }, [api]);
 };
 
+export const useAllCouncilMembers = (): { loading: boolean; init: boolean; members: { council: string; data: AccountId[]}[] } => {
+  const { api } = useApi();
+  const councils = getAllCouncil(api);
+
+  const { data: members, status: { init, loading } } = useQueryMulti<AccountId[][]>(councils.map((item) => {
+    return {
+      params: [],
+      path: `query.${item}.members`
+    };
+  }));
+
+  return useMemo(() => ({
+    init,
+    loading,
+    members: councils.map((item, index) => ({
+      council: item,
+      data: members ? members[index] : []
+    }))
+  }), [members, loading, init, councils]);
+};
+
 export const useCouncilMembers = (council: string): Vec<AccountId> | undefined => {
   const _council = council.endsWith('Council') ? council : council + 'Council';
-  const { data: members } = useCall<Vec<AccountId>>(`query.${_council}.members`, []);
+  const { data: members } = useQuery<Vec<AccountId>>(`query.${_council}.members`, []);
 
   return members;
 };

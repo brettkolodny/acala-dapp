@@ -4,7 +4,7 @@ import { FixedPointNumber } from '@acala-network/sdk-core';
 import { Balance, CurrencyId } from '@acala-network/types/interfaces';
 import { AccountId } from '@polkadot/types/interfaces';
 
-import { useCall, useAccounts, usePrice } from '@acala-dapp/react-hooks';
+import { useQuery, useAccounts, usePrice } from '@acala-dapp/react-hooks';
 import { BareProps } from '@acala-dapp/ui-components/types';
 import { FormatValue, FormatBalance } from './format';
 
@@ -24,7 +24,7 @@ export const UserBalance: FC<Props> = ({
 }) => {
   const { active } = useAccounts();
   const _account = account !== undefined ? account : active ? active.address : '';
-  const { data: result } = useCall<Balance>('derive.currencies.balance', [_account, currency]);
+  const { data: result } = useQuery<Balance>('derive.currencies.balance', [_account, currency]);
   const price = usePrice(currency);
 
   if (!result) return null;

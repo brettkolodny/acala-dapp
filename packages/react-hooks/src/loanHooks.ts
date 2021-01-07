@@ -6,7 +6,7 @@ import { Rate, CurrencyId, Position } from '@acala-network/types/interfaces';
 
 import { CurrencyLike, AccountLike } from './types';
 import { useAccounts } from './useAccounts';
-import { useCall } from './useCall';
+import { useQuery } from './useQuery';
 import { useConstants } from './useConstants';
 import { usePrice, useAllPrices } from './priceHooks';
 import { filterEmptyLoan } from './utils';
@@ -22,7 +22,7 @@ import { tokenEq, focusToFixed18, getTokenName } from '@acala-dapp/react-compone
 export const useUserLoan = (currency: CurrencyLike, account?: AccountLike): DerivedUserLoan | undefined => {
   const { active } = useAccounts();
   const _account = account || (active ? active.address : '');
-  const { data: loan } = useCall<DerivedUserLoan>('derive.loan.loan', [_account, currency]);
+  const { data: loan } = useQuery<DerivedUserLoan>('derive.loan.loan', [_account, currency]);
 
   return loan;
 };
@@ -32,7 +32,7 @@ export const useUserLoan = (currency: CurrencyLike, account?: AccountLike): Deri
  * @description get cdp type information
  */
 export const useLoanType = (currency: CurrencyLike): DerivedLoanType | undefined => {
-  const { data: type } = useCall<DerivedLoanType>('derive.loan.loanType', [currency]);
+  const { data: type } = useQuery<DerivedLoanType>('derive.loan.loanType', [currency]);
 
   return type;
 };
@@ -105,7 +105,7 @@ export const useLoanHelper = (currency: CurrencyId, account?: AccountLike): Loan
 export const useAllUserLoans = (filterEmpyt?: boolean, account?: AccountLike): DerivedUserLoan[] | null => {
   const { active } = useAccounts();
   const _account = account || (active ? active.address : '');
-  const { data: loans } = useCall<DerivedUserLoan[]>('derive.loan.allLoans', [_account]);
+  const { data: loans } = useQuery<DerivedUserLoan[]>('derive.loan.allLoans', [_account]);
 
   if (!loans) {
     return null;
@@ -119,7 +119,7 @@ export const useAllUserLoans = (filterEmpyt?: boolean, account?: AccountLike): D
  * @description get loan overview
  */
 export const useLoanOverview = (currency: CurrencyLike): (DerivedLoanOverView & DerivedLoanType) | undefined => {
-  const { data: result } = useCall<DerivedLoanOverView>('derive.loan.loanOverview', [currency]);
+  const { data: result } = useQuery<DerivedLoanOverView>('derive.loan.loanOverview', [currency]);
   const loanType = useLoanType(currency);
 
   if (!result || !loanType) return undefined;

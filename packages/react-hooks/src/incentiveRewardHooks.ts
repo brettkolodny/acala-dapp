@@ -4,7 +4,7 @@ import { Share, Balance, CurrencyId } from '@acala-network/types/interfaces';
 import { PoolInfo } from '@open-web3/orml-types/interfaces';
 import { FixedPointNumber } from '@acala-network/sdk-core';
 
-import { useCall } from './useCall';
+import { useQuery } from './useQuery';
 import { useApi } from './useApi';
 import { useAccounts } from './useAccounts';
 
@@ -39,7 +39,7 @@ export function getPoolId (poolId: PoolId, currency: CurrencyId): Partial<Record
 }
 
 export const useIncentivePool = (poolId: PoolId, currency: CurrencyId): CPoolInfo => {
-  const { data: poolInfo } = useCall<PoolInfo>('query.rewards.pools', [getPoolId(poolId, currency)]);
+  const { data: poolInfo } = useQuery<PoolInfo>('query.rewards.pools', [getPoolId(poolId, currency)]);
   const result = useMemo<CPoolInfo>(() => {
     if (!poolInfo) {
       return {
@@ -65,7 +65,7 @@ interface ShareAndWithdrawn {
 }
 
 export const useShareAndWithdrawnReward = (poolId: PoolId, currency: CurrencyId, account?: string): ShareAndWithdrawn => {
-  const { data: info } = useCall<[Share, Balance]>('query.rewards.shareAndWithdrawnReward', [getPoolId(poolId, currency), account]);
+  const { data: info } = useQuery<[Share, Balance]>('query.rewards.shareAndWithdrawnReward', [getPoolId(poolId, currency), account]);
   const result = useMemo<ShareAndWithdrawn>(() => {
     if (!info) {
       return {
@@ -91,7 +91,7 @@ interface RewardPool {
 // get currency active LP whic is have incentive reward
 export const useDexActiveIncentiveRewardPool = (): RewardPool[] => {
   const { api } = useApi();
-  const { data: dexIncentiveRewards } = useCall<[StorageKey, Balance][]>('query.incentives.dEXIncentiveRewards.entries');
+  const { data: dexIncentiveRewards } = useQuery<[StorageKey, Balance][]>('query.incentives.dEXIncentiveRewards.entries');
   const result = useMemo(() => {
     if (!dexIncentiveRewards) return [];
 
@@ -140,7 +140,7 @@ export const useDexIncentiveReward = (): { params: IncentiveParams; rewardPool: 
 // get currency active LP whic is have incentive reward
 export const useLoanActiveIncentiveRewardPool = (): RewardPool[] => {
   const { api } = useApi();
-  const { data: loansIncentiveRewards } = useCall<[StorageKey, Balance][]>('query.incentives.loansIncentiveRewards.entries');
+  const { data: loansIncentiveRewards } = useQuery<[StorageKey, Balance][]>('query.incentives.loansIncentiveRewards.entries');
   const result = useMemo(() => {
     if (!loansIncentiveRewards) return [];
 

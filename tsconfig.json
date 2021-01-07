@@ -16,6 +16,8 @@
     "jsx": "react",
     "baseUrl": "./packages",
     "paths": {
+      "@acala-dapp/utils/*": ["utils/src/*"],
+      "@acala-dapp/utils": ["utils/src"],
       "@acala-dapp/apps/*": ["apps/src/*"],
       "@acala-dapp/apps": ["apps/src"],
       "@acala-dapp/page-wallet": ["page-wallet/src"],

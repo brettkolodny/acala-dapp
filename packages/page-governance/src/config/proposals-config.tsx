@@ -15,7 +15,7 @@ const commonProposalsConfig = [
       { name: 'auction_surplus' },
       { name: 'auction_debit' },
       { name: 'auction_collateral' },
-      { name: 'set_collateral_auction_maximum_size' },
+      { name: 'set_collateral_auction_maximum_size' }
     ],
     module: 'cdp_treasury',
     origin: ensureRootOrHalfHonzonCouncil
@@ -69,4 +69,21 @@ export const proposalsConfig = {
   acala: commonProposalsConfig,
   karura: commonProposalsConfig,
   mandala: commonProposalsConfig
-} as Record<string, ModuleProposalCouncilConfig[]>;
+} as {
+  acala: ModuleProposalCouncilConfig[];
+  karura: ModuleProposalCouncilConfig[];
+  mandala: ModuleProposalCouncilConfig[];
+  [k: string]: ModuleProposalCouncilConfig[];
+};
+
+export const proposalModules = Array.from(
+  new Set(
+    Object.keys(proposalsConfig).reduce((acc, item) => {
+      return acc.concat((proposalsConfig[item] as any as ModuleProposalCouncilConfig[]).map((i) => i.module));
+    }, [] as string[])
+  )
+);
+
+export const getProposalsConfig = <U extends keyof typeof proposalsConfig>(key: U): ModuleProposalCouncilConfig[] => {
+  return proposalsConfig[key];
+};

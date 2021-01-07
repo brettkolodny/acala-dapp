@@ -3,7 +3,7 @@ import { Balance } from '@open-web3/orml-types/interfaces';
 
 import { useConstants } from './useConstants';
 import { useCallback, useMemo } from 'react';
-import { useCall } from './useCall';
+import { useQuery } from './useQuery';
 import { WithNull } from './types';
 import { useTreasuryOverview } from './treasuryHooks';
 
@@ -17,7 +17,7 @@ export interface ReclaimCollateralData {
 export const useReclaimCollateral = (): ReclaimCollateralData => {
   const { stableCurrency } = useConstants();
   const treasury = useTreasuryOverview();
-  const { data: totalIssuance } = useCall<Balance>('query.tokens.totalIssuance', [stableCurrency]);
+  const { data: totalIssuance } = useQuery<Balance>('query.tokens.totalIssuance', [stableCurrency]);
 
   const collaterals = useMemo<ReclaimCollateralAmount>(() => {
     if (!treasury) return {};

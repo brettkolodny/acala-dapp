@@ -1,7 +1,6 @@
 import { useEffect, useMemo } from 'react';
-import { get, isEmpty } from 'lodash';
+import { get as lodashGet, isEmpty } from 'lodash';
 import { Observable, Subscription } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import { ApiRx } from '@polkadot/api';
 
 import { useStore } from '@acala-dapp/react-environment';
@@ -35,15 +34,12 @@ class Tracker {
       return;
     }
 
-    const fn = get(api, path);
+    const fn = lodashGet(api, path);
 
     if (!fn) throw new Error(`can't find method:${path} in api`);
 
-    const subscriber = (fn(...params) as Observable<unknown>).pipe(
-      tap(() => {
-        callback(key, { data: undefined, status: { loading: true } });
-      })
-    ).subscribe({
+    callback(key, { data: undefined, status: { loading: true } });
+    const subscriber = (fn(...params) as Observable<unknown>).subscribe({
       error: () => {
         console.error(`Error in fetch ${key} data`);
       },
@@ -74,13 +70,13 @@ type UseCallResult<T> = {
   };
 }
 
-export function useCall<T> (path: string, params: CallParams = [], options?: {
+export function useQuery<T> (path: string, params: CallParams = [], options?: {
   cacheKey: string;
 }): UseCallResult<T | undefined> {
   const { api } = useApi();
   const isAppReady = useIsAppReady();
   const { get, set } = useStore('apiQuery');
-  const key = useMemo(() => `${path}.${JSON.stringify(params) || 'empty'}.${options?.cacheKey || 'no_cached'}`, [path, params, options]);
+  const key = useMemo(() => `${path}-${JSON.stringify(params) || 'empty'}-${options?.cacheKey || 'no_cached'}`, [path, params, options]);
 
   // on changes, re-subscribe
   useEffect(() => {
@@ -94,6 +90,57 @@ export function useCall<T> (path: string, params: CallParams = [], options?: {
 
     return (): void => tracker.unsubscribe(key);
   }, [isAppReady, api, path, params, key, set]);
+
+  return useMemo(() => {
+    const data = get(key);
+
+    if (!data) {
+      return {
+        data: undefined,
+        status: {
+          init: false,
+          loading: false
+        }
+      };
+    }
+
+    return {
+      data: data.data,
+      status: {
+        init: true,
+        loading: data?.status?.loading || false
+      }
+    };
+  }, [key, get]);
+}
+
+export function useQueryMulti<T> (calls: { path: string; params: CallParams }[], options?: {
+  cacheKey: string;
+}): UseCallResult<T | undefined> {
+  const { api } = useApi();
+  const isAppReady = useIsAppReady();
+  const { get, set } = useStore('apiQuery');
+  const key = useMemo(() => `multi-${JSON.stringify(calls)}-${options?.cacheKey || 'no_cached'}`, [calls, options]);
+
+  // on changes, re-subscribe
+  useEffect(() => {
+    // check if we have a function & that we are mounted
+    if (!isAppReady) return;
+
+    if (!calls || calls.length === 0) return;
+
+    tracker.subscribe(
+      api,
+      'queryMulti',
+      calls.map((config) => {
+        return [lodashGet(api, config.path),  ...config.params];
+      })
+      , key,
+      set
+    );
+
+    return (): void => tracker.unsubscribe(key);
+  }, [isAppReady, api, calls, key, set]);
 
   return useMemo(() => {
     const data = get(key);

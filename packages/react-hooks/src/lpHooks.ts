@@ -6,7 +6,7 @@ import { DerivedDexPool } from '@acala-network/api-derive';
 import { FixedPointNumber, TokenPair, currencyId2Token } from '@acala-network/sdk-core';
 
 import { useApi } from './useApi';
-import { useCall } from './useCall';
+import { useQuery } from './useQuery';
 
 export const useAllTradingPairs = (): TradingPair[] => {
   const { api } = useApi();
@@ -42,7 +42,7 @@ export const useEnableLPs = (): TokenPair[] => {
 type LPSize = { [i: string]: FixedPointNumber };
 
 export const useLPSize = (token1?: CurrencyId, token2?: CurrencyId): LPSize => {
-  const { data: pool } = useCall<DerivedDexPool>(
+  const { data: pool } = useQuery<DerivedDexPool>(
     token1 && token2 ? 'derive.dex.pool' : '__phantomdata',
     [token1, token2]
   );
@@ -94,13 +94,13 @@ export const useLPCurrencies = (): CurrencyId[] => {
 };
 
 export const useLPTokenAmount = (account: AccountId | string, lp: CurrencyId): FixedPointNumber => {
-  const { data: amount } = useCall<AccountData>('query.tokens.accounts', [account, lp]);
+  const { data: amount } = useQuery<AccountData>('query.tokens.accounts', [account, lp]);
 
   return amount ? FixedPointNumber.fromInner(amount.free.toString()) : FixedPointNumber.ZERO;
 };
 
 export const useLPShares = (account: AccountId | string, lp: CurrencyId): [FixedPointNumber, FixedPointNumber, FixedPointNumber] => {
-  const { data: issuance } = useCall<Balance>('query.tokens.totalIssuance', [lp]);
+  const { data: issuance } = useQuery<Balance>('query.tokens.totalIssuance', [lp]);
   const owned = useLPTokenAmount(account, lp);
   const _issuance = useMemo(() => issuance ? FixedPointNumber.fromInner(issuance.toString()) : FixedPointNumber.ZERO, [issuance]);
   const ratio = useMemo(() => owned.div(_issuance), [_issuance, owned]);

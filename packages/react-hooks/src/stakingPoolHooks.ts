@@ -7,7 +7,7 @@ import { BlockNumber, SubAccountStatus, Amount, Balance } from '@acala-network/t
 import { useStore, StakingPoolData } from '@acala-dapp/react-environment';
 
 import { useApi } from './useApi';
-import { useCall } from './useCall';
+import { useQuery } from './useQuery';
 import { useBalance, useIssuance } from './balanceHooks';
 import { useConstants } from './useConstants';
 import { usePrice } from './priceHooks';
@@ -142,7 +142,7 @@ const YEAR = 365 * 24 * 60 * 60 * 1000;
 
 export const useStakingRewardAPR = (): FixedPointNumber => {
   const { api } = useApi();
-  const { data: subAccountStatus } = useCall<SubAccountStatus>('query.polkadotBridge.subAccounts', [1]);
+  const { data: subAccountStatus } = useQuery<SubAccountStatus>('query.polkadotBridge.subAccounts', [1]);
 
   const arp = useMemo<FixedPointNumber>(() => {
     if (!subAccountStatus) return FixedPointNumber.ZERO;
@@ -158,7 +158,7 @@ export const useStakingRewardAPR = (): FixedPointNumber => {
 };
 
 export const useStakingRewardERA = (): FixedPointNumber => {
-  const { data: subAccountStatus } = useCall<SubAccountStatus>('query.polkadotBridge.subAccounts', [1]);
+  const { data: subAccountStatus } = useQuery<SubAccountStatus>('query.polkadotBridge.subAccounts', [1]);
 
   const arp = useMemo<FixedPointNumber>(() => {
     if (!subAccountStatus) return FixedPointNumber.ZERO;

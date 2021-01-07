@@ -1,5 +1,5 @@
 import { BalanceInput, BalanceInputValue, FormatAddress, FormatBalance, getCurrencyIdFromName, TxButton } from '@acala-dapp/react-components';
-import { useApi, useCall, useCollateralAuctions, useConstants, useInputValue } from '@acala-dapp/react-hooks';
+import { useApi, useQuery, useCollateralAuctions, useConstants, useInputValue } from '@acala-dapp/react-hooks';
 import { FixedPointNumber } from '@acala-network/sdk-core';
 import { Card } from '@acala-dapp/ui-components';
 import { convertToFixed18, Fixed18 } from '@acala-network/app-util';
@@ -11,7 +11,7 @@ import React, { FC, useMemo } from 'react';
 import classes from './CollateralAuctionList.module.scss';
 
 const AuctionLastBid: FC<{ id: string }> = ({ id }) => {
-  const { data: info } = useCall<Option<AuctionInfo>>('query.auction.auctions', [id]);
+  const { data: info } = useQuery<Option<AuctionInfo>>('query.auction.auctions', [id]);
 
   if (info) {
     console.log('!!', info.toHuman());
@@ -36,7 +36,7 @@ const AuctionLastBid: FC<{ id: string }> = ({ id }) => {
 };
 
 const AuctionPayment: FC<{ id: string; target: Fixed18 }> = ({ id, target }) => {
-  const { data: info } = useCall<Option<AuctionInfo>>('query.auction.auctions', [id]);
+  const { data: info } = useQuery<Option<AuctionInfo>>('query.auction.auctions', [id]);
 
   if (info) {
     console.log('!!', info.toHuman());
@@ -58,7 +58,7 @@ const AuctionPayment: FC<{ id: string; target: Fixed18 }> = ({ id, target }) => 
 };
 
 const AuctionReceiveCollateral: FC<{ id: string; target: Fixed18; amount: Fixed18 }> = ({ amount, id, target }) => {
-  const { data: info } = useCall<Option<AuctionInfo>>('query.auction.auctions', [id]);
+  const { data: info } = useQuery<Option<AuctionInfo>>('query.auction.auctions', [id]);
 
   if (info) {
     console.log('!!', info.toHuman());

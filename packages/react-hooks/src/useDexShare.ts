@@ -1,7 +1,7 @@
 import { Share } from '@acala-network/types/interfaces';
 import { AccountId } from '@polkadot/types/interfaces';
 
-import { useCall } from './useCall';
+import { useQuery } from './useQuery';
 import { useAccounts } from './useAccounts';
 import { CurrencyLike } from './types';
 
@@ -13,8 +13,8 @@ interface DexShareData {
 export const useDexShare = (token: CurrencyLike, account?: AccountId | string): DexShareData => {
   const { active } = useAccounts();
   const _account = account || (active ? active.address : '');
-  const { data: share } = useCall<Share>('query.dex.shares', [token, _account]);
-  const { data: totalShares } = useCall<Share>('query.dex.totalShares', [token]);
+  const { data: share } = useQuery<Share>('query.dex.shares', [token, _account]);
+  const { data: totalShares } = useQuery<Share>('query.dex.totalShares', [token]);
 
   return { share, totalShares };
 };

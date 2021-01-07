@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router';
 // import { CouncilPage } from './components/CouncilPage';
 
 import { Overview } from './components/overview';
+import { CreateProposal } from './components/create-proposal';
 // import { ProposalPage } from './components/ProposalPage';
 // import { CouncilProposalDetail } from './components/CouncilProposalDetail';
 
@@ -12,6 +13,10 @@ const PageGovernance: FC = () => {
       <Route
         element={<Overview />}
         path='/'
+      />
+      <Route
+        element={<CreateProposal />}
+        path='/create'
       />
       {/* <Route
         element={<ProposalPage />}

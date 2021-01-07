@@ -13,7 +13,7 @@ export {
 // system
 export * from './useAccounts';
 export * from './useApi';
-export * from './useCall';
+export * from './useQuery';
 export * from './useIsAppReady';
 export * from './useStorage';
 export * from './useSetting';

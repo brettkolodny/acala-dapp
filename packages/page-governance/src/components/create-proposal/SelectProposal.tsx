@@ -1,18 +1,9 @@
-import React, { FC, useContext, useMemo } from 'react';
-import { upperFirst } from 'lodash';
+import React, { FC, useCallback, useContext, useMemo } from 'react';
+import clsx from 'clsx';
 import { styled, Tabs, useTabs } from '@acala-dapp/ui-components';
 import { BareProps } from '@acala-dapp/ui-components/types';
 import { ProposalData, CreateContext } from './CreateProvider';
-
-interface SelectModuleProps {
-  modules: string[];
-  active: string | null;
-  onChange: (value: string) => void;
-}
-
-function formatter (str: string): string {
-  return str.split('_').map(upperFirst).join(' ');
-}
+import { formatter } from '../../config';
 
 const ProposalsList = styled.div`
   display: grid;
@@ -20,13 +11,25 @@ const ProposalsList = styled.div`
   grid-gap: 16px;
 `;
 
-const ProposalCard = styled(({
-  className,
-  document,
-  name
-}: ProposalData & BareProps) => {
+const ProposalCard = styled((props: ProposalData & BareProps) => {
+  const { className, document, module, name } = props;
+  const { onSelectProposal, selectedProposal } = useContext(CreateContext);
+
+  const handleClick = useCallback(() => {
+    onSelectProposal(props);
+  }, [onSelectProposal, props]);
+
+  const isActive = useMemo(() => {
+    return selectedProposal &&
+      selectedProposal.name === name &&
+      selectedProposal.module === module;
+  }, [name, module, selectedProposal]);
+
   return (
-    <div className={className}>
+    <div
+      className={clsx(className, { active: isActive })}
+      onClick={handleClick}
+    >
       <p className='proposal-card__name'>{formatter(name)}</p>
       <p className='proposal-card__document'>{document}</p>
     </div>
@@ -39,7 +42,7 @@ const ProposalCard = styled(({
   font-weight: 500;
   cursor: pointer;
   user-select: none;
-  transition: border-color .2s;
+  transition: all .2s;
 
   &:hover {
     border-color: var(--input-border-color);
@@ -63,7 +66,7 @@ const ProposalCard = styled(({
   }
 `;
 
-export const SelectProposal: FC<SelectModuleProps> = () => {
+export const SelectProposal: FC = () => {
   const { allowedProposals } = useContext(CreateContext);
 
   const _allowedProposals = useMemo(() => {

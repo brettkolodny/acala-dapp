@@ -1,4 +1,4 @@
-import { CouncilType, EnsureProportionMoreThan, ModuleProposalCouncilConfig, proposalsConfig } from '../../config';
+import { EnsureProportionMoreThan, ModuleProposalCouncilConfig, proposalsConfig } from '../../config';
 import React, { createContext, FC, PropsWithChildren, useCallback, useEffect, useMemo, useReducer } from 'react';
 import { useApi } from '@acala-dapp/react-hooks';
 
@@ -16,24 +16,21 @@ type CreateProposalState = 'select_module'
 | 'submit_success'
 | 'submit_failed'
 
-type CreateAction = { type: 'update_selected_council'; data: CouncilType | null }
-| { type: 'update_selected_module'; data: string }
-| { type: 'set_current_proposal_config'; data: ModuleProposalCouncilConfig[] }
-| { type: 'update_state'; data: CreateProposalState }
+type CreateAction = { type: 'set_current_proposal_config'; data: ModuleProposalCouncilConfig[] }
 | { type: 'set_allowed_proposals'; data: ProposalData[] }
+| { type: 'update_selected_proposal'; data: ProposalData }
+| { type: 'update_state'; data: CreateProposalState }
 
 type CreateState = {
   allowedProposals: ProposalData[];
   state: CreateProposalState | null;
-  selectedModule: string | null;
-  selectedProposal: string | null;
+  selectedProposal: ProposalData | null;
   currentProposalConfig: ModuleProposalCouncilConfig[];
 }
 
 const initState: CreateState = {
   allowedProposals: [],
   currentProposalConfig: [],
-  selectedModule: null,
   selectedProposal: null,
   state: 'select_module'
 };
@@ -56,10 +53,10 @@ function getProposalsConfig (chainName: string): ModuleProposalCouncilConfig[] {
 
 const reducer = (state: CreateState, action: CreateAction): CreateState => {
   switch (action.type) {
-    case 'update_selected_module': {
+    case 'update_selected_proposal': {
       return {
         ...state,
-        selected: action.data
+        selectedProposal: action.data
       };
     }
 
@@ -83,8 +80,8 @@ const reducer = (state: CreateState, action: CreateAction): CreateState => {
 
 export const CreateContext = createContext<
 CreateState & {
-  onSelectModule(module: string): void;
-  setProposalDatas(proposals: ProposalData[]): void;
+  onSelectProposal(data: ProposalData): void;
+  setProposalDatas(data: ProposalData[]): void;
 }
 >({} as any);
 
@@ -92,18 +89,10 @@ export const CreateProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const { chainInfo } = useApi();
   const [state, dispatch] = useReducer(reducer, initState);
 
-  const next = useCallback(() => {
-
-  }, []);
-
-  const pre = useCallback(() => {
-
-  }, []);
-
-  const onSelectModule = useCallback((data: string) => {
+  const onSelectProposal = useCallback((data: ProposalData) => {
     dispatch({
       data,
-      type: 'update_selected_module'
+      type: 'update_selected_proposal'
     });
   }, []);
 
@@ -114,25 +103,23 @@ export const CreateProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     });
   }, [dispatch]);
 
-  const context = useMemo(() => ({
+  const contextData = useMemo(() => ({
     ...state,
-    onSelectModule,
+    onSelectProposal,
     setProposalDatas
-  }), [next, pre, state, onSelectModule, setProposalDatas]);
+  }), [state, setProposalDatas, onSelectProposal]);
 
   useEffect(() => {
     if (chainInfo.chainName) {
-      const config = getProposalsConfig(chainInfo.chainName);
-
       dispatch({
-        data: config,
+        data: getProposalsConfig(chainInfo.chainName),
         type: 'set_current_proposal_config'
       });
     }
   }, [chainInfo]);
 
   return (
-    <CreateContext.Provider value={context}>
+    <CreateContext.Provider value={contextData}>
       {children}
     </CreateContext.Provider>
   );

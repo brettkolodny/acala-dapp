@@ -17,8 +17,8 @@ const Item: FC<ItemProps> = ({
 }) => {
   return (
     <li className={clsx('aca-list__item', className)}>
-      <div>{label}</div>
-      <div>{value}</div>
+      <div className='aca-list__item__label'>{label}</div>
+      <div className='aca-list__item__value'>{value}</div>
     </li>
   );
 };

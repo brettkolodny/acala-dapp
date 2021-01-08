@@ -1,3 +1,4 @@
+import { upperFirst } from 'lodash';
 import { EnsureProportionMoreThan, ensureRootOrHalfHomaCouncil, ensureRootOrHalfHonzonCouncil, ensureRootOrHalfGeneralCouncil } from './councils-config';
 
 export type ModuleProposalCouncilConfig = {
@@ -8,6 +9,10 @@ export type ModuleProposalCouncilConfig = {
     origin?: EnsureProportionMoreThan<any, any, any, true>;
   }[];
   origin: EnsureProportionMoreThan<any, any, any, true>;
+}
+
+export function formatter (str: string): string {
+  return str.split('_').map(upperFirst).join(' ');
 }
 
 const commonProposalsConfig = [

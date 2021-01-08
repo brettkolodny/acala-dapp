@@ -4,6 +4,7 @@ import { SelectProposal } from './SelectProposal';
 import { ProcessController, ProcessItem } from './ProcessController';
 import { CreateContext, CreateProvider } from './CreateProvider';
 import { CheckCouncilAuthority } from './CheckCouncilAuthority';
+import { CouncilAndProposal } from './CouncilAndProposal';
 
 export const Inner: FC = () => {
   usePageTitle({
@@ -16,10 +17,7 @@ export const Inner: FC = () => {
     content: 'Create Proposal'
   });
 
-  const {
-    onSelectModule,
-    selectedModule
-  } = useContext(CreateContext);
+  const { selectedProposal } = useContext(CreateContext);
 
   return (
     <CheckCouncilAuthority>
@@ -29,6 +27,12 @@ export const Inner: FC = () => {
           title='1. Select Proposals'
         >
           <SelectProposal />
+        </ProcessItem>
+        <ProcessItem
+          show={selectedProposal !== null}
+          title='2. Ensure Proposal And Council'
+        >
+          <CouncilAndProposal />
         </ProcessItem>
       </ProcessController>
     </CheckCouncilAuthority>

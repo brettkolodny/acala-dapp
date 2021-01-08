@@ -6,16 +6,18 @@ import { BareProps } from '@acala-dapp/ui-components/types';
 type ProcessStatus = 'active';
 
 interface ProcessItemProps extends BareProps {
-  status: ProcessStatus;
+  show: boolean;
   title: ReactNode;
 }
 
 export const ProcessItem = styled(({
   children,
   className,
-  status,
+  show = true,
   title
 }: ProcessItemProps) => {
+  if (!show) return null;
+
   return (
     <div className={clsx(className, status)}>
       <div className='process-item__title'>{title}</div>
@@ -49,7 +51,7 @@ export const ProcessItem = styled(({
     color: var(--text-color-primary);
   }
 
-  &.active::after {
+  &::after {
     content: '';
     position: absolute;
     top: 0;

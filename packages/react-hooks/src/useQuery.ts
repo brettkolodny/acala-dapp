@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from 'react';
-import { get as lodashGet, isEmpty } from 'lodash';
+import { get as _get, isEmpty } from 'lodash';
 import { Observable, Subscription } from 'rxjs';
 import { ApiRx } from '@polkadot/api';
 
@@ -34,16 +34,18 @@ class Tracker {
       return;
     }
 
-    const fn = lodashGet(api, path);
+    const fn = _get(api, path);
 
     if (!fn) throw new Error(`can't find method:${path} in api`);
 
     callback(key, { data: undefined, status: { loading: true } });
-    const subscriber = (fn(...params) as Observable<unknown>).subscribe({
+    const subscriber = (fn.apply(fn, key.startsWith('multi') ? [params] : params) as Observable<unknown>).subscribe({
       error: () => {
         console.error(`Error in fetch ${key} data`);
       },
-      next: (result: any) => callback(key, { data: result, status: { loading: false } })
+      next: (result: any) => {
+        callback(key, { data: result, status: { loading: false } });
+      }
     });
 
     // update tracker list
@@ -132,10 +134,8 @@ export function useQueryMulti<T> (calls: { path: string; params: CallParams }[],
     tracker.subscribe(
       api,
       'queryMulti',
-      calls.map((config) => {
-        return [lodashGet(api, config.path),  ...config.params];
-      })
-      , key,
+      calls.map((config) => [_get(api, config.path), ...config.params]),
+      key,
       set
     );
 

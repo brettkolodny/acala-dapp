@@ -6,10 +6,6 @@ import { useCouncilList } from '@acala-dapp/react-hooks';
 
 import { CouncilsColor, CouncilType } from '../../config';
 
-export function getCouncilType (name: string): CouncilType {
-  return name.replace('Council', '') as CouncilType;
-}
-
 const CouncilTabHeader = styled(TabHeader)<{ type: CouncilType }>`
   display: flex;
   align-items: center;
@@ -43,13 +39,7 @@ const CouncilTabHeader = styled(TabHeader)<{ type: CouncilType }>`
 
 export const CouncilesTab: FC<{ contentRender: (council: CouncilType) => ReactElement }> = ({ contentRender }) => {
   const councils = useCouncilList();
-  const { changeTabs, currentTab } = useTabs<CouncilType>('general');
-
-  const _councils = useMemo(() => {
-    if (!councils) return [];
-
-    return councils.map(getCouncilType);
-  }, [councils]);
+  const { changeTabs, currentTab } = useTabs<CouncilType>('generalCouncil');
 
   return (
     <Tabs
@@ -59,7 +49,7 @@ export const CouncilesTab: FC<{ contentRender: (council: CouncilType) => ReactEl
       slider={false}
     >
       {
-        _councils.map((item) => {
+        councils.map((item) => {
           return (
             <Tabs.Panel
               $key={item}
@@ -67,8 +57,8 @@ export const CouncilesTab: FC<{ contentRender: (council: CouncilType) => ReactEl
                 <CouncilTabHeader
                   active={currentTab === item}
                   key={`tab-header-${item}`}
-                  onClick={(): void => changeTabs(item) }
-                  type={item}
+                  onClick={(): void => changeTabs(item as any) }
+                  type={item as any}
                 >
                   {upperFirst(item)} Council
                 </CouncilTabHeader>

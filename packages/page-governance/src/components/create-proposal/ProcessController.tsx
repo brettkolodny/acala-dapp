@@ -1,15 +1,23 @@
 import React, { FC, ReactNode } from 'react';
+import clsx from 'clsx';
 import { styled } from '@acala-dapp/ui-components';
 import { BareProps } from '@acala-dapp/ui-components/types';
 
+type ProcessStatus = 'active';
+
 interface ProcessItemProps extends BareProps {
-  active?: boolean;
+  status: ProcessStatus;
   title: ReactNode;
 }
 
-export const ProcessItem = styled(({ children, className, title }: ProcessItemProps) => {
+export const ProcessItem = styled(({
+  children,
+  className,
+  status,
+  title
+}: ProcessItemProps) => {
   return (
-    <div className={className}>
+    <div className={clsx(className, status)}>
       <div className='process-item__title'>{title}</div>
       <div className='process-item__content'>{children}</div>
     </div>
@@ -39,6 +47,16 @@ export const ProcessItem = styled(({ children, className, title }: ProcessItemPr
     margin-bottom: 16px;
     font-size: 24px;
     color: var(--text-color-primary);
+  }
+
+  &.active::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 100%;
+    background: var(--color-primary);
   }
 `;
 

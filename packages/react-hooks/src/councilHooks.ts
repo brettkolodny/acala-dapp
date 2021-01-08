@@ -61,7 +61,7 @@ export const useCouncilList = (): string[] => {
 
 export const useAllCouncilMembers = (): { loading: boolean; init: boolean; members: { council: string; data: AccountId[]}[] } => {
   const { api } = useApi();
-  const councils = getAllCouncil(api);
+  const councils = useMemo(() => getAllCouncil(api), [api]);
 
   const { data: members, status: { init, loading } } = useQueryMulti<AccountId[][]>(councils.map((item) => {
     return {
@@ -70,14 +70,16 @@ export const useAllCouncilMembers = (): { loading: boolean; init: boolean; membe
     };
   }));
 
-  return useMemo(() => ({
-    init,
-    loading,
-    members: councils.map((item, index) => ({
-      council: item,
-      data: members ? members[index] : []
-    }))
-  }), [members, loading, init, councils]);
+  return useMemo(() => {
+    return {
+      init,
+      loading,
+      members: councils.map((item, index) => ({
+        council: item,
+        data: members ? members[index] : []
+      }))
+    };
+  }, [members, loading, init, councils]);
 };
 
 export const useCouncilMembers = (council: string): Vec<AccountId> | undefined => {

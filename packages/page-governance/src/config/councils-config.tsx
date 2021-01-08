@@ -1,4 +1,4 @@
-export type CouncilType = 'general' | 'honzon' | 'homa' | 'technicalCommittee';
+export type CouncilType = 'generalCouncil' | 'honzonCouncil' | 'homaCouncil' | 'technicalCommittee';
 
 export type EnsureProportionMoreThan<N extends number, D extends number, C extends CouncilType, R extends boolean> = {
   numerator: N;
@@ -16,15 +16,15 @@ export function ensureProportionMoreThan (n: number, d: number, c: CouncilType, 
   };
 }
 
-export const ensureRootOrHalfGeneralCouncil = ensureProportionMoreThan(1, 2, 'general', true);
+export const ensureRootOrHalfGeneralCouncil = ensureProportionMoreThan(1, 2, 'generalCouncil', true);
 
-export const ensureRootOrHalfHonzonCouncil = ensureProportionMoreThan(1, 2, 'honzon', true);
+export const ensureRootOrHalfHonzonCouncil = ensureProportionMoreThan(1, 2, 'honzonCouncil', true);
 
-export const ensureRootOrHalfHomaCouncil = ensureProportionMoreThan(1, 2, 'homa', true);
+export const ensureRootOrHalfHomaCouncil = ensureProportionMoreThan(1, 2, 'homaCouncil', true);
 
-export const ensureRootOrTwoThirdsGeneralCouncil = ensureProportionMoreThan(2, 3, 'general', true);
+export const ensureRootOrTwoThirdsGeneralCouncil = ensureProportionMoreThan(2, 3, 'generalCouncil', true);
 
-export const ensureRootOrThreeFourthsGeneralCouncil = ensureProportionMoreThan(3, 4, 'general', true);
+export const ensureRootOrThreeFourthsGeneralCouncil = ensureProportionMoreThan(3, 4, 'generalCouncil', true);
 
 export const ensureRootOrOneThirdsTechnicalCommittee = ensureProportionMoreThan(1, 3, 'technicalCommittee', true);
 
@@ -39,7 +39,7 @@ export interface CouncilColorConfig {
 
 export const CouncilsColor = new Map<CouncilType, CouncilColorConfig>([
   [
-    'general',
+    'generalCouncil',
     {
       background: 'rgba(247, 181, 0, 0.1)',
       backgroundActive: '#f7b500',
@@ -48,7 +48,7 @@ export const CouncilsColor = new Map<CouncilType, CouncilColorConfig>([
     }
   ],
   [
-    'honzon',
+    'honzonCouncil',
     {
       background: 'rgba(250, 0, 0, 0.1)',
       backgroundActive: '#fa0000',
@@ -57,7 +57,7 @@ export const CouncilsColor = new Map<CouncilType, CouncilColorConfig>([
     }
   ],
   [
-    'homa',
+    'homaCouncil',
     {
       background: 'rgba(98, 54, 2550, 0.1)',
       backgroundActive: '#6236FF',

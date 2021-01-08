@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import { get, noop, isEmpty } from 'lodash';
 import { useApi } from './useApi';
 import { useAccounts } from './useAccounts';
@@ -17,7 +17,7 @@ export const useIsAppReady = (options?: Options): boolean => {
   const { api } = useApi();
   const { active: activeAccount, authRequired } = useAccounts();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const accountStatus = !authRequired || (!!activeAccount && !!activeAccount.address);
 
     const status = accountStatus && !isEmpty(api);

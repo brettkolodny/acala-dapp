@@ -1,7 +1,6 @@
 import React, { FC, useContext } from 'react';
 import { usePageTitle } from '@acala-dapp/react-environment';
-import { SelectModule } from './SelectModule';
-import { proposalModules } from '../../config';
+import { SelectProposal } from './SelectProposal';
 import { ProcessController, ProcessItem } from './ProcessController';
 import { CreateContext, CreateProvider } from './CreateProvider';
 import { CheckCouncilAuthority } from './CheckCouncilAuthority';
@@ -26,13 +25,10 @@ export const Inner: FC = () => {
     <CheckCouncilAuthority>
       <ProcessController>
         <ProcessItem
-          title='Select Module'
+          status={'active'}
+          title='1. Select Proposals'
         >
-          <SelectModule
-            active={selectedModule}
-            modules={proposalModules}
-            onChange={onSelectModule}
-          />
+          <SelectProposal />
         </ProcessItem>
       </ProcessController>
     </CheckCouncilAuthority>

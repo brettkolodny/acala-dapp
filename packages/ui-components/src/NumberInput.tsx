@@ -2,6 +2,8 @@ import React, { FC, ChangeEventHandler, useState, useEffect, forwardRef, useCall
 import clsx from 'clsx';
 import { noop } from 'lodash';
 import './NumberInput.scss';
+import { styled } from '.';
+import { getInputBorder, getInputShadow } from './utils';
 
 const NUMBER_PATTERN = '^[0-9]*(\\.)?[0-9]*$';
 const numberReg = new RegExp(NUMBER_PATTERN);
@@ -42,7 +44,7 @@ export interface NumberInputProps {
   min?: number;
 }
 
-export const NumberInput: FC<NumberInputProps> = forwardRef<HTMLInputElement, NumberInputProps>(({
+export const NumberInputInner: FC<NumberInputProps> = forwardRef<HTMLInputElement, NumberInputProps>(({
   className,
   disabled,
   id,
@@ -113,4 +115,21 @@ export const NumberInput: FC<NumberInputProps> = forwardRef<HTMLInputElement, Nu
   );
 });
 
-NumberInput.displayName = 'NumberInput';
+NumberInputInner.displayName = 'NumberInputInner';
+
+export const NumberInput = styled(NumberInputInner)`
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  padding: 0;
+  padding-left: 16px;
+  height: 58px;
+  transition: all .2s cubic-bezier(0.0, 0, 0.2, 1);
+  border-radius: 2px;
+  border: ${getInputBorder(false, false)};
+  box-shadow: ${getInputShadow(false, false, false)};
+
+  &:hover {
+    box-shadow: ${getInputShadow(false, false, true)};
+  }
+`;

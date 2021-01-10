@@ -29,9 +29,10 @@ interface Props extends ButtonProps {
   api?: ApiRx;
   signAddress?: string;
   affectAssets?: CurrencyLike[]; // assets which be affected in this extrinsc
-  section: string; // extrinsic section
-  method: string; // extrinsic method
-  params: any[] | (() => any[] | null | undefined); // extrinsic params
+  section?: string; // extrinsic section
+  method?: string; // extrinsic method
+  params?: any[] | (() => any[] | null | undefined); // extrinsic params
+  call?: (() => SubmittableExtrinsic<'rxjs'>) | SubmittableExtrinsic<'rxjs'>;
 
   preCheck?: () => Promise<boolean>;
   beforeSend?: () => void; // the callback will be executed before send
@@ -48,6 +49,7 @@ export const TxButton: FC<PropsWithChildren<Props>> = ({
   afterSend,
   api,
   beforeSend,
+  call,
   children,
   className,
   disabled,
@@ -85,22 +87,28 @@ export const TxButton: FC<PropsWithChildren<Props>> = ({
     if (preCheck) {
       const result = await preCheck();
 
-      if (!result) {
-        return;
-      }
+      if (!result) return;
     }
 
     const _params = isFunction(params) ? params() : params;
 
-    if (!_params) {
+    if (!call && !_params) {
       return;
     }
 
     // ensure that the section and method are exist
-    if (!_api.tx[section] || !_api.tx[section][method]) {
+    if (!call && (!_api.tx[section] || !_api.tx[section][method])) {
       console.error(`can not find api.tx.${section}.${method}`);
 
       return;
+    }
+
+    let _call: SubmittableExtrinsic<'rxjs'>;
+
+    if (call) {
+      _call = isFunction(call) ? call() : call;
+    } else if (section && method) {
+      _call = _api.tx[section][method].apply(api, _params || []);
     }
 
     // ensuer that account is exist
@@ -110,33 +118,7 @@ export const TxButton: FC<PropsWithChildren<Props>> = ({
       return;
     }
 
-    const createTx = (): Observable<SubmittableExtrinsic<'rxjs'>> => _api.query.system.account<AccountInfo>(_signAddress).pipe(
-      take(1),
-      map((account) => {
-        return [account, _params] as [AccountInfo, any[]];
-      }),
-      switchMap(([account, params]) => {
-        const signedExtrinsic = _api.tx[section][method].apply(_api, params);
-
-        return signedExtrinsic.paymentInfo(_signAddress).pipe(
-          map((result) => {
-            console.log(result.toString());
-          }),
-          map(() => [account, params] as [AccountInfo, any[]]),
-          catchError((error) => {
-            console.log(error);
-
-            return of([account, params] as [AccountInfo, any[]]);
-          })
-        );
-      }),
-      switchMap(([account, params]) => {
-        return _api.tx[section][method](...params).signAsync(
-          _signAddress,
-          { nonce: account.nonce.toNumber() }
-        );
-      })
-    );
+    const createTx = (): Observable<SubmittableExtrinsic<'rxjs'>> => _call.signAsync(_signAddress);
 
     const notify = (signedTx: SubmittableExtrinsic<'rxjs'>): [SubmittableExtrinsic<'rxjs'>, string] => {
       const hash = signedTx.hash.toString();
@@ -288,7 +270,7 @@ export const TxButton: FC<PropsWithChildren<Props>> = ({
         }
       }
     });
-  }, [preCheck, _api, _signAddress, afterSend, beforeSend, method, params, section, onExtrinsicSuccsss, onInblock, onFinalize, onFailed, refresh]);
+  }, [call, preCheck, _api, _signAddress, afterSend, beforeSend, method, params, section, onExtrinsicSuccsss, onInblock, onFinalize, onFailed, refresh]);
 
   return (
     <Button

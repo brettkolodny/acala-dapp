@@ -3,7 +3,7 @@ import { FormikErrors } from 'formik';
 
 import { CurrencyId } from '@acala-network/types/interfaces';
 import { BareProps } from '@acala-dapp/ui-components/types';
-import { Button, NumberInput, NumberInputProps, styled, getInputShadow, getInputBorder } from '@acala-dapp/ui-components';
+import { Button, NumberInputInner, NumberInputProps, styled, getInputShadow, getInputBorder } from '@acala-dapp/ui-components';
 
 import { TokenName } from './Token';
 import { TokenSelector } from './TokenSelector';
@@ -36,7 +36,7 @@ export const BalanceInputRoot = styled.div<{
   }
 `;
 
-const CNumberInput = styled(NumberInput)`
+const CNumberInput = styled(NumberInputInner)`
   flex: 1 1 auto;
   padding: none;
 `;

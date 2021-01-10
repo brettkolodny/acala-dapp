@@ -62,7 +62,6 @@ export const CouncilAndProposal: FC = styled(({ className }: BareProps) => {
 
   .aca-list__item {
     align-items: flex-start;
-    margin-top: 16px;
     padding: 16px;
     border-left: 1px solid var(--border-color);
   }

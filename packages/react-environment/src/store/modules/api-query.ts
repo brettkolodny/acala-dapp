@@ -48,8 +48,6 @@ export const useApiQueryStore = (): UseApiQueryStoreResult => {
   const [state, dispatch] = useReducer(reducer, initState);
 
   const set = useCallback((key: string, value: ApiQueryData) => {
-    console.log(key, value);
-
     dispatch({
       data: { key, value },
       type: 'receive_result'

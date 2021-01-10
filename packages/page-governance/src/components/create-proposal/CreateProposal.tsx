@@ -5,6 +5,7 @@ import { ProcessController, ProcessItem } from './ProcessController';
 import { CreateContext, CreateProvider } from './CreateProvider';
 import { CheckCouncilAuthority } from './CheckCouncilAuthority';
 import { CouncilAndProposal } from './CouncilAndProposal';
+import { ProposalArgumentInput } from './ProposalArgumentInput';
 
 export const Inner: FC = () => {
   usePageTitle({
@@ -23,16 +24,19 @@ export const Inner: FC = () => {
     <CheckCouncilAuthority>
       <ProcessController>
         <ProcessItem
-          status={'active'}
-          title='1. Select Proposals'
+          show={true}
+          title='Select Proposals'
         >
           <SelectProposal />
         </ProcessItem>
         <ProcessItem
           show={selectedProposal !== null}
-          title='2. Ensure Proposal And Council'
+          title='Initiate Proposal'
         >
-          <CouncilAndProposal />
+          <>
+            <CouncilAndProposal />
+            <ProposalArgumentInput />
+          </>
         </ProcessItem>
       </ProcessController>
     </CheckCouncilAuthority>

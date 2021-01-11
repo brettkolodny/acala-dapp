@@ -143,8 +143,6 @@ export const TxButton: FC<PropsWithChildren<Props>> = ({
     const extractEvents = (result: SubmittableResult): { isDone: boolean; errorMessage?: string } => {
       const events = result.events.filter((event): boolean => !!event.event);
 
-      console.log(events);
-
       for (const { event: { data, method, section } } of events) {
         // extrinsic success
         if (section === 'system' && method === 'ExtrinsicSuccess') {

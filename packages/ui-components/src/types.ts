@@ -5,7 +5,7 @@ export interface BareProps {
   className?: string;
 }
 
-export interface ClickAbleProps {
+export interface ClickAbleProps extends BareProps {
   onClick: () => void;
 }
 

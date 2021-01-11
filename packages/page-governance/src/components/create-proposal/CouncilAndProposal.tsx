@@ -64,6 +64,14 @@ export const CouncilAndProposal: FC = styled(({ className }: BareProps) => {
     align-items: flex-start;
     padding: 16px;
     border-left: 1px solid var(--border-color);
+
+    &:nth-child(2n) {
+      padding-right: 0;
+    }
+
+    &:nth-child(2n + 1) {
+      padding-left: 0;
+    }
   }
 
   .aca-list__item:nth-child(2n + 1) {

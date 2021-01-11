@@ -1,3 +1,5 @@
-import { Form as AntForm } from 'antd';
+import { Form } from 'antd';
+import type { FieldData } from 'rc-field-form/lib/interface';
 
-export const Form = AntForm;
+export type { FieldData };
+export { Form };

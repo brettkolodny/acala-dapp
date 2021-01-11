@@ -15,22 +15,24 @@ interface TokenInputProps extends BareProps {
   onChange?: (value: CurrencyId) => void;
   placeholder?: string;
   disableZeroCurrency?: boolean;
+  showBalance?: boolean;
 }
 
 interface CurrencyItemProps {
   currency: CurrencyId;
   disableZeroCurrency?: boolean;
   onClick?: (value: CurrencyId) => void;
+  showBalance?: boolean;
 }
 
 const MenuItem = styled(Menu.Item)`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 58px;
+  height: 100%px;
 
-  .token-input__menu__item__currency,
-  .token-input__menu__item__balance {
+  .token-input__menu-item__currency,
+  .token-input__menu-item__balance {
     font-size: 18px;
     line-height: 1.2083;
     color: #333333;
@@ -41,11 +43,11 @@ const Current = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 58px;
+  height: 100%px;
   padding: 0 16px;
 
-  .token-input__menu__item__currency,
-  .token-input__menu__item__balance {
+  .token-input__menu-item__currency,
+  .token-input__menu-item__balance {
     font-size: 18px;
     line-height: 1.2083;
     color: #333333;
@@ -56,6 +58,7 @@ const CurrencyItem: FC<CurrencyItemProps> = ({
   currency,
   disableZeroCurrency,
   onClick,
+  showBalance = true,
   ...props
 }) => {
   const balance = useBalance(currency);
@@ -68,21 +71,23 @@ const CurrencyItem: FC<CurrencyItemProps> = ({
   return (
     <MenuItem
       {...props}
-      className='token-input__menu__item'
+      className='token-input__menu-item'
       disabled={disableZeroCurrency ? balance.isZero() : false}
       key={`token-input-${currency.toString()}`}
       onClick={_onClick}
     >
       <Token
-        className='token-input__menu__item__currency'
+        className='token-input__menu-item__currency'
         currency={currency}
         icon
       />
-      <UserBalance
-        className='token-input__menu__item__balance'
-        currency={currency}
-        showCurrencyName
-      />
+      {
+        showBalance ? (<UserBalance
+          className='token-input__menu-item__balance'
+          currency={currency}
+          showCurrencyName
+        />) : null
+      }
     </MenuItem>
   );
 };
@@ -94,6 +99,7 @@ export const TokenInput: FC<TokenInputProps> = styled<FC<TokenInputProps>>(({
   error,
   onChange,
   placeholder,
+  showBalance = true,
   value
 }) => {
   const [focused, setFocused] = useState<boolean>(false);
@@ -136,6 +142,7 @@ export const TokenInput: FC<TokenInputProps> = styled<FC<TokenInputProps>>(({
                     disableZeroCurrency={disableZeroCurrency}
                     key={`key-${currency.toString()}`}
                     onClick={_onClick}
+                    showBalance={showBalance}
                   />
                 );
               })
@@ -150,15 +157,19 @@ export const TokenInput: FC<TokenInputProps> = styled<FC<TokenInputProps>>(({
             value ? (
               <Current>
                 <Token
-                  className='token-input__menu__item__currency'
+                  className='token-input__menu-item__currency'
                   currency={value}
                   icon
                 />
-                <UserBalance
-                  className='token-input__menu__item__balance'
-                  currency={value}
-                  showCurrencyName
-                />
+                {
+                  showBalance ? (
+                    <UserBalance
+                      className='token-input__menu-item__balance'
+                      currency={value}
+                      showCurrencyName
+                    />
+                  ) : null
+                }
               </Current>
             ) : <div className='token-input__content__content'>{placeholder || 'Please Select Token'}</div>
           }

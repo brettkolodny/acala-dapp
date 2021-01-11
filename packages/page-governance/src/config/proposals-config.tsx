@@ -11,7 +11,9 @@ export type ModuleProposalCouncilConfig = {
   origin: EnsureProportionMoreThan<any, any, any, true>;
 }
 
-export function formatter (str: string): string {
+export function formatter (str?: string): string {
+  if (!str) return '';
+
   return str.split('_').map(upperFirst).join(' ');
 }
 

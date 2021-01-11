@@ -1,5 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
-import { noop } from 'lodash';
+import { useState, useCallback, useMemo } from 'react';
 
 interface ReturnData {
   close: () => void;
@@ -9,17 +8,12 @@ interface ReturnData {
   update: (status: boolean) => void;
 }
 
-export const useModal = (defaultStatus = false, callback?: () => void): ReturnData => {
+export const useModal = (defaultStatus = false): ReturnData => {
   const [status, setStatus] = useState<boolean>(defaultStatus);
   const open = useCallback((): void => setStatus(true), []);
   const close = useCallback((): void => setStatus(false), []);
   const toggle = useCallback((): void => setStatus(!status), [status]);
-  const _callback = useRef<() => void>(callback || noop);
   const update = useCallback((status: boolean): void => setStatus(status), []);
 
-  useEffect(() => {
-    _callback.current();
-  }, [status, _callback]);
-
-  return { close, open, status, toggle, update };
+  return useMemo(() => ({ close, open, status, toggle, update }), [close, open, status, toggle, update]);
 };

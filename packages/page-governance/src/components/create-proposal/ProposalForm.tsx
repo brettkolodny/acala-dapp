@@ -1,22 +1,47 @@
-import React, { FC, useCallback, useContext, useMemo } from 'react';
+import React, { FC, useCallback, useContext, useMemo, useState } from 'react';
 import { FixedPointNumber } from '@acala-network/sdk-core';
 import { camelCase } from 'lodash';
 import { CreateContext } from './CreateProvider';
-import { styled, Col, Form, Row, NumberInput, getInputBorder, getInputShadow, Button, FlexBox } from '@acala-dapp/ui-components';
+import { styled, Form, FlexBox, SpaceBox } from '@acala-dapp/ui-components';
+import type { FieldData } from '@acala-dapp/ui-components';
 import { useApi, useConstants } from '@acala-dapp/react-hooks';
 import { Switch } from 'antd';
 import { BareProps } from '@acala-dapp/ui-components/types';
-import { focusToFixedPointNumber, TokenSelector, TxButton } from '@acala-dapp/react-components';
+import { TxButton } from '@acala-dapp/react-components';
+import { NumberInput, BlockNumberPicker, CurrencySelector } from './ProposalFormInputs';
 import { formatter } from '../../config';
 
 const formItemLayout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 }
+  labelCol: { span: 6 },
+  wrapperCol: { span: 18 }
 };
 
-export const ProposalArgumentInput: FC = styled(({ className }: BareProps) => {
+export const DelaySubForm = styled(({ className }: BareProps) => {
+  return (
+    <Form.Item
+      className={className}
+      label='Delay To'
+      name='delayedAtBlock'
+    >
+      <BlockNumberPicker />
+    </Form.Item>
+  );
+})`
+  padding: 16px;
+  border-radius: 8px;
+  background: var(--form-background);
+
+  .ant-form-item-control {
+    margin-left: -8px;
+  }
+
+  .delay-sub-form__item {
+    margin: 0;
+  }
+`;
+
+export const ProposalForm: FC = styled(({ className }: BareProps) => {
   const { api } = useApi();
-  const { allCurrencies } = useConstants();
   const { selectedProposal } = useContext(CreateContext);
   const proposal = useMemo(() => {
     if (!api || !selectedProposal) return;
@@ -26,6 +51,7 @@ export const ProposalArgumentInput: FC = styled(({ className }: BareProps) => {
 
     return call.toJSON();
   }, [api, selectedProposal]);
+  const [shouldDelay, setShouldDelayed] = useState<boolean>(false);
 
   const renderFormItem = useCallback((item) => {
     if (item.type === 'bool') {
@@ -37,11 +63,11 @@ export const ProposalArgumentInput: FC = styled(({ className }: BareProps) => {
     }
 
     if (item.type === 'CurrencyId') {
-      return <TokenSelector currencies={allCurrencies} />;
+      return <CurrencySelector />;
     }
 
     return null;
-  }, [allCurrencies]);
+  }, []);
 
   const form = Form.useForm()[0];
 
@@ -58,6 +84,10 @@ export const ProposalArgumentInput: FC = styled(({ className }: BareProps) => {
         return new FixedPointNumber(values[key.name] || 0).toChainData();
       }
 
+      if (key.type === 'bool') {
+        return api.createType('bool', values[key.name] || false);
+      }
+
       return values[key.name];
     });
 
@@ -67,7 +97,7 @@ export const ProposalArgumentInput: FC = styled(({ className }: BareProps) => {
       _inner = api.tx.scheduler.schedule(
         values.atBlock,
         '',
-        0,
+        values.delayedAtBlock,
         _inner
       );
     }
@@ -85,57 +115,53 @@ export const ProposalArgumentInput: FC = styled(({ className }: BareProps) => {
     form.resetFields();
   }, [form]);
 
+  const handleFieldsChange = useCallback((changedFields: FieldData[]) => {
+    changedFields.forEach((item) => {
+      if ((item.name as string[])[0] === 'shouldDelay') {
+        setShouldDelayed(item.value);
+      }
+    });
+  }, [setShouldDelayed]);
+
+  console.log(proposal.args);
+
   return (
     <Form
       autoComplete='off'
       className={className}
       form={form}
       labelAlign='left'
+      onFieldsChange={handleFieldsChange}
       {...formItemLayout}
     >
-      <Row gutter={16}>
-        <Col span={12}>
-          <Form.Item
-            label='Delayed Execute'
-            name='shouldDelay'
-          >
-            <Switch />
-          </Form.Item>
-        </Col>
-        <Col span={12}>
-          <Form.Item
-            label='When To Execute'
-            name='atBlock'
-          >
-            <NumberInput />
-          </Form.Item>
-        </Col>
-        <Col span={12}>
-          <Form.Item
-            label='Threshold'
-            name='threshold'
-          >
-            <NumberInput />
-          </Form.Item>
-        </Col>
-        {
-          proposal.args.map((item) => {
-            return (
-              <Col
-                key={`foorm-${item.name}`}
-                span={12}
-              >
-                <Form.Item
-                  label={formatter(item.name)}
-                  name={item.name}
-                >
-                  {renderFormItem(item)}
-                </Form.Item>
-              </Col>
-            );
-          })
-        }
-      </Row>
+      <Form.Item
+        initialValue={false}
+        label='Delay Execute'
+        name='shouldDelay'
+      >
+        <Switch />
+      </Form.Item>
+      {shouldDelay ? <DelaySubForm /> : null}
+      <Form.Item
+        label='Threshold'
+        name='threshold'
+      >
+        <NumberInput />
+      </Form.Item>
+      {
+        proposal.args.map((item: any) => {
+          return (
+            <Form.Item
+              key={item.name}
+              label={formatter(item.name)}
+              name={item.name}
+            >
+              {renderFormItem(item)}
+            </Form.Item>
+          );
+        })
+      }
+      <SpaceBox height={16}/>
       <FlexBox
         alignItems='center'
         justifyContent='flex-end'

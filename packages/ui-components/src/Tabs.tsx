@@ -152,7 +152,7 @@ interface TabsProps<T> extends BareProps {
   className?: string;
   tabClassName?: string;
   active: T | string | number;
-  onChange?: ((key: T | string | number) => void) | React.Dispatch<React.SetStateAction<T>>;
+  onChange?: ((key: T) => void) | React.Dispatch<React.SetStateAction<T>>;
   divider?: boolean;
   slider?: boolean;
 }

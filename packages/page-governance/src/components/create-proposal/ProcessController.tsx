@@ -26,7 +26,7 @@ export const ProcessItem = styled(({
   );
 })`
   position: relative;
-  padding: 16px 16px 16px 32px;
+  padding: 16px 32px;
   background: var(--color-white);
   overflow: hidden;
 
@@ -49,16 +49,6 @@ export const ProcessItem = styled(({
     margin-bottom: 16px;
     font-size: 24px;
     color: var(--text-color-primary);
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 6px;
-    height: 100%;
-    background: var(--color-primary);
   }
 `;
 

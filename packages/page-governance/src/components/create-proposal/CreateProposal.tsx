@@ -1,11 +1,11 @@
 import React, { FC, useContext } from 'react';
 import { usePageTitle } from '@acala-dapp/react-environment';
-import { SelectProposal } from './SelectProposal';
 import { ProcessController, ProcessItem } from './ProcessController';
 import { CreateContext, CreateProvider } from './CreateProvider';
 import { CheckCouncilAuthority } from './CheckCouncilAuthority';
 import { CouncilAndProposal } from './CouncilAndProposal';
-import { ProposalArgumentInput } from './ProposalArgumentInput';
+import { ProposalForm } from './ProposalForm';
+import { ProposalSelector } from './ProposalSelector';
 
 export const Inner: FC = () => {
   usePageTitle({
@@ -27,7 +27,7 @@ export const Inner: FC = () => {
           show={true}
           title='Select Proposals'
         >
-          <SelectProposal />
+          <ProposalSelector />
         </ProcessItem>
         <ProcessItem
           show={selectedProposal !== null}
@@ -35,7 +35,7 @@ export const Inner: FC = () => {
         >
           <>
             <CouncilAndProposal />
-            <ProposalArgumentInput />
+            <ProposalForm />
           </>
         </ProcessItem>
       </ProcessController>

@@ -1,10 +1,11 @@
-import { Skeleton } from 'antd';
+import { Skeleton, DatePicker } from 'antd';
 import styled from 'styled-components';
 
 // export common thirdpart packages
 export {
   Skeleton,
-  styled
+  styled,
+  DatePicker
 };
 
 export * from './Alert';

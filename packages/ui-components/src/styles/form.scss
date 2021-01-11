@@ -1,7 +1,8 @@
 .ant-form-item-label > label {
   font-size: 16px;
   line-height: 19px;
-  color: var(--text-color-primary);
+  font-weight: 500;
+  color: var(--information-title-color);
 }
 
 .ant-form-item-has-error .ant-select:not(.ant-select-borderless) .ant-select-selector {
@@ -23,4 +24,23 @@
 
 .ant-input-number {
   width: 100%;
+}
+
+.ant-picker {
+  min-width: 250px;
+  height: 48px;
+  border: 1px solid var(--input-border-color);
+  border-radius: 8px;
+  font-size: 24px;
+  line-height: 29px;
+  color: var(--text-color-primary);
+
+  &:hover {
+    border: 1px solid var(--input-border-color);
+    box-shadow: 0 0 2px 2px var(--input-shadow);
+  }
+
+  &.ant-picker-focused {
+    box-shadow: 0 0 2px 2px var(--input-shadow);
+  }
 }

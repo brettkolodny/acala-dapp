@@ -192,7 +192,7 @@ export const SubMenu = styled(({ active, className, content, onClick }: SubMenuP
       {
         content.map(({ content, key }) => (
           <li
-            className={clsx('sub-menu__item', { active: active === key })}
+            className={clsx('sub-menu-item', { active: active === key })}
             key={`submenu-${key}`}
             onClick={(): void => onClick(key)}
           >
@@ -208,7 +208,7 @@ export const SubMenu = styled(({ active, className, content, onClick }: SubMenuP
   align-items: stretch;
   list-style: none;
 
-  .sub-menu__item {
+  .sub-menu-item {
     padding-left: 40px;
     transition: color .2s;
     color: var(--text-color-second);

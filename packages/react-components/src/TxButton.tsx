@@ -1,11 +1,11 @@
 import React, { FC, PropsWithChildren, useState, useCallback, useMemo } from 'react';
 import { isFunction, uniqueId } from 'lodash';
-import { Observable, of } from 'rxjs';
-import { switchMap, map, timeout, finalize, take, catchError } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { switchMap, map, timeout, finalize } from 'rxjs/operators';
 
 import { SubmittableResult, ApiRx } from '@polkadot/api';
 import { ITuple, ISubmittableResult } from '@polkadot/types/types';
-import { DispatchError, AccountInfo } from '@polkadot/types/interfaces';
+import { DispatchError } from '@polkadot/types/interfaces';
 import { SubmittableExtrinsic } from '@polkadot/api/types';
 
 import { useAccounts, useApi, useHistory } from '@acala-dapp/react-hooks';
@@ -142,6 +142,8 @@ export const TxButton: FC<PropsWithChildren<Props>> = ({
 
     const extractEvents = (result: SubmittableResult): { isDone: boolean; errorMessage?: string } => {
       const events = result.events.filter((event): boolean => !!event.event);
+
+      console.log(events);
 
       for (const { event: { data, method, section } } of events) {
         // extrinsic success

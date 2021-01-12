@@ -32,7 +32,7 @@ interface Props extends ButtonProps {
   section?: string; // extrinsic section
   method?: string; // extrinsic method
   params?: any[] | (() => any[] | null | undefined); // extrinsic params
-  call?: (() => SubmittableExtrinsic<'rxjs'>) | SubmittableExtrinsic<'rxjs'>;
+  call?: (() => SubmittableExtrinsic<'rxjs'> | undefined) | SubmittableExtrinsic<'rxjs'>;
 
   preCheck?: () => Promise<boolean>;
   beforeSend?: () => void; // the callback will be executed before send
@@ -92,13 +92,13 @@ export const TxButton: FC<PropsWithChildren<Props>> = ({
 
     const _params = isFunction(params) ? params() : params;
 
-    if (!call && !_params) {
+    if (call && isFunction(call) && !call()) {
       return;
     }
 
     // ensure that the section and method are exist
-    if (!call && section && method && (!_api.tx[section] || !_api.tx[section][method])) {
-      console.error(`can not find api.tx.${section}.${method}`);
+    if (!call && section && method && _params && (!_api.tx[section] || !_api.tx[section][method])) {
+      console.error(`can not find api.tx.${section}.${method} or params is empty`);
 
       return;
     }
@@ -106,7 +106,7 @@ export const TxButton: FC<PropsWithChildren<Props>> = ({
     let _call: SubmittableExtrinsic<'rxjs'>;
 
     if (call) {
-      _call = isFunction(call) ? call() : call;
+      _call = isFunction(call) ? call() as SubmittableExtrinsic<'rxjs'> : call;
     } else if (section && method) {
       _call = _api.tx[section][method].apply(_api, _params || []);
     }

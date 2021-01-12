@@ -44,3 +44,11 @@
     box-shadow: 0 0 2px 2px var(--input-shadow);
   }
 }
+
+.ant-radio-checked .ant-radio-inner {
+  border-color: var(--color-primary);
+}
+
+.ant-radio-inner::after {
+  background-color: var(--color-primary);
+}

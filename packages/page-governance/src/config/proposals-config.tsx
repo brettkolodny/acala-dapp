@@ -86,24 +86,24 @@ const commonProposalsConfig = [
     module: 'staking_pool',
     origin: ensureRootOrHalfHomaCouncil
   },
-  {
-    calls: [
-      {
-        document: 'List a new trading pair, trading pair will become Enabled status after provision process.',
-        name: 'list_trading_pair'
-      },
-      {
-        document: 'Enable a new trading pair(without the provision process),',
-        name: 'enable_trading_pair'
-      },
-      {
-        document: 'Disbale a trading pair',
-        name: 'disable_trading_pair'
-      }
-    ],
-    module: 'dex',
-    origin: ensureRootOrHalfGeneralCouncil
-  },
+  // {
+  //   calls: [
+  //     {
+  //       document: 'List a new trading pair, trading pair will become Enabled status after provision process.',
+  //       name: 'list_trading_pair'
+  //     },
+  //     {
+  //       document: 'Enable a new trading pair(without the provision process),',
+  //       name: 'enable_trading_pair'
+  //     },
+  //     {
+  //       document: 'Disbale a trading pair',
+  //       name: 'disable_trading_pair'
+  //     }
+  //   ],
+  //   module: 'dex',
+  //   origin: ensureRootOrHalfGeneralCouncil
+  // },
   {
     calls: [
       {

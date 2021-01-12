@@ -5,8 +5,6 @@ import { CreateProposal } from './components/create-proposal';
 import { AllProposalList, ProposalDetail } from './components/proposals';
 import { CouncilList } from './components/council';
 
-console.log(CouncilList);
-
 const PageGovernance: FC = () => {
   return (
     <Routes>

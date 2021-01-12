@@ -1,4 +1,4 @@
-import { Menu, Dropdown, Drawer, Skeleton, DatePicker, Switch, Progress, Grid, Steps } from 'antd';
+import { Radio as AntRadio, Menu, Dropdown, Drawer, Skeleton, DatePicker, Switch, Progress, Grid, Steps } from 'antd';
 import styled from 'styled-components';
 
 // export common thirdpart packages
@@ -12,7 +12,8 @@ export {
   styled,
   DatePicker,
   Switch,
-  Progress
+  Progress,
+  AntRadio
 };
 
 export * from './Alert';

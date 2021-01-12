@@ -97,7 +97,7 @@ export const TxButton: FC<PropsWithChildren<Props>> = ({
     }
 
     // ensure that the section and method are exist
-    if (!call && (!_api.tx[section] || !_api.tx[section][method])) {
+    if (!call && section && method && (!_api.tx[section] || !_api.tx[section][method])) {
       console.error(`can not find api.tx.${section}.${method}`);
 
       return;
@@ -108,7 +108,7 @@ export const TxButton: FC<PropsWithChildren<Props>> = ({
     if (call) {
       _call = isFunction(call) ? call() : call;
     } else if (section && method) {
-      _call = _api.tx[section][method].apply(api, _params || []);
+      _call = _api.tx[section][method].apply(_api, _params || []);
     }
 
     // ensuer that account is exist
@@ -130,7 +130,7 @@ export const TxButton: FC<PropsWithChildren<Props>> = ({
         duration: null,
         icon: <Loading spin />,
         key: notificationKey,
-        message: `${section}: ${method}`
+        message: `${_call.method.sectionName}: ${_call.method.methodName}`
       });
 
       return [signedTx, notificationKey];

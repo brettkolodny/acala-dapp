@@ -6,6 +6,7 @@ import { Card, Table, ColumnsType, styled } from '@acala-dapp/ui-components';
 import { useCouncilMembers } from '@acala-dapp/react-hooks';
 import { FormatAddress, FormatRatio } from '@acala-dapp/react-components';
 import { CouncilType } from '../../config';
+import { camelToDisplay } from '../common/utils';
 
 interface Props {
   council: CouncilType;
@@ -43,7 +44,7 @@ export const CouncilMembers: FC<Props> = ({ council }) => {
           />
         );
       },
-      title: `${upperFirst(council)} Council Seats`
+      title: `${camelToDisplay(council)} Seats`
     },
     {
       align: 'left',

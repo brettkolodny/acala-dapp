@@ -2,8 +2,8 @@ import React, { FC, useCallback, useMemo } from 'react';
 import { AccountId } from '@acala-network/types/interfaces';
 import { useParams } from 'react-router';
 import { usePageTitle } from '@acala-dapp/react-environment';
-import { ProposalData, useApi, useCouncilMembers, useProposal } from '@acala-dapp/react-hooks';
-import { Button, Card, Col, FlexBox, List, notification, Row, styled } from '@acala-dapp/ui-components';
+import { ProposalData, useAccounts, useApi, useCouncilMembers, useProposal } from '@acala-dapp/react-hooks';
+import { Card, Col, FlexBox, List, notification, Row, styled } from '@acala-dapp/ui-components';
 import { ProposalCard } from '../common/ProposalCard';
 import { camelToDisplay } from '../common/utils';
 import { BareProps } from '@acala-dapp/ui-components/types';
@@ -186,7 +186,9 @@ const OnChainInfo = styled(({ className, council, proposal, vote}: ProposalData 
 }
 `;
 
-const ActionBar = styled(({ council, vote, hash, proposal } : ProposalData & BareProps) => {
+const ActionBar = styled(({ council, hash, proposal, vote }: ProposalData & BareProps) => {
+  const { active } = useAccounts();
+  const members = useCouncilMembers(council);
   const { api } = useApi();
   const ayeCall = useMemo(() => {
     return api.tx[council].vote(
@@ -213,6 +215,13 @@ const ActionBar = styled(({ council, vote, hash, proposal } : ProposalData & Bar
     );
   }, [api, hash, vote, council, proposal]);
 
+  const canAccess = useMemo(() => {
+    if (!members) return false;
+    if (!active) return false;
+
+    return members.find((item: AccountId): boolean => item.toString() === active.address)?.length !== 0;
+  }, [active, members]);
+
   const onAyeSuccess = useCallback(() => {
     notification.success({
       message: 'Aye Proposal Success'
@@ -236,22 +245,30 @@ const ActionBar = styled(({ council, vote, hash, proposal } : ProposalData & Bar
       gutter={[24, 24]}
       justify='end'
     >
-      <Col>
-        <TxButton
-          call={ayeCall}
-          onExtrinsicSuccsss={onAyeSuccess}
-        >
-          Approve
-        </TxButton>
-      </Col>
-      <Col>
-        <TxButton
-          call={nayCall}
-          onExtrinsicSuccsss={onNaySuccess}
-        >
-          Against
-        </TxButton>
-      </Col>
+      {
+        canAccess ? (
+          <Col>
+            <TxButton
+              call={ayeCall}
+              onExtrinsicSuccsss={onAyeSuccess}
+            >
+              Approve
+            </TxButton>
+          </Col>
+        ) : null
+      }
+      {
+        canAccess ? (
+          <Col>
+            <TxButton
+              call={nayCall}
+              onExtrinsicSuccsss={onNaySuccess}
+            >
+              Against
+            </TxButton>
+          </Col>
+        ) : null
+      }
       <Col>
         <TxButton
           call={closeCall}

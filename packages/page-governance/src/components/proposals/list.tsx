@@ -1,30 +1,47 @@
 import React, { FC, useCallback } from 'react';
 import { usePageTitle } from '@acala-dapp/react-environment';
 import { useProposals } from '@acala-dapp/react-hooks';
-import { Col, Row } from '@acala-dapp/ui-components';
+import { Card, CardLoading, Col, Row, styled } from '@acala-dapp/ui-components';
+import { BareProps } from '@acala-dapp/ui-components/types';
 import { CouncilType } from '../../config';
 import { ProposalCard } from '../common/ProposalCard';
 import { CouncilesTab } from '../common/CouncliTab';
 
-const ProposalList: FC<{ council: string }> = ({ council }) => {
-  console.log(council);
+const EmptyProposal = styled(({ className }: BareProps) => {
+  return (
+    <Card className={className}>
+      No Proposals
+    </Card>
+  );
+})`
+  font-size: 24px;
+  font-weight: 500;
+`;
 
-  const proposals = useProposals(council);
+const ProposalList: FC<{ council: string }> = ({ council }) => {
+  const { data: proposals, loading }= useProposals(council);
 
   return (
     <Row gutter={[24, 24]}>
       {
-        proposals.map((item, index) => (
-          <Col
-            key={`proposal-${item.council}-${index}`}
-            span={24}
-          >
-            <ProposalCard
-              {...item}
-              showGoToDetail
-            />
-          </Col>
-        ))
+        loading ? <CardLoading />
+          : (proposals && proposals.length)
+            ? proposals.map((item, index) => (
+              <Col
+                key={`proposal-${item.council}-${index}`}
+                span={24}
+              >
+                <ProposalCard
+                  {...item}
+                  showGoToDetail
+                />
+              </Col>
+            ))
+            : (
+              <Col span={24}>
+                <EmptyProposal />
+              </Col>
+            )
       }
     </Row>
   );

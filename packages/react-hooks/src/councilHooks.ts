@@ -106,21 +106,26 @@ export const useProposal = (council: string, hash: string): ProposalData | null 
   return data;
 };
 
-export const useProposals = (council: string): ProposalData[] => {
+export const useProposals = (council: string): { data: ProposalData[]; loading: boolean } => {
   const _council = council.endsWith('Council') ? council : council + 'Council';
   const { api } = useApi();
   const [data, setData] = useState<ProposalData[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (!api || !api.query[_council]) return;
 
+    setLoading(true);
     const subscriber = fetchAllProposalAndVote(api, _council)
-      .subscribe((data) => setData(data));
+      .subscribe((data) => {
+        setData(data);
+        setLoading(false);
+      });
 
     return (): void => subscriber.unsubscribe();
   }, [api, _council]);
 
-  return data;
+  return useMemo(() => ({ data, loading }), [data, loading]);
 };
 
 export const useRecentProposals = (): { data: ProposalData[]; loading: boolean } => {

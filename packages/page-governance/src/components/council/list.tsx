@@ -2,11 +2,11 @@ import React, { FC, useCallback } from 'react';
 
 import { usePageTitle } from '@acala-dapp/react-environment';
 
-import { CouncilesTab } from './CouncliTab';
-import { CouncilType } from '../config';
+import { CouncilesTab } from '../common/CouncliTab';
+import { CouncilType } from '../../config';
 import { CouncilMembers } from './CouncilMembers';
 
-export const CouncilPage: FC = () => {
+export const CouncilList: FC = () => {
   usePageTitle({
     breadcrumb: [
       {

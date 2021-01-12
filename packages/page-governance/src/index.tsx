@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import { Route, Routes } from 'react-router';
-// import { CouncilPage } from './components/proposals';
-
 import { Overview } from './components/overview';
 import { CreateProposal } from './components/create-proposal';
 import { AllProposalList, ProposalDetail } from './components/proposals';
-// import { CouncilProposalDetail } from './components/CouncilProposalDetail';
+import { CouncilList } from './components/council';
+
+console.log(CouncilList);
 
 const PageGovernance: FC = () => {
   return (
@@ -26,15 +26,10 @@ const PageGovernance: FC = () => {
         element={<ProposalDetail />}
         path='/proposals/:id'
       />
-      {/*
       <Route
-        element={<CouncilProposalDetail />}
-        path='/proposals/:id'
-      />
-      <Route
-        element={<CouncilPage />}
+        element={<CouncilList />}
         path='/councils'
-      /> */}
+      />
     </Routes>
   );
 };

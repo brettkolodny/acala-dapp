@@ -10,7 +10,7 @@ import { CouncilesTab } from '../common/CouncliTab';
 import { GovernanceStage } from './GovernanceStage';
 import { GovernanceIntro } from './GovernanceIntro';
 import { RecentProposals } from './RecentProposals';
-import { CouncilMembers } from './CouncilMembers';
+import { CouncilMembers } from '../council/CouncilMembers';
 import { CouncilType } from '../../config';
 
 const OverviewSubTitleExtra = styled<FC<{ content: string } & BareProps & ClickAbleProps >>(({ className, content, onClick }) => {

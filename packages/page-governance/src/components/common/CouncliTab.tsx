@@ -1,10 +1,11 @@
-import React, { FC, ReactElement, useMemo } from 'react';
+import React, { FC, ReactElement } from 'react';
 import { upperFirst } from 'lodash';
 
 import { styled, Tabs, TabHeader, useTabs } from '@acala-dapp/ui-components';
 import { useCouncilList } from '@acala-dapp/react-hooks';
 
 import { CouncilsColor, CouncilType } from '../../config';
+import { camelToDisplay } from './utils';
 
 const CouncilTabHeader = styled(TabHeader)<{ type: CouncilType }>`
   display: flex;
@@ -37,10 +38,6 @@ const CouncilTabHeader = styled(TabHeader)<{ type: CouncilType }>`
   }
 `;
 
-const councilFormatter = (str: string): string => {
-  return upperFirst(str.replace(/([A-Z])/, ' $1'));
-};
-
 export const CouncilesTab: FC<{ contentRender: (council: CouncilType) => ReactElement }> = ({ contentRender }) => {
   const councils = useCouncilList();
   const { changeTabs, currentTab } = useTabs<CouncilType>('generalCouncil');
@@ -64,7 +61,7 @@ export const CouncilesTab: FC<{ contentRender: (council: CouncilType) => ReactEl
                   onClick={(): void => changeTabs(item as any) }
                   type={item as any}
                 >
-                  {councilFormatter(item)}
+                  {camelToDisplay(item)}
                 </CouncilTabHeader>
               }
               key={`council-${item}`}

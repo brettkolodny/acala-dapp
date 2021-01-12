@@ -1,6 +1,6 @@
 import React, { FC, ReactNode, useMemo } from 'react';
 import clsx from 'clsx';
-import { Modal } from 'antd';
+import { Modal } from '@acala-dapp/ui-components';
 
 import { BareProps } from './types';
 import { Button } from './Button';

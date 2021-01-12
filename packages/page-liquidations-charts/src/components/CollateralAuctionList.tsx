@@ -5,7 +5,7 @@ import { Card } from '@acala-dapp/ui-components';
 import { convertToFixed18, Fixed18 } from '@acala-network/app-util';
 import { AuctionInfo } from '@open-web3/orml-types/interfaces';
 import { Option } from '@polkadot/types';
-import { Table } from 'antd';
+import { Table } from '@acala-dapp/ui-components';
 import React, { FC, useMemo } from 'react';
 
 import classes from './CollateralAuctionList.module.scss';

@@ -2,7 +2,7 @@ import React, { FC, useState, useCallback, useMemo, ReactNode } from 'react';
 import clsx from 'clsx';
 import { noop } from 'lodash';
 
-import { Menu, Dropdown } from 'antd';
+import { Menu, Dropdown } from '@acala-dapp/ui-components';
 
 import { BareProps } from '@acala-dapp/ui-components/types';
 import { ArrowIcon } from '@acala-dapp/ui-components';

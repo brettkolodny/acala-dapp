@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect, useContext } from 'react';
-import { Progress } from 'antd';
+import { Progress } from '@acala-dapp/ui-components';
 import { useAuctionOverview, useEmergencyShutdown } from '@acala-dapp/react-hooks';
 import classes from './Process.module.scss';
 import { EmergencyShutdownContext } from './EmergencyShutdownProvider';

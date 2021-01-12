@@ -1,7 +1,7 @@
 import { FormatBalance } from '@acala-dapp/react-components';
 import { DebitAuction, SurplusAuction, useConstants, useDebitAuctions, useSurplusAuction } from '@acala-dapp/react-hooks';
 import { Card } from '@acala-dapp/ui-components';
-import { Table } from 'antd';
+import { Table } from '@acala-dapp/ui-components';
 import React, { FC, useMemo } from 'react';
 import classes from './AuctionList.module.scss';
 

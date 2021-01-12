@@ -5,7 +5,7 @@ import { CreateContext } from './CreateProvider';
 import { styled, Form, FlexBox, SpaceBox, MinusCircleOutlined, Button } from '@acala-dapp/ui-components';
 import type { FieldData } from '@acala-dapp/ui-components';
 import { useApi } from '@acala-dapp/react-hooks';
-import { Switch } from 'antd';
+import { Switch } from '@acala-dapp/ui-components';
 import { BareProps } from '@acala-dapp/ui-components/types';
 import { TxButton } from '@acala-dapp/react-components';
 import { NumberInput, BlockNumberPicker, CurrencySelector } from './ProposalFormInputs';

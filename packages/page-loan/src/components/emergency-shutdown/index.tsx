@@ -1,6 +1,6 @@
 import React, { FC, useContext } from 'react';
 import { Card, Row, Col, Condition } from '@acala-dapp/ui-components';
-import { Steps } from 'antd';
+import { Steps } from '@acala-dapp/ui-components';
 
 import { LockPrices } from './LockPrices';
 import { EmergencyShutdownProvider, EmergencyShutdownContext, StepRoute } from './EmergencyShutdownProvider';

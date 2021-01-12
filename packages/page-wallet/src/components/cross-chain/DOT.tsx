@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useContext, useState, useEffect } from 'react';
-import { Form, Skeleton } from 'antd';
+import { Form, Skeleton } from '@acala-dapp/ui-components';
 
 import { Fixed18 } from '@acala-network/app-util';
 

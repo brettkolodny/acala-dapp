@@ -1,7 +1,7 @@
 import React, { FC, memo, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router';
-import { useApi, useBreakpoint, useIsAppReady, useSetting } from '@acala-dapp/react-hooks';
-import { styled, PageLoading, Page, SubMenu } from '@acala-dapp/ui-components';
+import { useApi, useIsAppReady, useSetting } from '@acala-dapp/react-hooks';
+import { styled, PageLoading, Page, SubMenu, Grid } from '@acala-dapp/ui-components';
 
 import { Sidebar, SidebarConfig } from '../Sidebar';
 import { useStore } from '@acala-dapp/react-environment';
@@ -27,7 +27,7 @@ const Main: FC<MainLayoutProps> = memo(({
 }) => {
   const { init } = useApi();
   const { allEndpoints, endpoint } = useSetting();
-  const screen = useBreakpoint();
+  const screen = Grid.useBreakpoint();
   const isAppReady = useIsAppReady();
   const ui = useStore('ui');
   const collapse = useMemo(() => enableCollapse ? !(screen.xl ?? true) : false, [enableCollapse, screen]);

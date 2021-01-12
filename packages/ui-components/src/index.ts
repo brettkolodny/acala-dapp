@@ -1,11 +1,18 @@
-import { Skeleton, DatePicker } from 'antd';
+import { Menu, Dropdown, Drawer, Skeleton, DatePicker, Switch, Progress, Grid, Steps } from 'antd';
 import styled from 'styled-components';
 
 // export common thirdpart packages
 export {
+  Steps,
+  Grid,
+  Menu,
+  Dropdown,
+  Drawer,
   Skeleton,
   styled,
-  DatePicker
+  DatePicker,
+  Switch,
+  Progress
 };
 
 export * from './Alert';

@@ -1,6 +1,6 @@
 import React, { FC, useMemo } from 'react';
 
-import { Table } from 'antd';
+import { Table } from '@acala-dapp/ui-components';
 import { Card } from '@acala-dapp/ui-components';
 import { useConstants, useSwapOverview } from '@acala-dapp/react-hooks';
 import { Token, Price, FormatValue, FormatBalance } from '@acala-dapp/react-components';

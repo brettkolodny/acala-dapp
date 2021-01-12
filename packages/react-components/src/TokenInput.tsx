@@ -1,6 +1,6 @@
 import React, { FC, FocusEventHandler, useCallback, useState } from 'react';
 import { BalanceInputRoot } from './BalanceInput';
-import { Menu, Dropdown } from 'antd';
+import { Menu, Dropdown } from '@acala-dapp/ui-components';
 import { CurrencyId } from '@acala-network/types/interfaces';
 import { UserBalance } from './UserBalance';
 import { Token } from './Token';

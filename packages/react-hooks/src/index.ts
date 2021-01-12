@@ -1,12 +1,8 @@
-import { Grid } from 'antd';
 import useRequest from '@umijs/use-request';
 import { useTranslation } from 'react-i18next';
 
-const { useBreakpoint } = Grid;
-
 export {
   useRequest,
-  useBreakpoint,
   useTranslation
 };
 

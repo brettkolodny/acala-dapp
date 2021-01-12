@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useMemo } from 'react';
-import { Form } from 'antd';
+import { Form } from '@acala-dapp/ui-components';
 
 import { BalanceInput, TxButton, numToFixed18Inner, UserAssetBalance } from '@acala-dapp/react-components';
 import { useConstants, useAccounts } from '@acala-dapp/react-hooks';

@@ -30,8 +30,8 @@ function fetchProposalAndVote (api: ApiRx, council: string, hash: string): Obser
       return {
         council,
         hash: hash,
-        proposal: proposal.unwrap(),
-        vote: vote.unwrap()
+        proposal: proposal.unwrapOrDefault(),
+        vote: vote.unwrapOrDefault()
       };
     })
   );
@@ -97,8 +97,6 @@ export const useProposal = (council: string, hash: string): ProposalData | null 
   useEffect(() => {
     if (!api || !api.query[_council]) return;
 
-    console.log(_council, hash);
-
     const subscriber = fetchProposalAndVote(api, _council, hash)
       .subscribe((data) => setData(data));
 
@@ -125,15 +123,17 @@ export const useProposals = (council: string): ProposalData[] => {
   return data;
 };
 
-export const useRecentProposals = (): ProposalData[] => {
+export const useRecentProposals = (): { data: ProposalData[]; loading: boolean } => {
   const { api } = useApi();
   const [data, setData] = useState<ProposalData[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (!api) return;
 
     const councils = getAllCouncil(api);
 
+    setLoading(true);
     const subscriber = combineLatest(
       councils.map((item) => fetchAllProposalAndVote(api, item))
     ).subscribe((result) => {
@@ -143,10 +143,11 @@ export const useRecentProposals = (): ProposalData[] => {
         .slice(0, 4);
 
       setData(_data);
+      setLoading(false);
     });
 
     return (): void => subscriber.unsubscribe();
-  }, [api]);
+  }, [api, setLoading, setData]);
 
-  return data;
+  return useMemo(() => ({ data, loading }), [data, loading]);
 };

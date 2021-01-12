@@ -6,7 +6,7 @@ import { ArrowPixelIcon, Row, Col, styled, SubTitle } from '@acala-dapp/ui-compo
 import { BareProps, ClickAbleProps } from '@acala-dapp/ui-components/types';
 import { usePageTitle } from '@acala-dapp/react-environment';
 
-import { CouncilesTab } from './CouncliTab';
+import { CouncilesTab } from '../common/CouncliTab';
 import { GovernanceStage } from './GovernanceStage';
 import { GovernanceIntro } from './GovernanceIntro';
 import { RecentProposals } from './RecentProposals';

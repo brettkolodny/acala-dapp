@@ -37,6 +37,10 @@ const CouncilTabHeader = styled(TabHeader)<{ type: CouncilType }>`
   }
 `;
 
+const councilFormatter = (str: string): string => {
+  return upperFirst(str.replace(/([A-Z])/, ' $1'));
+};
+
 export const CouncilesTab: FC<{ contentRender: (council: CouncilType) => ReactElement }> = ({ contentRender }) => {
   const councils = useCouncilList();
   const { changeTabs, currentTab } = useTabs<CouncilType>('generalCouncil');
@@ -60,7 +64,7 @@ export const CouncilesTab: FC<{ contentRender: (council: CouncilType) => ReactEl
                   onClick={(): void => changeTabs(item as any) }
                   type={item as any}
                 >
-                  {upperFirst(item)} Council
+                  {councilFormatter(item)}
                 </CouncilTabHeader>
               }
               key={`council-${item}`}

@@ -1,10 +1,10 @@
 import React, { FC, useCallback } from 'react';
 import { usePageTitle } from '@acala-dapp/react-environment';
-import { CouncilesTab } from './CouncliTab';
 import { useProposals } from '@acala-dapp/react-hooks';
 import { Col, Row } from '@acala-dapp/ui-components';
 import { CouncilType } from '../../config';
-import { ProposalCard } from './ProposalCard';
+import { ProposalCard } from '../common/ProposalCard';
+import { CouncilesTab } from '../common/CouncliTab';
 
 const ProposalList: FC<{ council: string }> = ({ council }) => {
   console.log(council);
@@ -19,7 +19,10 @@ const ProposalList: FC<{ council: string }> = ({ council }) => {
             key={`proposal-${item.council}-${index}`}
             span={24}
           >
-            <ProposalCard {...item} />
+            <ProposalCard
+              {...item}
+              showGoToDetail
+            />
           </Col>
         ))
       }
@@ -27,7 +30,7 @@ const ProposalList: FC<{ council: string }> = ({ council }) => {
   );
 };
 
-export const ProposalPage: FC = () => {
+export const AllProposalList: FC = () => {
   usePageTitle({
     breadcrumb: [
       {

@@ -6,6 +6,7 @@ import { Card, Row, Col, styled, FlexBox, Button } from '@acala-dapp/ui-componen
 import { BareProps } from '@acala-dapp/ui-components/types';
 import { ProposalData, useAccounts, useCouncilMembers } from '@acala-dapp/react-hooks';
 import { CouncilsColor, CouncilType } from '../../config';
+import { camelToDisplay } from './utils';
 
 const Title = styled(({ className, council, title }: { title: string; council: string } & BareProps) => {
   const _council = useMemo(() => council.replace('Council', ''), [council]);
@@ -93,16 +94,8 @@ const VoteEnd = styled(({ className, data }: { data: ProposalData['vote'] } & Ba
   }
 `;
 
-const Action = styled(({ council, hash }: { council: string; hash: string }) => {
-  const { active } = useAccounts();
-  const members = useCouncilMembers(council);
+const GotoDetailBtn: FC<{ council: string; hash: string }> = ({ council, hash }) => {
   const navigate = useNavigate();
-
-  const isMemebers = useMemo((): boolean => {
-    if (!active || !members) return false;
-
-    return !!members.find((item) => item.toString() === active.address);
-  }, [active, members]);
 
   const goToDetail = useCallback(() => {
     navigate(`/governance/proposals/${council}-${hash}`);
@@ -110,18 +103,12 @@ const Action = styled(({ council, hash }: { council: string; hash: string }) => 
 
   return (
     <FlexBox justifyContent='flex-end'>
-      {
-        isMemebers ? (
-          <Button onClick={goToDetail}>
-            Vote
-          </Button>
-        ) : null
-      }
+      <Button onClick={goToDetail}>
+        Detail
+      </Button>
     </FlexBox>
   );
-})`
-
-`;
+};
 
 const ProposalCardRoot = styled(Card)`
   .card__content {
@@ -129,26 +116,26 @@ const ProposalCardRoot = styled(Card)`
   }
 `;
 
-export const ProposalCard: FC<ProposalData & { showAction?: boolean }> = ({ council, hash, proposal, showAction = true, vote }) => {
+export const ProposalCard: FC<ProposalData & { showGoToDetail?: boolean }> = ({ council, hash, proposal, showGoToDetail, vote }) => {
   return (
     <ProposalCardRoot>
       <Row>
         <Col span={10}>
           <Title
             council={council}
-            title={proposal.method.toString()}
+            title={camelToDisplay(proposal.method.toString())}
           />
         </Col>
-        <Col span={showAction ? 4 : 7}>
+        <Col span={showGoToDetail ? 4 : 7}>
           <Votes data={vote} />
         </Col>
-        <Col span={showAction ? 4 : 7}>
+        <Col span={showGoToDetail ? 4 : 7}>
           <VoteEnd data={vote} />
         </Col>
         {
-          showAction ? (
+          showGoToDetail ? (
             <Col span={6}>
-              <Action
+              <GotoDetailBtn
                 council={council}
                 hash={hash}
               />

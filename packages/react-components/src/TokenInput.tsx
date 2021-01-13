@@ -1,11 +1,10 @@
 import React, { FC, FocusEventHandler, useCallback, useState } from 'react';
 import { BalanceInputRoot } from './BalanceInput';
-import { Menu, Dropdown } from '@acala-dapp/ui-components';
+import { Menu, Dropdown, ArrowPixelIcon, styled } from '@acala-dapp/ui-components';
 import { CurrencyId } from '@acala-network/types/interfaces';
 import { UserBalance } from './UserBalance';
 import { Token } from './Token';
 import { BareProps } from '@acala-dapp/ui-components/types';
-import { ArrowPixelIcon, styled } from '@acala-dapp/ui-components';
 import { useBalance } from '@acala-dapp/react-hooks';
 
 interface TokenInputProps extends BareProps {

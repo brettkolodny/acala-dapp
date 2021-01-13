@@ -19,7 +19,7 @@ const EmptyProposal = styled(({ className }: BareProps) => {
 `;
 
 const ProposalList: FC<{ council: string }> = ({ council }) => {
-  const { data: proposals, loading }= useProposals(council);
+  const { data: proposals, loading } = useProposals(council);
 
   return (
     <Row gutter={[24, 24]}>

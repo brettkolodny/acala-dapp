@@ -188,7 +188,7 @@ export const RedeemConsole: FC = () => {
             disabled={!freeList.length}
             label={(
               <div className={classes.targetInput}>
-                <span>Redeem in ERA</span>
+                <span>Redeem in </span>
                 {
                   freeList.length ? (
                     <TargetRedeemList
@@ -197,9 +197,6 @@ export const RedeemConsole: FC = () => {
                       value={era}
                     />
                   ) : null
-                }
-                {
-                  freeLiquidityCurrencyAmountInTarget ? `Free is ${freeLiquidityCurrencyAmountInTarget.toNumber()}` : null
                 }
               </div>
             )}

@@ -1,6 +1,5 @@
 import React, { FC, useMemo } from 'react';
-import { Table } from '@acala-dapp/ui-components';
-import { Card } from '@acala-dapp/ui-components';
+import { Table, Card } from '@acala-dapp/ui-components';
 import { useConstants } from '@acala-dapp/react-hooks';
 import { Token, TotalCollateral, TotalDebit, TotalCollateralRatio, LiquidationRatio } from '@acala-dapp/react-components';
 

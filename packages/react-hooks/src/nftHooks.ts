@@ -41,7 +41,7 @@ export const useAllNFTTokens = (): { data: [ClassInfoOf, TokenInfoOf][]; loading
         );
       })
     ).subscribe({
-      error: (e) => {
+      error: () => {
         setLoading(false);
         setResult([]);
       },

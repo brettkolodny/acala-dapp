@@ -127,7 +127,7 @@ padding-top: 24px;
 }
 `;
 
-const OnChainInfo = styled(({ className, council, proposal, vote}: ProposalData & BareProps) => {
+const OnChainInfo = styled(({ className, council, proposal, vote }: ProposalData & BareProps) => {
   return (
     <Card
       className={className}

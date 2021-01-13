@@ -1,11 +1,10 @@
 import { BalanceInput, BalanceInputValue, FormatAddress, FormatBalance, getCurrencyIdFromName, TxButton } from '@acala-dapp/react-components';
 import { useApi, useQuery, useCollateralAuctions, useConstants, useInputValue } from '@acala-dapp/react-hooks';
 import { FixedPointNumber } from '@acala-network/sdk-core';
-import { Card } from '@acala-dapp/ui-components';
+import { Card, Table } from '@acala-dapp/ui-components';
 import { convertToFixed18, Fixed18 } from '@acala-network/app-util';
 import { AuctionInfo } from '@open-web3/orml-types/interfaces';
 import { Option } from '@polkadot/types';
-import { Table } from '@acala-dapp/ui-components';
 import React, { FC, useMemo } from 'react';
 
 import classes from './CollateralAuctionList.module.scss';

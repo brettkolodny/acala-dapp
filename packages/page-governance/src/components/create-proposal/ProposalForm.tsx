@@ -2,13 +2,12 @@ import React, { FC, useCallback, useContext, useMemo, useState } from 'react';
 import { FixedPointNumber } from '@acala-network/sdk-core';
 import { camelCase } from 'lodash';
 import { CreateContext } from './CreateProvider';
-import { styled, Form, FlexBox, SpaceBox, MinusCircleOutlined, Button, Switch } from '@acala-dapp/ui-components';
+import { styled, Form, FlexBox, SpaceBox, Switch } from '@acala-dapp/ui-components';
 import type { FieldData } from '@acala-dapp/ui-components';
 import { useApi } from '@acala-dapp/react-hooks';
 import { BareProps } from '@acala-dapp/ui-components/types';
 import { TxButton } from '@acala-dapp/react-components';
-import { NumberInput, BlockNumberPicker, CurrencySelector } from './ProposalFormInputs';
-import { formatter } from '../../config';
+import { NumberInput, BlockNumberPicker } from './ProposalFormInputs';
 import { CreateProposalForm } from './CreateProposalForm';
 
 const formItemLayout = {
@@ -40,37 +39,6 @@ export const DelaySubForm = styled(({ className }: BareProps) => {
   }
 `;
 
-const ListFormItemArea = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 16px;
-  border-radius: 8px;
-  background: var(--form-background);
-  margin-bottom: 24px;
-
-  .list-form-item__remove-btn > svg {
-    width: 24px;
-    height: 24px;
-  }
-
-  .ant-form-item-control {
-    margin-left: -8px;
-  }
-
-  .ant-col {
-    flex: 0 0 50%;
-    width: 50%;
-  }
-
-  .ant-row {
-    flex: 1;
-  }
-
-  .ant-form-item {
-    margin-bottom: 0;
-  }
-`;
-
 export const ProposalForm: FC = styled(({ className }: BareProps) => {
   const { api } = useApi();
   const { selectedProposal } = useContext(CreateContext);
@@ -97,7 +65,7 @@ export const ProposalForm: FC = styled(({ className }: BareProps) => {
     const { module, name, origin } = selectedProposal;
     const { args } = proposal;
 
-    const getData = (key: string, value: any) => {
+    const getData = (key: string, value: any): any => {
       if (!key) return;
 
       const _key = key;
@@ -162,10 +130,6 @@ export const ProposalForm: FC = styled(({ className }: BareProps) => {
 
     return call;
   }, [form, selectedProposal, proposal, api]);
-
-  const preCheck = useCallback(() => {
-    form.validateFields();
-  }, [form]);
 
   const onSuccess = useCallback(() => {
     form.resetFields();

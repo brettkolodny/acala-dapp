@@ -1,5 +1,4 @@
 import React, { FC, ReactElement } from 'react';
-import { upperFirst } from 'lodash';
 
 import { styled, Tabs, TabHeader, useTabs } from '@acala-dapp/ui-components';
 import { useCouncilList } from '@acala-dapp/react-hooks';

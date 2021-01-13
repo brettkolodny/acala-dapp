@@ -1,9 +1,8 @@
 import React, { FC, useCallback } from 'react';
-import { Drawer } from '@acala-dapp/ui-components';
+import { Radio, CloseIcon, Drawer } from '@acala-dapp/ui-components';
 
 import { useSetting } from '@acala-dapp/react-hooks';
 import { DEFAULT_ENDPOINTS } from '@acala-dapp/react-environment/configs/endpoints';
-import { Radio, CloseIcon } from '@acala-dapp/ui-components';
 
 import classes from './AppSettings.module.scss';
 

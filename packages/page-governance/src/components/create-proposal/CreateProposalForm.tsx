@@ -85,7 +85,7 @@ export const ProposalFormItem: FC<ProposalFormItemProps> = ({
     return '';
   }, [label, name]);
 
-  const formItemRender = useCallback((ele: ReactNode): ReactNode => {
+  const formItemRender = useCallback((ele: ReactNode): JSX.Element => {
     return (
       <Form.Item
         {...field}
@@ -143,31 +143,29 @@ export const ProposalFormItem: FC<ProposalFormItemProps> = ({
     );
   }
 
-  if (typeof _type === 'object') {
-    if (Reflect.has(_type, '_enum')) {
-      return formItemRender(
-        <AntRadio.Group>
-          {
-            Object.keys(_type._enum).map((key: string) => {
-              return (
-                <AntRadio
-                  key={name + key}
-                  value={key}
-                >
-                  {_type._enum[key] === 'Null' ? key : (
-                    <ProposalFormItem
-                      label={key}
-                      name={`${name}-${key}-value`}
-                      type={_type._enum[key]}
-                    />
-                  )}
-                </AntRadio>
-              );
-            })
-          }
-        </AntRadio.Group>
-      );
-    }
+  if (typeof _type === 'object' && Reflect.has(_type, '_enum')) {
+    return formItemRender(
+      <AntRadio.Group>
+        {
+          Object.keys(_type._enum).map((key: string) => {
+            return (
+              <AntRadio
+                key={name + key}
+                value={key}
+              >
+                {_type._enum[key] === 'Null' ? key : (
+                  <ProposalFormItem
+                    label={key}
+                    name={`${name}-${key}-value`}
+                    type={_type._enum[key]}
+                  />
+                )}
+              </AntRadio>
+            );
+          })
+        }
+      </AntRadio.Group>
+    );
   }
 
   if (_type === 'bool') {

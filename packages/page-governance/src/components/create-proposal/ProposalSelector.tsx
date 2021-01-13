@@ -14,7 +14,7 @@ const ProposalsList = styled.div`
 `;
 
 const ProposalCard = styled((props: ProposalData & ClickAbleProps) => {
-  const { className, document, module, name, onClick } = props;
+  const { className, collective, document, name, onClick } = props;
   const { onSelectProposal, selectedProposal } = useContext(CreateContext);
 
   const handleClick = useCallback(() => {
@@ -25,8 +25,8 @@ const ProposalCard = styled((props: ProposalData & ClickAbleProps) => {
   const isActive = useMemo(() => {
     return selectedProposal &&
       selectedProposal.name === name &&
-      selectedProposal.module === module;
-  }, [name, module, selectedProposal]);
+      selectedProposal.collective === collective;
+  }, [name, collective, selectedProposal]);
 
   return (
     <div
@@ -79,7 +79,7 @@ const SelectedProposal = styled(({ className, onClick }: ClickAbleProps) => {
       justifyContent='space-between'
     >
       <p className='selected-proposal__proposal'>
-        {`${formatter(selectedProposal?.module)} / ${formatter(selectedProposal?.name)}`}
+        {`${formatter(selectedProposal?.section)} / ${formatter(selectedProposal?.name)}`}
       </p>
       <Button
         className='selected-proposal__change-btn'
@@ -109,10 +109,10 @@ export const ProposalSelector: FC = () => {
 
   const _allowedProposals = useMemo(() => {
     return allowedProposals.reduce((acc, cur) => {
-      if (Array.isArray(acc[cur.module])) {
-        acc[cur.module].push(cur);
+      if (Array.isArray(acc[cur.collective])) {
+        acc[cur.collective].push(cur);
       } else {
-        acc[cur.module] = [cur];
+        acc[cur.collective] = [cur];
       }
 
       return acc;
@@ -120,8 +120,8 @@ export const ProposalSelector: FC = () => {
   }, [allowedProposals]);
 
   const {
-    changeTabs: handleSelectModule,
-    currentTab: selectedModule
+    changeTabs: handleSelectCollective,
+    currentTab: selectedCollective
   } = useTabs(Object.keys(_allowedProposals)[0]);
 
   const {
@@ -133,20 +133,20 @@ export const ProposalSelector: FC = () => {
   if (selectorStatus) {
     return (
       <Tabs
-        active={selectedModule}
-        onChange={handleSelectModule}
+        active={selectedCollective}
+        onChange={handleSelectCollective}
       >
         {
-          Object.keys(_allowedProposals).map((module): JSX.Element => {
+          Object.keys(_allowedProposals).map((collective): JSX.Element => {
             return (
               <Tabs.Panel
-                $key={module}
-                header={formatter(module)}
+                $key={collective}
+                header={formatter(collective)}
                 key={`proposal-module-list-${module}`}
               >
                 <ProposalsList>
                   {
-                    _allowedProposals[module].map((proposal) => {
+                    _allowedProposals[collective].map((proposal) => {
                       return (
                         <ProposalCard
                           key={`proposal-card-${module}-${proposal.name}`}

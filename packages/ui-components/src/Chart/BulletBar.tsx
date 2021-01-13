@@ -1,7 +1,7 @@
 import React, { FC, createRef, useMemo, useLayoutEffect, useRef } from 'react';
 import styled from 'styled-components';
 
-import { BulletBarDrawer, BulletBarConfigItem, drawBulletBar } from './bullet-bar-helper';
+import { BulletBarDrawer, BulletBarConfigItem } from './bullet-bar-helper';
 
 interface BulletBarProps {
   config: BulletBarConfigItem[];

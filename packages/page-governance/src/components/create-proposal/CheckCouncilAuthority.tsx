@@ -36,7 +36,7 @@ export const CheckCouncilAuthority: FC<BareProps> = ({ children }) => {
       .reduce((acc, cur) => {
         return acc.concat(
           cur.calls.map((item) => ({
-            module: cur.module,
+            collective: cur.collective,
             origin: cur.origin,
             ...item
           }))

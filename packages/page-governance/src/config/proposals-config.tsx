@@ -2,10 +2,11 @@ import { upperFirst } from 'lodash';
 import { EnsureProportionMoreThan, ensureRootOrHalfHomaCouncil, ensureRootOrHalfHonzonCouncil, ensureRootOrHalfGeneralCouncil } from './councils-config';
 
 export type ModuleProposalCouncilConfig = {
-  module: string;
+  collective: string;
   calls: {
     document: string;
     name: string;
+    section: string;
     origin?: EnsureProportionMoreThan<any, any, any, true>;
   }[];
   origin: EnsureProportionMoreThan<any, any, any, true>;
@@ -22,68 +23,73 @@ const commonProposalsConfig = [
     calls: [
       {
         document: 'Start surplus auction',
-        name: 'auction_surplus'
+        name: 'auction_surplus',
+        section: 'cdp_treasury'
       },
       {
         document: 'Start debit auction',
-        name: 'auction_debit'
+        name: 'auction_debit',
+        section: 'cdp_treasury'
       },
       {
         document: 'Start collateral auction',
-        name: 'auction_collateral'
+        name: 'auction_collateral',
+        section: 'cdp_treasury'
       },
       {
         document: 'Set collateral auction maximum size',
-        name: 'set_collateral_auction_maximum_size'
+        name: 'set_collateral_auction_maximum_size',
+        section: 'cdp_treasury'
+      },
+      {
+        document: 'Update global parameters related to risk management of CDP',
+        name: 'set_global_params',
+        section: 'cdp_engine'
+      },
+      {
+        document: 'Update parameters related to risk management of CDP under specific collateral type',
+        name: 'set_collateral_params',
+        section: 'cdp_engine'
       }
     ],
-    module: 'cdp_treasury',
+    collective: 'Loan',
     origin: ensureRootOrHalfHonzonCouncil
   },
   {
     calls: [
       {
         document: 'Update loans incentive rewawrds',
-        name: 'update_loans_incentive_rewards'
+        name: 'update_loans_incentive_rewards',
+        section: 'incentives'
       },
       {
         document: 'Update dex incentive rewards',
-        name: 'update_dex_incentive_rewards'
+        name: 'update_dex_incentive_rewards',
+        section: 'incentives'
       },
       {
         document: 'Update homa incentive rewards',
-        name: 'update_homa_incentive_reward'
+        name: 'update_homa_incentive_reward',
+        section: 'incentives'
       },
       {
         document: 'Update dex saving reates',
-        name: 'update_dex_saving_rates'
+        name: 'update_dex_saving_rates',
+        section: 'incentives'
       }
     ],
-    module: 'incentives',
-    origin: ensureRootOrHalfHonzonCouncil
-  },
-  {
-    calls: [
-      {
-        document: 'Update global parameters related to risk management of CDP',
-        name: 'set_global_params'
-      },
-      {
-        document: 'Update parameters related to risk management of CDP under specific collateral type',
-        name: 'set_collateral_params'
-      }
-    ],
-    module: 'cdp_engine',
-    origin: ensureRootOrHalfHonzonCouncil
+    collective: 'incentives',
+    origin: ensureRootOrHalfGeneralCouncil
   },
   {
     calls: [
       {
         document: 'Set staking pool params',
-        name: 'set_staking_pool_params'
+        name: 'set_staking_pool_params',
+        section: 'staking_pool'
       }
     ],
-    module: 'staking_pool',
+    collective: 'staking_pool',
     origin: ensureRootOrHalfHomaCouncil
   },
   // {
@@ -108,14 +114,16 @@ const commonProposalsConfig = [
     calls: [
       {
         document: 'Start emergency shutdown',
-        name: 'emergency_shutdown'
+        name: 'emergency_shutdown',
+        section: 'emergency_shutdown'
       },
       {
         document: 'Open final redemption if settlement is completed.',
-        name: 'open_collateral_refund'
+        name: 'open_collateral_refund',
+        section: 'emergency_shutdown'
       }
     ],
-    module: 'emergency_shutdown',
+    collective: 'emergency_shutdown',
     origin: ensureRootOrHalfGeneralCouncil
   }
 ];

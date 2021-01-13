@@ -8,7 +8,7 @@ import { useApi } from '@acala-dapp/react-hooks';
 import { BareProps } from '@acala-dapp/ui-components/types';
 import { TxButton } from '@acala-dapp/react-components';
 import { NumberInput, BlockNumberPicker } from './ProposalFormInputs';
-import { CreateProposalForm } from './CreateProposalForm';
+import { CreateProposalForm, ProposalFormItem } from './CreateProposalForm';
 
 const formItemLayout = {
   labelCol: { span: 6 },
@@ -39,19 +39,43 @@ export const DelaySubForm = styled(({ className }: BareProps) => {
   }
 `;
 
+export const ChangeOriginSubForm = styled(({ className }: BareProps) => {
+  return (
+    <ProposalFormItem
+      className={className}
+      label='Change To'
+      name='chagnedOrigin'
+      type='AsOriginId'
+    />
+  );
+})`
+  padding: 16px;
+  border-radius: 8px;
+  background: var(--form-background);
+
+  .ant-form-item-control {
+    margin-left: -8px;
+  }
+
+  .delay-sub-form__item {
+    margin: 0;
+  }
+`;
+
 export const ProposalForm: FC = styled(({ className }: BareProps) => {
   const { api } = useApi();
   const { selectedProposal } = useContext(CreateContext);
   const proposal = useMemo(() => {
     if (!api || !selectedProposal) return;
 
-    const { module, name } = selectedProposal;
+    const { name, section } = selectedProposal;
 
-    const call = api.tx[camelCase(module)][camelCase(name)];
+    const call = api.tx[camelCase(section)][camelCase(name)];
 
     return call.toJSON();
   }, [api, selectedProposal]);
   const [shouldDelay, setShouldDelayed] = useState<boolean>(false);
+  const [shouldChangeOrigin, setShouldChangeOrigin] = useState<boolean>(false);
 
   const form = Form.useForm()[0];
 
@@ -62,7 +86,7 @@ export const ProposalForm: FC = styled(({ className }: BareProps) => {
 
     if (!selectedProposal) return;
 
-    const { module, name, origin } = selectedProposal;
+    const { name, origin, section } = selectedProposal;
     const { args } = proposal;
 
     const getData = (key: string, value: any): any => {
@@ -111,15 +135,31 @@ export const ProposalForm: FC = styled(({ className }: BareProps) => {
       return getData(key.type, _value);
     });
 
-    let _inner = api.tx[camelCase(module)][camelCase(name)].apply(api, _params);
+    let _inner = api.tx[camelCase(section)][camelCase(name)].apply(api, _params);
 
-    if (values.shouldDelay) {
-      _inner = api.tx.scheduler.schedule(
-        values.atBlock,
-        '',
-        values.delayedAtBlock,
+    if (values.shouldChangeOrigin) {
+      _inner = api.tx.authority.dispatchAs(
+        'ROOT',
         _inner
       );
+    }
+
+    if (values.shouldDelay) {
+      if (values.shouldChangeOrigin) {
+        _inner = api.tx.authority.scheduleDispatch(
+          { at: values.delayedAtBlock },
+          0,
+          true,
+          _inner
+        );
+      } else {
+        _inner = api.tx.scheduler.schedule(
+          values.delayedAtBlock,
+          '',
+          0,
+          _inner
+        );
+      }
     }
 
     const call = api.tx[origin.council].propose(
@@ -140,8 +180,12 @@ export const ProposalForm: FC = styled(({ className }: BareProps) => {
       if ((item.name as string[])[0] === 'shouldDelay') {
         setShouldDelayed(item.value);
       }
+
+      if ((item.name as string[])[0] === 'shouldChangeOrigin') {
+        setShouldChangeOrigin(item.value);
+      }
     });
-  }, [setShouldDelayed]);
+  }, [setShouldDelayed, setShouldChangeOrigin]);
 
   return (
     <Form
@@ -160,6 +204,14 @@ export const ProposalForm: FC = styled(({ className }: BareProps) => {
         <Switch />
       </Form.Item>
       {shouldDelay ? <DelaySubForm /> : null}
+      <Form.Item
+        initialValue={false}
+        label='Change Origin'
+        name='shouldChangeOrigin'
+      >
+        <Switch />
+      </Form.Item>
+      {shouldChangeOrigin ? <ChangeOriginSubForm /> : null}
       <Form.Item
         label='Threshold'
         name='threshold'

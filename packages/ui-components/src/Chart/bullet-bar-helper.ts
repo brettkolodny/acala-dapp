@@ -116,19 +116,6 @@ export class BulletBarDrawer {
       y: barY
     });
 
-    const maxInputData = Math.min(
-      Math.max.apply(
-        undefined,
-        config.map((item) => item.data)
-      ),
-      10 ** 9
-    );
-
-    const scale = d3
-      .scaleLinear()
-      .domain([0, maxInputData * 1.5])
-      .range([0, canvasBox.width]);
-
     const _sortedConfig = config
       .slice()
       .sort((a: BulletBarConfigItem, b: BulletBarConfigItem): number => b.data - a.data);
@@ -137,13 +124,11 @@ export class BulletBarDrawer {
       .enter()
       .append('rect')
       .attr('class', 'bar')
-      .attr('fill', (item) => item.color)
       .attr('height', barHeight)
       .attr('rx', barHeight / 2)
       .attr('ry', barHeight / 2)
       .attr('x', barX)
-      .attr('y', barY)
-      .attr('width', (item) => this.getBarWidth(item.data, scale));
+      .attr('y', barY);
 
     this.$canvas.selectAll('.end')
       .data(_sortedConfig)
@@ -152,8 +137,6 @@ export class BulletBarDrawer {
       .attr('class', 'end')
       .attr('height', barHeight)
       .attr('width', barHeight)
-      .attr('fill', (item) => item.color)
-      .attr('x', (item) => Math.max(this.getBarWidth(item.data, scale) - barHeight + barX, 0))
       .attr('y', barY);
 
     this.$canvas.selectAll('.label')

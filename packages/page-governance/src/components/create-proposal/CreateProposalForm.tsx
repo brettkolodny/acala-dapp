@@ -36,7 +36,7 @@ const ListFormItemArea = styled.div`
   }
 `;
 
-interface ProposalFormItemProps {
+interface ProposalFormItemProps extends BareProps {
   type: string;
   name: string | string[];
   label: string;
@@ -45,6 +45,7 @@ interface ProposalFormItemProps {
 }
 
 export const ProposalFormItem: FC<ProposalFormItemProps> = ({
+  className,
   field,
   fieldKey,
   label,
@@ -89,6 +90,7 @@ export const ProposalFormItem: FC<ProposalFormItemProps> = ({
     return (
       <Form.Item
         {...field}
+        className={className}
         fieldKey={fieldKey}
         label={_label}
         name={name}
@@ -96,7 +98,7 @@ export const ProposalFormItem: FC<ProposalFormItemProps> = ({
         {ele}
       </Form.Item>
     );
-  }, [field, fieldKey, _label, name]);
+  }, [field, fieldKey, _label, name, className]);
 
   if (Array.isArray(_type)) {
     return (
@@ -148,6 +150,17 @@ export const ProposalFormItem: FC<ProposalFormItemProps> = ({
       <AntRadio.Group>
         {
           Object.keys(_type._enum).map((key: string) => {
+            if (/^\d$/.test(key)) {
+              return (
+                <AntRadio
+                  key={name + key}
+                  value={key}
+                >
+                  {_type._enum[key]}
+                </AntRadio>
+              );
+            }
+
             return (
               <AntRadio
                 key={name + key}

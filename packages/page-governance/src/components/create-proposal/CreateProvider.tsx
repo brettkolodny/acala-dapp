@@ -3,9 +3,10 @@ import React, { createContext, FC, PropsWithChildren, useCallback, useEffect, us
 import { useApi } from '@acala-dapp/react-hooks';
 
 export type ProposalData = {
+  collective: string;
   document: string;
   name: string;
-  module: string;
+  section: string;
   origin: EnsureProportionMoreThan<any, any, any, any>;
 }
 

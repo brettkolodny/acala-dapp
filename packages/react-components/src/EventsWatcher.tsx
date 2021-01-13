@@ -62,12 +62,13 @@ export const EventsWatcher: FC = () => {
 
                 notification.open({
                   className: 'success',
-                  message: (
+                  description: (
                     <div>
                       <p>{`Received ${formatNumber(num, { decimalLength: 6, removeEmptyDecimalParts: true, removeTailZero: true })} ${getTokenName(data[0].Token || data[0].DEXShare)}`}</p>
                       <p>{`From ${formatHash(data[1])}`}</p>
                     </div>
-                  )
+                  ),
+                  message: 'Balance Change'
                 });
               },
               method: 'Transferred',
@@ -86,11 +87,12 @@ export const EventsWatcher: FC = () => {
 
                 notification.open({
                   className: 'success',
-                  message: (
+                  description: (
                     <div>
                       <p>{`Received ${formatNumber(num, { decimalLength: 6, removeEmptyDecimalParts: true, removeTailZero: true })} ${getTokenName(data[0].Token || data[0].DEXShare)}`}</p>
                     </div>
-                  )
+                  ),
+                  message: 'Balance Change'
                 });
               },
               method: 'Deposited',
@@ -105,11 +107,12 @@ export const EventsWatcher: FC = () => {
 
                 notification.open({
                   className: 'error',
-                  message: (
+                  description: (
                     <div>
                       <p>{`The ${getTokenName(data[0])} Loan had been liquidated.`}</p>
                     </div>
-                  )
+                  ),
+                  message: 'Loan Alert'
                 });
               },
               method: 'LiquidateUnsafeCDP',

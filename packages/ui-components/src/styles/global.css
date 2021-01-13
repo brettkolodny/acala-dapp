@@ -94,7 +94,7 @@ p, span {
   --information-content-color: #95ADDC;
 
   --notification-success-color: #8fce65;
-  --notification-info-color: #108ee9;
+  --notification-info-color: var(--color-primary);
   --notification-warning-color: #f0af41;
   --notification-error-color: #f35600;
 

@@ -66,7 +66,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(({
   extra,
   header,
   headerClassName,
-  overflowHidden = false,
+  overflowHidden = true,
   padding = true,
   showShadow = true
 }, ref) => {

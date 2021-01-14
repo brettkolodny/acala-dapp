@@ -219,8 +219,22 @@ const ActionBar = styled(({ council, hash, proposal, vote }: ProposalData & Bare
     if (!members) return false;
     if (!active) return false;
 
-    return members.find((item: AccountId): boolean => item.toString() === active.address)?.length !== 0;
+    return !!members.find((item: AccountId): boolean => item.toString() === active.address);
   }, [active, members]);
+
+  const canAye = useMemo(() => {
+    if (!active) return false;
+    if (!vote) return false;
+
+    return !vote.ayes.find((item: AccountId): boolean => item.toString() === active.address);
+  }, [active, vote]);
+
+  const canNay = useMemo(() => {
+    if (!active) return false;
+    if (!vote) return false;
+
+    return !vote.nays.find((item: AccountId): boolean => item.toString() === active.address);
+  }, [active, vote]);
 
   const onAyeSuccess = useCallback(() => {
     notification.success({
@@ -246,7 +260,7 @@ const ActionBar = styled(({ council, hash, proposal, vote }: ProposalData & Bare
       justify='end'
     >
       {
-        canAccess ? (
+        canAccess && canAye ? (
           <Col>
             <TxButton
               call={ayeCall}
@@ -258,7 +272,7 @@ const ActionBar = styled(({ council, hash, proposal, vote }: ProposalData & Bare
         ) : null
       }
       {
-        canAccess ? (
+        canAccess && canNay ? (
           <Col>
             <TxButton
               call={nayCall}

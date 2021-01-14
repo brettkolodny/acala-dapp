@@ -54,7 +54,7 @@ export const ProposalFormItem: FC<ProposalFormItemProps> = ({
 }) => {
   const { api } = useApi();
   const _type = useMemo(() => {
-    if (type === 'CurrencyId') return type;
+    if (type === 'CurrencyId' || type === 'CurrencyIdOf') return 'CurrencyId';
 
     if (type.startsWith('Vec')) {
       return type.replace(/^Vec<\((.*?)\)>$/, '$1').split(',');
@@ -63,7 +63,14 @@ export const ProposalFormItem: FC<ProposalFormItemProps> = ({
     if (type === 'Compact<BalanceOf>') return 'FixedU128';
 
     let definition = api.registry.getDefinition(type as any);
+    let temp = definition;
 
+    while (definition) {
+      temp = definition;
+      definition = api.registry.getDefinition(definition as any);
+    }
+
+    definition = temp;
     definition = definition?.replace(/^Option<(.*?)>$/, '$1');
     definition = definition?.replace(/^Compact<(.*?)>$/, '$1');
 
@@ -148,6 +155,8 @@ export const ProposalFormItem: FC<ProposalFormItemProps> = ({
       </Form.List>
     );
   }
+
+  console.log(_type);
 
   if (typeof _type === 'object' && Reflect.has(_type, '_enum')) {
     return formItemRender(

@@ -19,7 +19,7 @@ export const CouncilAndProposal: FC = styled(({ className }: BareProps) => {
     const { origin: { denominator, numerator } } = selectedProposal;
     const councilMemberLength = usedCouncil.data.length;
 
-    return Math.min(Math.ceil(councilMemberLength * numerator / denominator) + 1, 1);
+    return Math.min(Math.ceil(councilMemberLength * numerator / denominator) + 1, councilMemberLength);
   }, [usedCouncil, selectedProposal]);
 
   return (

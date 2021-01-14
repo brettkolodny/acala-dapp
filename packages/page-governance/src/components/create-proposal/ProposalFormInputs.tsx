@@ -1,9 +1,9 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useMemo } from 'react';
 import dayjs from 'dayjs';
 import { CurrencyId } from '@acala-network/types/interfaces';
 import { NumberInput as SNumberInput, styled, DatePicker } from '@acala-dapp/ui-components';
 import { BareProps } from '@acala-dapp/ui-components/types';
-import { useBlockNumber, useConstants } from '@acala-dapp/react-hooks';
+import { useBlockNumber, useConstants, useLPCurrencies } from '@acala-dapp/react-hooks';
 import { TokenInput } from '@acala-dapp/react-components/TokenInput';
 
 interface BasicFormInputProps<T> extends BareProps {
@@ -58,11 +58,16 @@ export const BlockNumberPicker = styled(({ className, onChange }: BasicFormInput
 
 export const CurrencySelector = styled(({ className, onChange, value }: BasicFormInputProps<CurrencyId>) => {
   const { allCurrencies } = useConstants();
+  const lpCurrencies = useLPCurrencies();
+
+  const data = useMemo(() => {
+    return [...allCurrencies, ...lpCurrencies];
+  }, [allCurrencies, lpCurrencies]);
 
   return (
     <TokenInput
       className={className}
-      currencies={allCurrencies}
+      currencies={data}
       disableZeroCurrency={false}
       onChange={onChange}
       showBalance={false}

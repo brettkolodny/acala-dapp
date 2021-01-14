@@ -136,7 +136,7 @@ const OnChainInfo = styled(({ className, council, proposal, vote }: ProposalData
       <List>
         <List.Item
           label='Proposal'
-          value={proposal.sectionName + ' / ' + proposal.methodName}
+          value={proposal.section + ' / ' + proposal.method}
         />
         <List.Item
           label='Council'

@@ -130,7 +130,7 @@ export const TxButton: FC<PropsWithChildren<Props>> = ({
         duration: null,
         icon: <Loading spin />,
         key: notificationKey,
-        message: `${_call.method.sectionName}: ${_call.method.methodName}`
+        message: `${_call.method.section}: ${_call.method.method}`
       });
 
       return [signedTx, notificationKey];

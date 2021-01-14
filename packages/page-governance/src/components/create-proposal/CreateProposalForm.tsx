@@ -1,5 +1,5 @@
 import React, { FC, useMemo, ReactNode, useCallback } from 'react';
-import { Form, Switch, AntRadio, styled, MinusCircleOutlined, Button } from '@acala-dapp/ui-components';
+import { Form, Switch, AntRadio, styled, MinusCircleOutlined, Button, Input } from '@acala-dapp/ui-components';
 import { NumberInput, CurrencySelector } from './ProposalFormInputs';
 import { formatter } from '../../config';
 import { useApi } from '@acala-dapp/react-hooks';
@@ -60,6 +60,8 @@ export const ProposalFormItem: FC<ProposalFormItemProps> = ({
       return type.replace(/^Vec<\((.*?)\)>$/, '$1').split(',');
     }
 
+    if (type === 'Compact<BalanceOf>') return 'FixedU128';
+
     let definition = api.registry.getDefinition(type as any);
 
     definition = definition?.replace(/^Option<(.*?)>$/, '$1');
@@ -70,6 +72,8 @@ export const ProposalFormItem: FC<ProposalFormItemProps> = ({
     if (definition === 'Rate') return 'FixedU128';
 
     if (definition === 'UInt<128, Balance>') return 'FixedU128';
+
+    if (definition === 'BalanceOf') return 'FixedU128';
 
     if (definition?.startsWith('{"_enum')) {
       return JSON.parse(definition);
@@ -193,7 +197,7 @@ export const ProposalFormItem: FC<ProposalFormItemProps> = ({
     return formItemRender(<CurrencySelector />);
   }
 
-  return null;
+  return formItemRender(<Input />);
 };
 
 export const CreateProposalForm = styled(({ className, data }: { data: ProposalFormItemProps[] } & BareProps) => {

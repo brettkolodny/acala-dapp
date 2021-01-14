@@ -50,6 +50,16 @@ const commonProposalsConfig = [
         document: 'Update parameters related to risk management of CDP under specific collateral type',
         name: 'set_collateral_params',
         section: 'cdp_engine'
+      },
+      {
+        document: 'Update parameters related to risk management of CDP under specific collateral type',
+        name: 'set_collateral_params',
+        section: 'cdp_engine'
+      },
+      {
+        document: 'Withdraw Treasury',
+        name: 'transfer',
+        section: 'currencies'
       }
     ],
     collective: 'Loan',

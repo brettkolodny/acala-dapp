@@ -82,8 +82,6 @@ export const ProposalForm: FC = styled(({ className }: BareProps) => {
   const handleSubmit = useCallback(() => {
     const values = form.getFieldsValue();
 
-    console.log(values);
-
     if (!selectedProposal) return;
 
     const { name, origin, section } = selectedProposal;
@@ -98,7 +96,11 @@ export const ProposalForm: FC = styled(({ className }: BareProps) => {
       definition = definition.replace(/^Option<(.*?)>$/, '$1');
       definition = definition.replace(/^Compact<(.*?)>$/, '$1');
 
-      if (['Ratio', 'Rate', 'UInt<128, Balance>', 'FixedU128'].includes(definition)) {
+      if (key === 'Compact<BalanceOf>') {
+        return api.createType(_key as any, new FixedPointNumber(value || 0).toChainData());
+      }
+
+      if (['Ratio', 'Rate', 'UInt<128, Balance>', 'FixedU128', 'BalanceOf'].includes(definition)) {
         return api.createType(_key as any, new FixedPointNumber(value || 0).toChainData());
       }
 

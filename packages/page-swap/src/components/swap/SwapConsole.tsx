@@ -184,6 +184,9 @@ export const Inner: FC = () => {
   }, [parameters, tradeMode]);
 
   useSubscription(() => {
+    const _input = (new FixedPointNumber(input?.amount || 0));
+    const _output = (new FixedPointNumber(output?.amount || 0));
+
     if (changeFlag.value === false) {
       if (tradeMode === 'EXACT_INPUT' && input.amount === 0) return;
 

@@ -1,5 +1,5 @@
 import { upperFirst } from 'lodash';
-import { EnsureProportionMoreThan, ensureRootOrHalfHomaCouncil, ensureRootOrHalfHonzonCouncil, ensureRootOrHalfGeneralCouncil } from './councils-config';
+import { EnsureProportionMoreThan, ensureRootOrHalfHomaCouncil, ensureRootOrHalfHonzonCouncil, ensureRootOrHalfGeneralCouncil, ensureRootOrTwoThirdsGeneralCouncil } from './councils-config';
 
 export type ModuleProposalCouncilConfig = {
   collective: string;
@@ -19,6 +19,42 @@ export function formatter (str?: string): string {
 }
 
 const commonProposalsConfig = [
+  {
+    calls: [
+      {
+        document: 'Add Member To General Council',
+        name: 'general_council_membersship',
+        section: 'add_member'
+      },
+      {
+        document: 'Remove Member From General Council',
+        name: 'general_council_membersship',
+        section: 'remove_member'
+      },
+      {
+        document: 'Add Member To Homa Council',
+        name: 'homa_council_membersship',
+        section: 'add_member'
+      },
+      {
+        document: 'Remove Member From Homa Council',
+        name: 'homa_council_membersship',
+        section: 'remove_member'
+      },
+      {
+        document: 'Add Member To Honzon Council',
+        name: 'honzon_council_membersship',
+        section: 'add_member'
+      },
+      {
+        document: 'Remove Member From Honzon Council',
+        name: 'honzon_council_membersship',
+        section: 'remove_member'
+      }
+    ],
+    collective: 'Council',
+    origin: ensureRootOrTwoThirdsGeneralCouncil
+  },
   {
     calls: [
       {

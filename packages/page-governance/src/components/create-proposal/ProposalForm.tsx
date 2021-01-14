@@ -112,7 +112,7 @@ export const ProposalForm: FC = styled(({ className }: BareProps) => {
     const _params = args.map((key: any) => {
       const _value = values[key.name];
 
-      if (key.type === 'CurrencyId') return _value;
+      if (key.type === 'CurrencyId' || key.type === 'CurrencyIdOf') return _value;
 
       if (key.type.includes('Vec')) {
         return values[key.name].map((item: any) => {
@@ -142,14 +142,7 @@ export const ProposalForm: FC = styled(({ className }: BareProps) => {
     let _inner = api.tx[camelCase(section)][camelCase(name)].apply(api, _params);
 
     if (values.shouldChangeOrigin) {
-      _inner = api.tx.authority.dispatchAs(
-        'ROOT',
-        _inner
-      );
-    }
-
-    if (values.shouldDelay) {
-      if (values.shouldChangeOrigin) {
+      if (values.delayedAtBlock) {
         _inner = api.tx.authority.scheduleDispatch(
           { at: values.delayedAtBlock },
           0,
@@ -157,10 +150,8 @@ export const ProposalForm: FC = styled(({ className }: BareProps) => {
           _inner
         );
       } else {
-        _inner = api.tx.scheduler.schedule(
-          values.delayedAtBlock,
-          '',
-          0,
+        _inner = api.tx.authority.dispatchAs(
+          'ROOT',
           _inner
         );
       }
@@ -202,26 +193,17 @@ export const ProposalForm: FC = styled(({ className }: BareProps) => {
     >
       <Form.Item
         initialValue={false}
-        label='Delay Execute'
-        name='shouldDelay'
+        label='Change Origin'
+        name='shouldChangeOrigin'
       >
         <Switch />
       </Form.Item>
-      {shouldDelay ? <DelaySubForm /> : null}
-      {
-        selectedProposal?.showChangeOrigin ? (
-          <>
-            <Form.Item
-              initialValue={false}
-              label='Change Origin'
-              name='shouldChangeOrigin'
-            >
-              <Switch />
-            </Form.Item>
-            {shouldChangeOrigin ? <ChangeOriginSubForm /> : null}
-          </>
-        ) : null
-      }
+      {shouldChangeOrigin ? (
+        <>
+          <DelaySubForm />
+          <ChangeOriginSubForm />
+        </>
+      ) : null}
       <Form.Item
         label='Threshold'
         name='threshold'

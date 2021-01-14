@@ -75,7 +75,6 @@ export const CurrencySelector = styled(({ className, onChange, value }: BasicFor
     />
   );
 })`
-  width: 250px;
   height: 48px;
   border-radius: 8px;
 

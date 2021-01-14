@@ -142,14 +142,14 @@ export const ProposalSelector: FC = () => {
               <Tabs.Panel
                 $key={collective}
                 header={formatter(collective)}
-                key={`proposal-module-list-${module}`}
+                key={`proposal-module-list-${collective}`}
               >
                 <ProposalsList>
                   {
                     _allowedProposals[collective].map((proposal) => {
                       return (
                         <ProposalCard
-                          key={`proposal-card-${module}-${proposal.name}`}
+                          key={`proposal-card-${collective}-${proposal.name}-${proposal.section}`}
                           onClick={closeSelector}
                           {...proposal}
                         />

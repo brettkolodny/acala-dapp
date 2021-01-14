@@ -30,8 +30,8 @@ export const CouncilAndProposal: FC = styled(({ className }: BareProps) => {
           value={formatter(selectedProposal?.name || '')}
         />
         <List.Item
-          label='Module'
-          value={formatter(selectedProposal?.module || '')}
+          label='Section'
+          value={formatter(selectedProposal?.section || '')}
         />
         <List.Item
           label='Description'

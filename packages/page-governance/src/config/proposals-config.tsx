@@ -8,6 +8,7 @@ export type ModuleProposalCouncilConfig = {
     name: string;
     section: string;
     origin?: EnsureProportionMoreThan<any, any, any, true>;
+    showChangeOrigin?: boolean;
   }[];
   origin: EnsureProportionMoreThan<any, any, any, true>;
 }
@@ -23,33 +24,33 @@ const commonProposalsConfig = [
     calls: [
       {
         document: 'Add Member To General Council',
-        name: 'general_council_membersship',
-        section: 'add_member'
+        name: 'add_member',
+        section: 'general_council_membership'
       },
       {
         document: 'Remove Member From General Council',
-        name: 'general_council_membersship',
-        section: 'remove_member'
+        name: 'remove_member',
+        section: 'general_council_membership'
       },
       {
         document: 'Add Member To Homa Council',
-        name: 'homa_council_membersship',
-        section: 'add_member'
+        name: 'add_member',
+        section: 'homa_council_membership'
       },
       {
         document: 'Remove Member From Homa Council',
-        name: 'homa_council_membersship',
-        section: 'remove_member'
+        name: 'remove_member',
+        section: 'homa_council_membership'
       },
       {
         document: 'Add Member To Honzon Council',
-        name: 'honzon_council_membersship',
-        section: 'add_member'
+        name: 'add_member',
+        section: 'honzon_council_membership'
       },
       {
         document: 'Remove Member From Honzon Council',
-        name: 'honzon_council_membersship',
-        section: 'remove_member'
+        name: 'remove_member',
+        section: 'honzon_council_membership'
       }
     ],
     collective: 'Council',
@@ -95,7 +96,8 @@ const commonProposalsConfig = [
       {
         document: 'Withdraw Treasury',
         name: 'transfer',
-        section: 'currencies'
+        section: 'currencies',
+        showChangeOrigin: true
       }
     ],
     collective: 'Loan',
@@ -185,14 +187,6 @@ export const proposalsConfig = {
   mandala: ModuleProposalCouncilConfig[];
   [k: string]: ModuleProposalCouncilConfig[];
 };
-
-export const proposalModules = Array.from(
-  new Set(
-    Object.keys(proposalsConfig).reduce((acc, item) => {
-      return acc.concat((proposalsConfig[item] as any as ModuleProposalCouncilConfig[]).map((i) => i.module));
-    }, [] as string[])
-  )
-);
 
 export const getProposalsConfig = <U extends keyof typeof proposalsConfig>(key: U): ModuleProposalCouncilConfig[] => {
   return proposalsConfig[key];

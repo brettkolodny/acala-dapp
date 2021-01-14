@@ -32,6 +32,10 @@ export const DEFAULT_ENDPOINTS: EndpointConfig = {
     {
       name: 'Local',
       url: 'ws://127.0.0.1:9944'
+    },
+    {
+      name: 'HZY',
+      url: 'ws://192.168.8.123:9944'
     }
   ]
 };

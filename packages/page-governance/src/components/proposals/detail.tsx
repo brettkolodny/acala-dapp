@@ -202,7 +202,7 @@ const ActionBar = styled(({ council, hash, proposal, vote }: ProposalData & Bare
     return api.tx[council].vote(
       hash,
       vote.index,
-      true
+      false
     );
   }, [api, hash, vote, council]);
 
@@ -298,7 +298,7 @@ export const ProposalDetail: FC = () => {
         path: '/governance/proposals'
       }
     ],
-    content: data ? camelToDisplay(data.proposal.methodName) : ''
+    content: data ? camelToDisplay(data.proposal.method) : ''
   });
 
   if (!data) return null;

@@ -3,8 +3,6 @@ import clsx from 'clsx';
 import { styled } from '@acala-dapp/ui-components';
 import { BareProps } from '@acala-dapp/ui-components/types';
 
-type ProcessStatus = 'active';
-
 interface ProcessItemProps extends BareProps {
   show: boolean;
   title: ReactNode;

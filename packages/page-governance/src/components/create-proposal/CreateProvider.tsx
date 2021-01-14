@@ -8,6 +8,7 @@ export type ProposalData = {
   name: string;
   section: string;
   origin: EnsureProportionMoreThan<any, any, any, any>;
+  showChangeOrigin?: boolean;
 }
 
 type CreateProposalState = 'select_module'

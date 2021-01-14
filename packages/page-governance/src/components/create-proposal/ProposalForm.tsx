@@ -70,6 +70,8 @@ export const ProposalForm: FC = styled(({ className }: BareProps) => {
 
     const { name, section } = selectedProposal;
 
+    if (!api.tx) return;
+
     const call = api.tx[camelCase(section)][camelCase(name)];
 
     return call.toJSON();
@@ -206,14 +208,20 @@ export const ProposalForm: FC = styled(({ className }: BareProps) => {
         <Switch />
       </Form.Item>
       {shouldDelay ? <DelaySubForm /> : null}
-      <Form.Item
-        initialValue={false}
-        label='Change Origin'
-        name='shouldChangeOrigin'
-      >
-        <Switch />
-      </Form.Item>
-      {shouldChangeOrigin ? <ChangeOriginSubForm /> : null}
+      {
+        selectedProposal?.showChangeOrigin ? (
+          <>
+            <Form.Item
+              initialValue={false}
+              label='Change Origin'
+              name='shouldChangeOrigin'
+            >
+              <Switch />
+            </Form.Item>
+            {shouldChangeOrigin ? <ChangeOriginSubForm /> : null}
+          </>
+        ) : null
+      }
       <Form.Item
         label='Threshold'
         name='threshold'

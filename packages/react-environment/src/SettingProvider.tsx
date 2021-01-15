@@ -86,19 +86,19 @@ export const SettingProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     _setLanguage(language);
   }, [_setLanguage, i18n]);
 
-  /* disable language auto change */
   // set language by browser
-  // useEffect(() => {
-  //   let language = window.navigator.language;
+  useEffect(() => {
+    let language = window.navigator.language;
 
-  //   if (language.toLocaleLowerCase().includes('zh')) {
-  //     language = 'zh';
-  //   } else {
-  //     language = 'en';
-  //   }
+    if (language.toLocaleLowerCase().includes('zh')) {
+      language = 'zh';
+    } else {
+      language = 'en';
+    }
 
-  //   setLanguage(language as Language);
-  // }, [setLanguage]);
+    setLanguage(language as Language);
+  }, [setLanguage]);
+
   // set endpoint
   useEffect(() => {
     // local setting

@@ -57,7 +57,7 @@ const format = (time: number): string => {
 export const TimeChange: FC<{ latest: number }> = styled(({ className, latest }: { className: string; latest: number }) => {
   const [spacing, setSpacing] = useState<number>(0);
   const latestRef = useRef<number>(latest);
-  const intervalRef = useRef<number>();
+  const intervalRef = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
     if (latestRef.current !== latest) {

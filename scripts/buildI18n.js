@@ -80,7 +80,8 @@ const dappModules = [
   'page-swap',
   'page-homa',
   'page-oracle-price',
-  'page-governance'
+  'page-governance',
+  'react-components'
 ];
 
 const APP_NAME = process.env.APP_NAME;

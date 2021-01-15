@@ -1,4 +1,5 @@
 {
-  "My Address": "我的地址",
-  "Transfer": "转账"
+  "My Address": "MyAddress",
+  "Transfer": "Transfer",
+  "TESTNET_SCAMES": "警告：当前测试网中所有资产仅供测试使用，无真实价值。"
 }

@@ -77,7 +77,7 @@ export const WithdrawConsole: FC = () => {
       <SpaceBox height={24} />
       <Row gutter={[0, 24]}>
         <Col>
-          <WithdrawnTitle>Whithdraw Token</WithdrawnTitle>
+          <WithdrawnTitle>Withdraw Token</WithdrawnTitle>
         </Col>
         <Col span={24}>
           <TokenInput

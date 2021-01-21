@@ -62,11 +62,6 @@ p, span {
   --border-color: #e9e9e9;
   --dividing-color: #ecf0f2;
 
-  --text-size-sm: 14px;
-  --text-size-md: 16px;
-  --text-size-lg: 18px;
-  --text-size-xl: 24px;
-
   --text-weight-light: 400;
   --text-weight-md: 500;
 
@@ -125,4 +120,5 @@ p, span {
 
 .ant-dropdown-menu {
   border-radius: 12px;
+  overflow: hidden;
 }

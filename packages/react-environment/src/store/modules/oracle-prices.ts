@@ -66,7 +66,7 @@ export const subscribeOraclePrices = (api: ApiRx, type: OracleProvider = 'Aggreg
         filter((record) => {
           const { event } = record;
 
-          return event.method === 'NewFeedData';
+          return event?.method === 'NewFeedData';
         }),
         mergeMap(() => getOraclePrices(api, type))
       );

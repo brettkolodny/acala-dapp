@@ -9,13 +9,13 @@ export const InformationRoot = styled.div`
 
 export const InformationTitle = styled.p`
   margin-bottom: 12px;
-  font-size: var(--text-size-md)
+  font-size: 16px
   line-height: 1.1875;
   color: var(--information-title-color);
 `;
 
 export const InformationContent = styled.p`
-  font-size: var(--text-size-md);
+  font-size: 16px;
   line-height: 1.375;
   color: var(--information-content-color);
 `;

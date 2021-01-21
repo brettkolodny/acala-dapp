@@ -46,7 +46,7 @@ const ProductName = styled.span<{ collapse: boolean }>`
   display: ${({ collapse }): string => collapse ? 'none' : 'block'};
   flex: 1;
   margin-left: 15px;
-  font-size: var(--text-size-sm);
+  font-size: 14px;
   line-height: 20px;
   font-weight: 500;
   color: var(--color-primary) !important;

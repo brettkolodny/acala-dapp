@@ -24,7 +24,7 @@ const TimeChangePlaceholder = styled.div`
 const TokenName = styled.p`
   margin-right: 108px;
   margin-bottom: 18px;
-  font-size: var(--text-size-md);
+  font-size: 16px;
   line-height: 1.166667;
   font-weight: var(--text-weight-md);
   color: var(--text-color-primary);

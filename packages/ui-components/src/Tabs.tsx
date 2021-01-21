@@ -42,7 +42,7 @@ export const TabHeader = styled.li<{
   flex-grow: 0;
   padding: 16px 8px;
   margin: 0 58px 0 0;
-  font-size: var(--text-size-md);
+  font-size: 16px;
   font-weight: var(--text-weight-md);
   line-height: 1.3125;
   color: ${({ active }): string => active ? 'var(--color-primary)' : 'var(--text-color-normal)'};
@@ -72,7 +72,7 @@ export const CardTabHeader = styled.div<{
 }>`
   flex: 1;
   text-align: center;
-  font-size: var(--text-size-lg);
+  font-size: 18px;
   line-height: 1.1875;
   padding: 20px 0;
   font-weight: 500;

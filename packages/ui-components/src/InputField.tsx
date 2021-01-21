@@ -17,7 +17,7 @@ const Root = styled.div`
 `;
 
 const Title = styled.div`
-  font-size: var(--text-size-md);
+  font-size: 16px;
   line-height: 1.1875;
 `;
 

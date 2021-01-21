@@ -13,7 +13,7 @@ const AggregatedCard = styled(Card)`
 `;
 
 const AssetName = styled(TokenName)`
-  font-size: var(--text-size-lg);
+  font-size: 18px;
   line-height: 1.333333;
   font-weight: var(--text-weight-md);
 `;
@@ -27,7 +27,7 @@ const OracleAggregatedHeader = styled.div`
 const AssetPrice = styled(FormatPrice)`
   display: block;
   margin-top: 16px;
-  font-size: var(--text-size-xl);
+  font-size: 24px;
   line-height: 1.2083333;
   font-weight: bold;
   color: var(--text-color-black);
@@ -83,14 +83,14 @@ export const TimeChange: FC<{ latest: number }> = styled(({ className, latest }:
   );
 })`
   margin-top: 18px;
-  font-size: var(--text-size-sm);
+  font-size: 14px;
   line-height: 1;
   color: var(--text-color-second);
 `;
 
 const PriceChangeRoot = styled.div<{ direction: 'up' | 'down' }>`
   position: relative;
-  font-size: var(--text-size-md);
+  font-size: 16px;
   line-height: 1.1875;
   color: ${({ direction }): string => direction === 'down' ? '#ee466a' : '#12ca6d'};
 

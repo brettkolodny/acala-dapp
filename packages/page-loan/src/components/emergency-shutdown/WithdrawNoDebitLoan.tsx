@@ -1,12 +1,12 @@
-import React, { FC, useState, useEffect, ReactNode } from 'react';
+import React, { FC, useEffect, ReactNode } from 'react';
 import { Card, ColumnsType, Table } from '@acala-dapp/ui-components';
-import { useAllUserLoans, filterEmptyLoan } from '@acala-dapp/react-hooks';
+import { useMemState, useAllUserLoans, filterEmptyLoan } from '@acala-dapp/react-hooks';
 import { DerivedUserLoan } from '@acala-network/api-derive';
 import { Token, FormatBalance, TxButton } from '@acala-dapp/react-components';
 import { convertToFixed18 } from '@acala-network/app-util';
 
 export const WithdrawNoDebitLoan: FC = () => {
-  const [empty, setEmpty] = useState<boolean>(true);
+  const [empty, setEmpty] = useMemState<boolean>(true);
 
   const loans = useAllUserLoans();
 

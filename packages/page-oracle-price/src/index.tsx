@@ -10,7 +10,7 @@ import { OracleDetails } from './components/OracleDetails';
 type OraclePriceTabType = 'aggregated' | 'details';
 
 const PageDeposit: FC = () => {
-  const { changeTabs, currentTab } = useTabs<OraclePriceTabType>('aggregated');
+  const { changeTab, currentTab } = useTabs<OraclePriceTabType>('aggregated');
   const { t } = useTranslation('page-oracle-price');
 
   return (
@@ -21,7 +21,7 @@ const PageDeposit: FC = () => {
       <Col span={24}>
         <Tabs<OraclePriceTabType>
           active={currentTab}
-          onChange={changeTabs}
+          onChange={changeTab}
         >
           <Tabs.Panel
             $key='aggregated'

@@ -1,9 +1,9 @@
-import React, { useCallback, useState, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import dayjs from 'dayjs';
 import { CurrencyId } from '@acala-network/types/interfaces';
 import { NumberInput as SNumberInput, styled, DatePicker } from '@acala-dapp/ui-components';
 import { BareProps } from '@acala-dapp/ui-components/types';
-import { useBlockNumber, useConstants, useLPCurrencies } from '@acala-dapp/react-hooks';
+import { useBlockNumber, useConstants, useLPCurrencies, useMemState } from '@acala-dapp/react-hooks';
 import { TokenInput } from '@acala-dapp/react-components/TokenInput';
 
 interface BasicFormInputProps<T> extends BareProps {
@@ -17,7 +17,7 @@ export const NumberInput = styled(SNumberInput)`
 `;
 
 export const BlockNumberPicker = styled(({ className, onChange }: BasicFormInputProps<number>) => {
-  const [estimate, setEstimate] = useState<number>(0);
+  const [estimate, setEstimate] = useMemState<number>(0);
   const currentBlockNumber = useBlockNumber();
 
   const _onOk = useCallback((value): void => {
@@ -32,7 +32,7 @@ export const BlockNumberPicker = styled(({ className, onChange }: BasicFormInput
     if (onChange) {
       onChange(estimate);
     }
-  }, [currentBlockNumber, onChange]);
+  }, [currentBlockNumber, onChange, setEstimate]);
 
   return (
     <div className={className}>

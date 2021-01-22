@@ -1,10 +1,11 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 
 import { FixedPointNumber } from '@acala-network/sdk-core';
 
 import { Card, styled, Table, ColumnsType } from '@acala-dapp/ui-components';
 import { useStore } from '@acala-dapp/react-environment';
 import { OracleProvider } from '@acala-dapp/react-environment/store/modules/oracle-prices';
+import { useMemState } from '@acala-dapp/react-hooks';
 
 import { FormatPrice, getTokenName } from '@acala-dapp/react-components';
 
@@ -44,8 +45,8 @@ const Price = styled(FormatPrice)<{ isHighest: boolean }>`
 `;
 
 const PriceWithChange: FC<{ price: FixedPointNumber; isHighest: boolean }> = ({ isHighest, price }) => {
-  const [latestUpdateTime, setLatestUpdateTime] = useState<number>(0);
-  const [latestPrice, setLatestPrice] = useState<FixedPointNumber>(FixedPointNumber.ZERO);
+  const [latestUpdateTime, setLatestUpdateTime] = useMemState<number>(0);
+  const [latestPrice, setLatestPrice] = useMemState<FixedPointNumber>(FixedPointNumber.ZERO);
 
   useEffect(() => {
     if (!price) return;

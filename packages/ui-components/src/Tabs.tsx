@@ -1,16 +1,16 @@
-import React, { FC, ReactNode, useState, useMemo, Children, ReactElement, useRef, Dispatch, SetStateAction, createRef, isValidElement, useLayoutEffect } from 'react';
+import React, { FC, useState, ReactNode, useMemo, Children, ReactElement, useRef, Dispatch, SetStateAction, createRef, isValidElement, useLayoutEffect } from 'react';
 
 import { BareProps } from './types';
 import styled from 'styled-components';
 import { Motion, spring } from 'react-motion';
 
-function useTabs<T = string | number> (defaultTab: T): { currentTab: T; changeTabs: Dispatch<SetStateAction<T>>} {
-  const [currentTab, changeTabs] = useState<T>(defaultTab);
+function useTabs<T = string | number> (defaultTab: T): { currentTab: T; changeTab: Dispatch<SetStateAction<T>>} {
+  const [currentTab, changeTab] = useState<T>(defaultTab);
 
   return useMemo(() => ({
-    changeTabs,
+    changeTab,
     currentTab
-  }), [currentTab, changeTabs]);
+  }), [currentTab, changeTab]);
 }
 
 interface PanelProps extends BareProps {
@@ -223,5 +223,7 @@ function Tabs<T> ({
 }
 
 Tabs.Panel = Panel;
+
+Tabs.useTabs = useTabs;
 
 export { useTabs, Tabs };

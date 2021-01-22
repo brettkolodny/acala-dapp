@@ -24,9 +24,9 @@ const subMenu = [
 ];
 
 const PageSwap: FC = () => {
-  const { changeTabs, currentTab } = useTabs<SwapTabType>('add-liquidity');
+  const { changeTab, currentTab } = useTabs<SwapTabType>('add-liquidity');
   const {
-    changeTabs: changeSubMenu,
+    changeTab: changeSubMenu,
     currentTab: currentSubMenu
   } = useTabs<SwapPageType>('swap');
 
@@ -40,10 +40,10 @@ const PageSwap: FC = () => {
 
   useLayoutEffect(() => {
     if (params.tab) {
-      changeTabs(params.tab as SwapTabType);
+      changeTab(params.tab as SwapTabType);
     }
   /* eslint-disable-next-line */
-  }, [changeTabs]);
+  }, [changeTab]);
 
   if (currentSubMenu === 'swap') {
     return <SwapConsole />;
@@ -57,7 +57,7 @@ const PageSwap: FC = () => {
       <Col span={24}>
         <Tabs
           active={currentTab}
-          onChange={changeTabs}
+          onChange={changeTab}
         >
           <Tabs.Panel
             $key='add-liquidity'

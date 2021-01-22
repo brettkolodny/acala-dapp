@@ -1,6 +1,6 @@
-import React, { FC, useState, useEffect, useContext } from 'react';
+import React, { FC, useEffect, useContext } from 'react';
 import { Progress } from '@acala-dapp/ui-components';
-import { useAuctionOverview, useEmergencyShutdown } from '@acala-dapp/react-hooks';
+import { useMemState, useAuctionOverview, useEmergencyShutdown } from '@acala-dapp/react-hooks';
 import classes from './Process.module.scss';
 import { EmergencyShutdownContext } from './EmergencyShutdownProvider';
 
@@ -11,7 +11,7 @@ export const Process: FC = () => {
   const { setCanReclaim } = useContext(EmergencyShutdownContext);
   const { canRefund } = useEmergencyShutdown();
   const auction = useAuctionOverview();
-  const [count, setCount] = useState<number>(0);
+  const [count, setCount] = useMemState<number>(0);
 
   useEffect(() => {
     let _count = 0;

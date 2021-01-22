@@ -1,4 +1,4 @@
-import React, { memo, createContext, FC, PropsWithChildren, useState, useCallback, useMemo, Dispatch, SetStateAction, useRef } from 'react';
+import React, { memo, createContext, FC, PropsWithChildren, useCallback, useMemo, Dispatch, SetStateAction, useRef } from 'react';
 import { u32 } from '@polkadot/types';
 import { Observable } from 'rxjs';
 import { ITuple } from '@polkadot/types/types';
@@ -8,7 +8,7 @@ import { Token, TokenPair, FixedPointNumber, currencyId2Token } from '@acala-net
 import { SwapTrade } from '@acala-network/sdk-swap';
 import { Fee, SwapTradeMode } from '@acala-network/sdk-swap/help';
 
-import { useAllTradingPairs, useApi, useEnableLPs } from '@acala-dapp/react-hooks';
+import { useMemState, useApi, useEnableLPs } from '@acala-dapp/react-hooks';
 import { TradeParameters } from '@acala-network/sdk-swap/trade-parameters';
 
 export interface PoolData {
@@ -67,8 +67,8 @@ export const SwapContext = createContext<ContextData>({} as ContextData);
 
 export const SwapProvider: FC<PropsWithChildren<{}>> = memo(({ children }) => {
   const { api } = useApi();
-  const [tradeMode, setTradeMode] = useState<SwapTradeMode>('EXACT_INPUT');
-  const [acceptSlippage, _setAcceptSlippage] = useState<number>(0.005);
+  const [tradeMode, setTradeMode] = useMemState<SwapTradeMode>('EXACT_INPUT');
+  const [acceptSlippage, _setAcceptSlippage] = useMemState<number>(0.005);
   const changeFlag = useRef<ChangeFlag>(ChangeFlag.create(false));
 
   const setAcceptSlippage = useCallback((value: number) => {

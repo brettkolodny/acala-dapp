@@ -1,10 +1,10 @@
-import React, { FC, useMemo, useCallback, useState } from 'react';
+import React, { FC, useMemo, useCallback } from 'react';
 
 import { FixedPointNumber } from '@acala-network/sdk-core';
 import { StakingPool } from '@acala-network/sdk-homa';
 import { Card, Tabs, List, useTabs, CardTabHeader } from '@acala-dapp/ui-components';
 import { TxButton, TwoWayBalanceInput, FormatBalance, BalanceInputValue, UserBalance, eliminateGap } from '@acala-dapp/react-components';
-import { useConstants, useStakingPool, useBalance, useInputValue, useBalanceValidator } from '@acala-dapp/react-hooks';
+import { useMemState, useConstants, useStakingPool, useBalance, useInputValue, useBalanceValidator } from '@acala-dapp/react-hooks';
 
 import classes from './ExpressConsole.module.scss';
 
@@ -130,7 +130,7 @@ const UnstakePanel: FC = () => {
   const { liquidCurrency, stakingCurrency } = useConstants();
   const stakingPool = useStakingPool();
   const liquidCurrencyBalance = useBalance(liquidCurrency);
-  const [unstakeResult, setUnStakeResult] = useState<ReturnType<StakingPool['getStakingAmountInRedeemByFreeUnbonded']>>();
+  const [unstakeResult, setUnStakeResult] = useMemState<ReturnType<StakingPool['getStakingAmountInRedeemByFreeUnbonded']>>();
 
   const [inputValue, setInputValue, { error, reset, setValidator }] = useInputValue({
     amount: 0,
@@ -149,7 +149,7 @@ const UnstakePanel: FC = () => {
     updateValidator: setValidator
   });
 
-  const [twoWayValue, setTwoWayValue] = useState<[Partial<BalanceInputValue>, Partial<BalanceInputValue>]>([
+  const [twoWayValue, setTwoWayValue] = useMemState<[Partial<BalanceInputValue>, Partial<BalanceInputValue>]>([
     inputValue,
     { amount: 0, token: stakingCurrency }
   ]);
@@ -288,7 +288,7 @@ const UnstakePanel: FC = () => {
 type ExpressConsoleTabTypes = 'stake' | 'unstake';
 
 export const ExpressConsole: FC = () => {
-  const { changeTabs, currentTab } = useTabs<ExpressConsoleTabTypes>('stake');
+  const { changeTab, currentTab } = useTabs<ExpressConsoleTabTypes>('stake');
 
   return (
     <Card
@@ -297,7 +297,7 @@ export const ExpressConsole: FC = () => {
       <Tabs
         active={currentTab}
         divider={false}
-        onChange={changeTabs}
+        onChange={changeTab}
       >
         <Tabs.Panel
           $key='stake'
@@ -305,7 +305,7 @@ export const ExpressConsole: FC = () => {
             <CardTabHeader
               active={currentTab === 'stake'}
               key='tab-stake'
-              onClick={(): void => changeTabs('stake')}
+              onClick={(): void => changeTab('stake')}
             >
               Stake
             </CardTabHeader>
@@ -320,7 +320,7 @@ export const ExpressConsole: FC = () => {
             <CardTabHeader
               active={currentTab === 'unstake'}
               key='tab-unstake'
-              onClick={(): void => changeTabs('unstake')}
+              onClick={(): void => changeTab('unstake')}
             >
               Unstake
             </CardTabHeader>

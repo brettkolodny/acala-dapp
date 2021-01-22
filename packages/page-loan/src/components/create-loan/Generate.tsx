@@ -1,10 +1,10 @@
-import React, { useContext, FC, useCallback, useMemo, useState } from 'react';
+import React, { useContext, FC, useCallback, useMemo } from 'react';
 
 import { Fixed18, calcCanGenerate } from '@acala-network/app-util';
 import { FixedPointNumber } from '@acala-network/sdk-core';
 
 import { BalanceInput, UserBalance, FormatBalance, getTokenName, BalanceInputValue, focusToFixedPointNumber } from '@acala-dapp/react-components';
-import { useConstants, useBalance, useLoanHelper, useBalanceValidator } from '@acala-dapp/react-hooks';
+import { useConstants, useBalance, useLoanHelper, useBalanceValidator, useMemState } from '@acala-dapp/react-hooks';
 import { Button } from '@acala-dapp/ui-components';
 
 import { createProviderContext } from './CreateProvider';
@@ -22,7 +22,7 @@ export const Generate: FC = () => {
   const { minmumDebitValue, stableCurrency } = useConstants();
   const selectedCurrencyBalance = useBalance(selectedToken);
   const helper = useLoanHelper(selectedToken);
-  const [collateralAmount, setColalteralAmount] = useState<number>(0);
+  const [collateralAmount, setColalteralAmount] = useMemState<number>(0);
   const maxGenerate = useMemo(() => {
     if (!helper) return FixedPointNumber.ZERO;
 

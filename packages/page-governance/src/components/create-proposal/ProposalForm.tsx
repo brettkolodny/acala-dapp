@@ -1,10 +1,10 @@
-import React, { FC, useCallback, useContext, useMemo, useState } from 'react';
+import React, { FC, useCallback, useContext, useMemo } from 'react';
 import { FixedPointNumber } from '@acala-network/sdk-core';
 import { camelCase } from 'lodash';
 import { CreateContext } from './CreateProvider';
 import { styled, Form, FlexBox, SpaceBox, Switch } from '@acala-dapp/ui-components';
 import type { FieldData } from '@acala-dapp/ui-components';
-import { useApi } from '@acala-dapp/react-hooks';
+import { useApi, useMemState } from '@acala-dapp/react-hooks';
 import { BareProps } from '@acala-dapp/ui-components/types';
 import { TxButton } from '@acala-dapp/react-components';
 import { NumberInput, BlockNumberPicker } from './ProposalFormInputs';
@@ -76,8 +76,8 @@ export const ProposalForm: FC = styled(({ className }: BareProps) => {
 
     return call.toJSON();
   }, [api, selectedProposal]);
-  const [shouldDelay, setShouldDelayed] = useState<boolean>(false);
-  const [shouldChangeOrigin, setShouldChangeOrigin] = useState<boolean>(false);
+  const [shouldDelay, setShouldDelayed] = useMemState<boolean>(false);
+  const [shouldChangeOrigin, setShouldChangeOrigin] = useMemState<boolean>(false);
 
   const form = Form.useForm()[0];
 

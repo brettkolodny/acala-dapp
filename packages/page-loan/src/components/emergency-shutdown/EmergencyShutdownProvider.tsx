@@ -1,8 +1,8 @@
-import React, { createContext, FC, PropsWithChildren, useState, useMemo, useRef, useEffect, useCallback } from 'react';
+import React, { createContext, FC, PropsWithChildren, useMemo, useRef, useEffect, useCallback } from 'react';
 import { FixedPointNumber } from '@acala-network/sdk-core';
 
 import { useLockPrices, LockedPricesResult } from '@acala-dapp/react-hooks/useLockPrices';
-import { useConstants, useReclaimCollateral, useBalance } from '@acala-dapp/react-hooks';
+import { useConstants, useReclaimCollateral, useBalance, useMemState } from '@acala-dapp/react-hooks';
 
 export type EmergencyShutdownStep = 'trigger' | 'process' | 'reclaim' | 'success';
 
@@ -24,8 +24,8 @@ export const EmergencyShutdownContext = createContext<EmergencyShutdownContextDa
 
 export const EmergencyShutdownProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
   const lockedPrices = useLockPrices();
-  const [step, setStep] = useState<EmergencyShutdownStep>('trigger');
-  const [canReclaim, setCanReclaim] = useState<boolean>(false);
+  const [step, setStep] = useMemState<EmergencyShutdownStep>('trigger');
+  const [canReclaim, setCanReclaim] = useMemState<boolean>(false);
   const { stableCurrency } = useConstants();
   const { calcCanReceive } = useReclaimCollateral();
   const stableCoinBalance = useBalance(stableCurrency);

@@ -120,7 +120,7 @@ export const ProposalSelector: FC = () => {
   }, [allowedProposals]);
 
   const {
-    changeTabs: handleSelectCollective,
+    changeTab: handleSelectCollective,
     currentTab: selectedCollective
   } = useTabs(Object.keys(_allowedProposals)[0]);
 

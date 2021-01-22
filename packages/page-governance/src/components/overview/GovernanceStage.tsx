@@ -68,19 +68,10 @@ export const GovernanceStage: FC = () => {
   }, []);
 
   return (
-    <FlexBox justifyContent='space-between'>
-      <CStep
-        config={data}
-        current={'poa'}
-        showIndex={false}
-      />
-      <Button
-        style='primary'
-      >
-        <NavLink to='/governance/create'>
-          Create Proposal
-        </NavLink>
-      </Button>
-    </FlexBox>
+    <CStep
+      config={data}
+      current={'poa'}
+      showIndex={false}
+    />
   );
 };

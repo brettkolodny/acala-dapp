@@ -116,3 +116,11 @@ export const formatDuration = (duration: number): number => {
 
   return FixedPointNumber.fromRational(duration, DAY).toNumber();
 };
+
+export const formatCodec = <T extends Codec>(type: string, value: T): string | number => {
+  if (type.includes('Balance')) {
+    return formatBalance(value);
+  }
+
+  return value.toString();
+};

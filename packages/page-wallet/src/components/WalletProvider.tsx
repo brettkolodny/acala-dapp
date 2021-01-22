@@ -1,5 +1,6 @@
-import React, { createContext, FC, useState, Dispatch, SetStateAction } from 'react';
+import React, { createContext, FC, Dispatch, SetStateAction } from 'react';
 import { BareProps } from '@acala-dapp/ui-components/types';
+import { useMemState } from '@acala-dapp/react-hooks';
 
 export type WalletTabType = 'acala' | 'cross-chain' | 'collectibles';
 
@@ -11,7 +12,7 @@ export interface WalletContextData {
 export const WalletContext = createContext<WalletContextData>({} as WalletContextData);
 
 export const WalletProvider: FC<BareProps> = ({ children }) => {
-  const [activeTab, changeActiveTab] = useState<WalletTabType>('acala');
+  const [activeTab, changeActiveTab] = useMemState<WalletTabType>('acala');
 
   return (
     <WalletContext.Provider value={{

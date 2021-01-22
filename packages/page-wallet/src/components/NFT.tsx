@@ -1,9 +1,9 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 
 import { TokenInfoOf, ClassInfoOf } from '@acala-network/types/interfaces';
 import { Card, GridBox, Empty, CardLoading, Modal, styled } from '@acala-dapp/ui-components';
 import { NFTCard, NFTImage } from '@acala-dapp/react-components';
-import { useAllNFTTokens, useModal } from '@acala-dapp/react-hooks';
+import { useMemState, useAllNFTTokens, useModal } from '@acala-dapp/react-hooks';
 
 type NewTokenInfo = Omit<TokenInfoOf, 'metadata'> & { metadata: Record<string, string> };
 
@@ -14,7 +14,7 @@ const CNFTImage = styled(NFTImage)`
 
 export const NFT: FC = () => {
   const { data, loading } = useAllNFTTokens();
-  const [activeImg, setActiveImg] = useState<{ name: string; externalUrl: string }>();
+  const [activeImg, setActiveImg] = useMemState<{ name: string; externalUrl: string }>();
   const {
     close: closeActiveNFTModal,
     open: openActiveNFTModal,

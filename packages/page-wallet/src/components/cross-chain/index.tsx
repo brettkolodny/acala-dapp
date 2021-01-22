@@ -101,13 +101,13 @@ const crossChainEnable: Map<CrossChainType, boolean> = new Map([
 
 export const CrossChainConsole: FC = () => {
   const { crossChainCurrencies } = useConstants();
-  const { changeTabs, currentTab } = useTabs<CrossChainType>('RENBTC');
+  const { changeTab, currentTab } = useTabs<CrossChainType>('RENBTC');
 
   return (
     <Tabs<CrossChainType>
       active={currentTab}
       divider={false}
-      onChange={changeTabs}
+      onChange={changeTab}
     >
       {
         crossChainCurrencies.map((currency) => {
@@ -122,7 +122,7 @@ export const CrossChainConsole: FC = () => {
                   active={currentTab === currency.asToken.toString()}
                   currency={currency}
                   disabled={disabled}
-                  onClick={(): void => changeTabs(currency.asToken.toString() as CrossChainType)}
+                  onClick={(): void => changeTab(currency.asToken.toString() as CrossChainType)}
                 />
               }
               key={`cross-chain-${currency.asToken.toString()}`}

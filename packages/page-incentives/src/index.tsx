@@ -9,13 +9,13 @@ import { LPIncentivesReward } from './components/LPIncentivesReward';
 type IncentiveTabType = 'lp-staking' | 'distribution-program';
 
 const PageDeposit: FC = () => {
-  const { changeTabs, currentTab } = useTabs<IncentiveTabType>('lp-staking');
+  const { changeTab, currentTab } = useTabs<IncentiveTabType>('lp-staking');
 
   return (
     <IncentivesProvider>
       <Tabs<IncentiveTabType>
         active={currentTab}
-        onChange={changeTabs}
+        onChange={changeTab}
       >
         <Tabs.Panel
           $key='lp-staking'

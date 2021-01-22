@@ -21,7 +21,6 @@ export * from './useMemorized';
 export * from './systemHooks';
 
 // common
-export * from './useStateWithCallback';
 export * from './useFormValidator';
 export * from './useModal';
 export * from './useSubscription';

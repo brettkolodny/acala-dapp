@@ -12,7 +12,7 @@ type LoanTabType = 'shutdown' | 'loans';
 
 const PageLoan: FC = () => {
   const { isShutdown } = useEmergencyShutdown();
-  const { changeTabs, currentTab: pageCurrentTab } = useTabs<LoanTabType>(
+  const { changeTab, currentTab: pageCurrentTab } = useTabs<LoanTabType>(
     isShutdown ? 'shutdown' : 'loans'
   );
 
@@ -21,7 +21,7 @@ const PageLoan: FC = () => {
       <Col span={24}>
         <Tabs<LoanTabType>
           active={pageCurrentTab}
-          onChange={changeTabs}
+          onChange={changeTab}
         >
           <Tabs.Panel
             $key='loans'

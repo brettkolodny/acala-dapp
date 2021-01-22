@@ -1,31 +1,28 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { AutoComplete as AntAutoComplete } from 'antd';
 import { AutoCompleteProps as AntAutoCompleteProps } from 'antd/lib/auto-complete';
+import styled from 'styled-components';
 
-import './AutoComplete.scss';
 import { ArrowIcon } from './Icon';
 import { Input } from './Input';
 
-interface AutoCompleteProps extends AntAutoCompleteProps {
-  inputClassName?: string;
-}
-
-export const AutoComplete: FC<AutoCompleteProps> = (props: AutoCompleteProps) => {
-  const { children, inputClassName, ...other } = props;
-
+export const AutoComplete = styled(({ children, className, ...other }: AntAutoCompleteProps) => {
   return (
     <AntAutoComplete
-      className='aca-autocomplete'
+      className={className}
       {...other}
     >
       {
         children || (
           <Input
-            className={inputClassName}
+            className='auto-complate__input'
             suffix={<ArrowIcon />}
           />
         )
       }
     </AntAutoComplete>
   );
-};
+})`
+  position: relative;
+  width: 100%;
+`;

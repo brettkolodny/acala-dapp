@@ -1,7 +1,8 @@
-import React, { FC, ReactElement, useContext, useCallback, useState } from 'react';
+import React, { FC, ReactElement, useContext, useCallback } from 'react';
 
 import { TagGroup, Tag, styled } from '@acala-dapp/ui-components';
 import { TagInput } from '@acala-dapp/ui-components/TagInput';
+import { useMemState } from '@acala-dapp/react-hooks';
 
 import { SwapContext } from './SwapProvider';
 
@@ -27,7 +28,7 @@ const Title = styled.div`
 
 export const SlippageInput: FC = () => {
   const { acceptSlippage, setAcceptSlippage } = useContext(SwapContext);
-  const [custom, setCustom] = useState<number>(0);
+  const [custom, setCustom] = useMemState<number>(0);
 
   const handleClick = useCallback((num: number): void => {
     setAcceptSlippage(num);

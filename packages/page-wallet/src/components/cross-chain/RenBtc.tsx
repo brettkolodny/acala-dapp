@@ -7,14 +7,14 @@ import { RenBtcMint } from './RenBtcMint';
 type RenBTCTabType = 'mint' | 'release';
 
 export const RenBtc: FC = () => {
-  const { changeTabs, currentTab } = useTabs<RenBTCTabType>('mint');
+  const { changeTab, currentTab } = useTabs<RenBTCTabType>('mint');
 
   return (
     <Card padding={false}>
       <Tabs<RenBTCTabType>
         active={currentTab}
         divider={false}
-        onChange={changeTabs}
+        onChange={changeTab}
       >
         <Tabs.Panel
           $key='mint'

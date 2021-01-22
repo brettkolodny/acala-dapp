@@ -1,22 +1,11 @@
 import React, { FC, useCallback } from 'react';
 import { usePageTitle } from '@acala-dapp/react-environment';
 import { useProposals } from '@acala-dapp/react-hooks';
-import { Card, CardLoading, Col, Row, styled } from '@acala-dapp/ui-components';
-import { BareProps } from '@acala-dapp/ui-components/types';
+import { Button, CardLoading, Col, FlexBox, PlusOutlined, Row } from '@acala-dapp/ui-components';
 import { CouncilType } from '../../config';
 import { ProposalCard } from '../common/ProposalCard';
 import { CouncilesTab } from '../common/CouncliTab';
-
-const EmptyProposal = styled(({ className }: BareProps) => {
-  return (
-    <Card className={className}>
-      No Proposals
-    </Card>
-  );
-})`
-  font-size: 24px;
-  font-weight: 500;
-`;
+import { Empty } from '../common/Empty';
 
 const ProposalList: FC<{ council: string }> = ({ council }) => {
   const { data: proposals, loading } = useProposals(council);
@@ -39,7 +28,7 @@ const ProposalList: FC<{ council: string }> = ({ council }) => {
             ))
             : (
               <Col span={24}>
-                <EmptyProposal />
+                <Empty description='No proposal yet' />
               </Col>
             )
       }
@@ -48,18 +37,23 @@ const ProposalList: FC<{ council: string }> = ({ council }) => {
 };
 
 export const AllProposalList: FC = () => {
-  usePageTitle({
-    breadcrumb: [
-      {
-        content: 'Governance Overview',
-        path: '/governance'
-      }
-    ],
-    content: 'Council Proposals'
-  });
+  usePageTitle({ content: 'Proposals' });
+
   const councilRender = useCallback((council: CouncilType) => <ProposalList council={council} />, []);
 
   return (
-    <CouncilesTab contentRender={councilRender} />
+    <Row gutter={[24, 24]}>
+      <Col span={24}>
+        <FlexBox justifyContent='flex-end'>
+          <Button size='middle'>
+            <PlusOutlined />
+            Create Proposal
+          </Button>
+        </FlexBox>
+      </Col>
+      <Col span={24}>
+        <CouncilesTab contentRender={councilRender} />
+      </Col>
+    </Row>
   );
 };

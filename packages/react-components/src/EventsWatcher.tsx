@@ -28,7 +28,7 @@ function handler (config: HandlerConfig[]): (list: EventRecord[]) => void {
 
   return (list: EventRecord[]): void => {
     list.forEach((item) => {
-      const key = `${item.event.section.toString()}_${item.event.method.toString()}`;
+      const key = `${item?.event?.section?.toString()}_${item?.event?.method?.toString()}`;
       const handler = dispatcherHashMap[key];
 
       if (handler) {

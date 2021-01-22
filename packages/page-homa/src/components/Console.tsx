@@ -20,14 +20,14 @@ const Content = styled.div`
 type AdvanceConsoleTabType = 'staking' | 'redeem';
 
 export const Console: FC = () => {
-  const { changeTabs, currentTab } = useTabs<AdvanceConsoleTabType>('staking');
+  const { changeTab, currentTab } = useTabs<AdvanceConsoleTabType>('staking');
 
   return (
     <CCard>
       <Tabs
         active={currentTab}
         divider={false}
-        onChange={changeTabs}
+        onChange={changeTab}
       >
         <Tabs.Panel
           $key='staking'

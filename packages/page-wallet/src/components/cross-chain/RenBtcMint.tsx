@@ -1,4 +1,4 @@
-import React, { FC, useState, useContext, useCallback, useMemo } from 'react';
+import React, { FC, useContext, useCallback, useMemo } from 'react';
 import { useFormik } from 'formik';
 import { noop } from 'lodash';
 import clsx from 'clsx';
@@ -8,7 +8,7 @@ import { List, Button, Row, Col, Condition } from '@acala-dapp/ui-components';
 import { BalanceInput, FormatAddress, FormatBalance, getCurrencyIdFromName, BalanceInputValue } from '@acala-dapp/react-components';
 
 import classes from './RenBtc.module.scss';
-import { useAccounts, useApi } from '@acala-dapp/react-hooks';
+import { useAccounts, useApi, useMemState } from '@acala-dapp/react-hooks';
 import { RenBtcDialog } from './RenBtcDialog';
 import { RenBtcMintContext, MintStep } from './RenBtcContext';
 
@@ -214,8 +214,8 @@ const Inner: FC = () => {
 };
 
 export const RenBtcMint: FC = () => {
-  const [step, setStep] = useState<MintStep>('input');
-  const [amount, setAmount] = useState<number>(0);
+  const [step, setStep] = useMemState<MintStep>('input');
+  const [amount, setAmount] = useMemState<number>(0);
 
   return (
     <RenBtcMintContext.Provider

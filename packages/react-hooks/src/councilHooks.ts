@@ -1,14 +1,16 @@
 import { useMemo, useState, useEffect } from 'react';
-import { switchMap, map } from 'rxjs/operators';
 import { combineLatest, Observable, of } from 'rxjs';
+import { startWith, switchMap, map, filter, tap } from 'rxjs/operators';
 
-import { Vec, Option } from '@polkadot/types';
-import { AccountId } from '@acala-network/types/interfaces/types';
-import { Proposal, Hash, Votes } from '@polkadot/types/interfaces';
 import { ApiRx } from '@polkadot/api';
+import { Vec, Option } from '@polkadot/types';
+import { Proposal, Hash, Votes, EventRecord, Scheduled } from '@polkadot/types/interfaces';
+import { AccountId } from '@acala-network/types/interfaces/types';
 
 import { useApi } from './useApi';
 import { useQuery, useQueryMulti } from './useQuery';
+import { useSubscription } from './useSubscription';
+import { useMemorized } from './useMemorized';
 
 export interface ProposalData {
   proposal: Proposal;
@@ -155,4 +157,49 @@ export const useRecentProposals = (): { data: ProposalData[]; loading: boolean }
   }, [api, setLoading, setData]);
 
   return useMemo(() => ({ data, loading }), [data, loading]);
+};
+
+export interface SchedulerData {
+  blockAt: number;
+  scheduler: Scheduled;
+}
+
+export const useScheduler = (): { data: SchedulerData[]; loading: boolean } => {
+  const { api } = useApi();
+  const [data, setData] = useState<SchedulerData[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const _data = useMemorized({ data, loading });
+
+  useSubscription(() => {
+    return api.query.system.events().pipe(
+      // trigger immediately
+      startWith([{ event: { section: 'scheduler' } }] as unknown as Vec<EventRecord>),
+      // if receive events from scheduler, reflash data
+      filter((events) => {
+        return events.findIndex((event) => event?.event?.section === 'scheduler') !== -1;
+      }),
+      tap(() => setLoading(true)),
+      switchMap(() => {
+        return api.query.scheduler.agenda.entries();
+      }),
+      tap(() => setLoading(false))
+    ).subscribe({
+      next: (result) => {
+        const data = result.reduce((acc, cur) => {
+          return acc.concat(
+            cur[1].map((item) => {
+              return {
+                blockAt: (cur[0] as any)?._args[0]?.toNumber() | 0,
+                scheduler: item.unwrapOrDefault()
+              };
+            })
+          );
+        }, [] as SchedulerData[]);
+
+        setData(data);
+      }
+    });
+  }, [api, setData]);
+
+  return _data;
 };

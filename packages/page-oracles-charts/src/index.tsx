@@ -9,7 +9,7 @@ type TabTypes = 'DOT' | 'XBTC' | 'RENBTC';
 
 const PageDashboardHome: FC = () => {
   const oracleCurrency = ['DOT', 'XBTC', 'RENBTC'];
-  const { changeTabs, currentTab } = useTabs<TabTypes>('DOT');
+  const { changeTab, currentTab } = useTabs<TabTypes>('DOT');
 
   return (
     <Page fullscreen>
@@ -23,7 +23,7 @@ const PageDashboardHome: FC = () => {
             <Page.Title title='Price Feeds' />
             <Tabs
               active={currentTab}
-              onChange={changeTabs}
+              onChange={changeTab}
             >
               {oracleCurrency.map((item: any) => {
                 return (

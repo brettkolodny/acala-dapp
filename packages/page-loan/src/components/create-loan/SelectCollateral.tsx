@@ -1,7 +1,7 @@
-import React, { FC, useContext, useState, useCallback, useMemo, useRef, useEffect, ReactNode } from 'react';
+import React, { FC, useContext, useCallback, useMemo, useRef, useEffect, ReactNode } from 'react';
 
 import { CurrencyId } from '@acala-network/types/interfaces';
-import { useConstants, useAllUserLoans, useBalance, useAllBalances } from '@acala-dapp/react-hooks';
+import { useMemState, useConstants, useAllUserLoans, useBalance, useAllBalances } from '@acala-dapp/react-hooks';
 import { Table, ColumnsType, Radio, Button, styled } from '@acala-dapp/ui-components';
 import { Token, tokenEq, UserAssetBalance, UserAssetValue, Price, StableFeeAPR, RequiredCollateralRatio, LiquidationRatio, LiquidationPenalty, isSimilarZero } from '@acala-dapp/react-components';
 
@@ -83,7 +83,7 @@ export const SelectCollateral: FC = () => {
   const { loanCurrencies } = useConstants();
   const loans = useAllUserLoans(true);
   const balances = useAllBalances();
-  const [selected, setSelected] = useState<CurrencyId>();
+  const [selected, setSelected] = useMemState<CurrencyId>();
   const { cancelCreate, setSelectedToken, setStep } = useContext(createProviderContext);
   const collateralDisabled = useRef<Map<string, boolean>>(new Map());
 

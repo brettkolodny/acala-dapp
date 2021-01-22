@@ -1,11 +1,11 @@
-import React, { FC, useEffect, useState, useRef } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 
 import { FixedPointNumber } from '@acala-network/sdk-core';
 
 import { useStore } from '@acala-dapp/react-environment';
 import { Card, GridBox, styled } from '@acala-dapp/ui-components';
 import { FormatPrice, FormatRatio, getCurrencyIdFromName, TokenName } from '@acala-dapp/react-components';
-import { useApi } from '@acala-dapp/react-hooks';
+import { useApi, useMemState } from '@acala-dapp/react-hooks';
 
 const AggregatedCard = styled(Card)`
   width: 200px;
@@ -55,9 +55,9 @@ const format = (time: number): string => {
 };
 
 export const TimeChange: FC<{ latest: number }> = styled(({ className, latest }: { className: string; latest: number }) => {
-  const [spacing, setSpacing] = useState<number>(0);
+  const [spacing, setSpacing] = useMemState<number>(0);
   const latestRef = useRef<number>(latest);
-  const intervalRef = useRef<number>();
+  const intervalRef = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
     if (latestRef.current !== latest) {
@@ -111,8 +111,8 @@ const PriceChangeRoot = styled.div<{ direction: 'up' | 'down' }>`
 
 const PriceChange: FC<{ latest: FixedPointNumber }> = ({ latest }) => {
   const latestRef = useRef<FixedPointNumber>(latest);
-  const [ratio, setRatio] = useState<FixedPointNumber>(FixedPointNumber.ZERO);
-  const [direction, setDirection] = useState<'up' | 'down'>('up');
+  const [ratio, setRatio] = useMemState<FixedPointNumber>(FixedPointNumber.ZERO);
+  const [direction, setDirection] = useMemState<'up' | 'down'>('up');
 
   useEffect(() => {
     if (!latest || !latestRef.current) return;
@@ -151,8 +151,8 @@ interface OracleAggregatedCardProps {
 
 const OracleAggregatedCard: FC<OracleAggregatedCardProps> = ({ currency, price }) => {
   const { api } = useApi();
-  const [latestUpdateTime, setLatestUpdateTime] = useState<number>(0);
-  const [latestPrice, setLatestPrice] = useState<FixedPointNumber>(FixedPointNumber.ZERO);
+  const [latestUpdateTime, setLatestUpdateTime] = useMemState<number>(0);
+  const [latestPrice, setLatestPrice] = useMemState<FixedPointNumber>(FixedPointNumber.ZERO);
 
   useEffect(() => {
     const currentTime = new Date().getTime();

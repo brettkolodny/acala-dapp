@@ -7,15 +7,7 @@ import { CouncilType } from '../../config';
 import { CouncilMembers } from './CouncilMembers';
 
 export const CouncilList: FC = () => {
-  usePageTitle({
-    breadcrumb: [
-      {
-        content: 'Governance Overview',
-        path: '/governance'
-      }
-    ],
-    content: 'Council'
-  });
+  usePageTitle({ content: 'Council' });
 
   const memberRender = useCallback((council: CouncilType) => <CouncilMembers council={council} />, []);
 

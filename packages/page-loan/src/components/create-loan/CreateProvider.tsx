@@ -1,10 +1,10 @@
-import React, { createContext, useState, FC, useCallback } from 'react';
+import React, { createContext, FC, useCallback } from 'react';
 import { useNavigate } from 'react-router';
 
 import { CurrencyId } from '@acala-network/types/interfaces';
 
 import { BareProps } from '@acala-dapp/ui-components/types';
-import { useConstants } from '@acala-dapp/react-hooks';
+import { useMemState, useConstants } from '@acala-dapp/react-hooks';
 
 type CREATE_STEP = 'select' | 'generate' | 'confirm' | 'success';
 
@@ -33,10 +33,10 @@ export const CreateProvider: FC<Props> = ({
 }) => {
   const navigate = useNavigate();
   const { loanCurrencies } = useConstants();
-  const [step, _setStep] = useState<CREATE_STEP>('select');
-  const [selectedToken, _setSelectedToken] = useState<CurrencyId>(loanCurrencies[0]);
-  const [deposit, setDeposit] = useState<number>(0);
-  const [generate, setGenerate] = useState<number>(0);
+  const [step, _setStep] = useMemState<CREATE_STEP>('select');
+  const [selectedToken, _setSelectedToken] = useMemState<CurrencyId>(loanCurrencies[0]);
+  const [deposit, setDeposit] = useMemState<number>(0);
+  const [generate, setGenerate] = useMemState<number>(0);
 
   const setStep = useCallback((step: CREATE_STEP) => {
     _setStep(step);

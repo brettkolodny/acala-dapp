@@ -39,13 +39,13 @@ const CouncilTabHeader = styled(TabHeader)<{ type: CouncilType }>`
 
 export const CouncilesTab: FC<{ contentRender: (council: CouncilType) => ReactElement }> = ({ contentRender }) => {
   const councils = useCouncilList();
-  const { changeTabs, currentTab } = useTabs<CouncilType>('generalCouncil');
+  const { changeTab, currentTab } = useTabs<CouncilType>('generalCouncil');
 
   return (
     <Tabs
       active={currentTab}
       divider={false}
-      onChange={changeTabs}
+      onChange={changeTab}
       slider={false}
     >
       {
@@ -57,7 +57,7 @@ export const CouncilesTab: FC<{ contentRender: (council: CouncilType) => ReactEl
                 <CouncilTabHeader
                   active={currentTab === item}
                   key={`tab-header-${item}`}
-                  onClick={(): void => changeTabs(item as any) }
+                  onClick={(): void => changeTab(item as any) }
                   type={item as any}
                 >
                   {camelToDisplay(item)}

@@ -9,13 +9,13 @@ import { Express } from './components/Express';
 type HomaPageTabsType = 'express' | 'advance' | 'validators';
 
 const PageHoma: FC = () => {
-  const { changeTabs, currentTab } = useTabs<HomaPageTabsType>('express');
+  const { changeTab, currentTab } = useTabs<HomaPageTabsType>('express');
 
   return (
     <StakingPoolProvider>
       <Tabs
         active={currentTab}
-        onChange={changeTabs}
+        onChange={changeTab}
       >
         <Tabs.Panel
           $key='express'

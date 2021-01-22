@@ -1,11 +1,10 @@
-import React, { FC, ReactNode, useCallback } from 'react';
-import clsx from 'clsx';
+import React, { ReactNode, useCallback } from 'react';
 import { CopyOutlined } from '@ant-design/icons';
 import CopyToClipboard from 'react-copy-to-clipboard';
+import styled from 'styled-components';
 
 import { notification } from './notification';
 import { BareProps } from './types';
-import classes from './Copy.module.scss';
 
 interface Props extends BareProps {
   text: string;
@@ -14,7 +13,7 @@ interface Props extends BareProps {
   withCopy?: boolean;
 }
 
-export const Copy: FC<Props> = ({
+export const Copy = styled(({
   className,
   display,
   render,
@@ -29,7 +28,7 @@ export const Copy: FC<Props> = ({
 
   if (withCopy) {
     return (
-      <span className={clsx(classes.root, className)}>
+      <span className={className}>
         { render ? render() : text }
         {
           withCopy ? (
@@ -50,10 +49,19 @@ export const Copy: FC<Props> = ({
       onCopy={handleCopy}
       text={text}
     >
-      <span className={clsx(classes.root, className)}>
+      <span className={className}>
         { render ? render() : text }
         { withCopy ? <CopyOutlined style={{ marginLeft: 6 }} /> : null }
       </span>
     </CopyToClipboard>
   );
-};
+})`
+  display: flex;
+  align-items: center;
+
+  > svg {
+    margin-left: 8px;
+    width: 16px;
+    cursor: pointer;
+  }
+`;

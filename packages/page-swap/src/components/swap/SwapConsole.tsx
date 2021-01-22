@@ -1,9 +1,9 @@
-import React, { FC, useContext, useCallback, useMemo, useState, useRef } from 'react';
+import React, { FC, useContext, useCallback, useMemo, useRef } from 'react';
 import clsx from 'clsx';
 
 import { Alert, Row, Col, IconButton, styled } from '@acala-dapp/ui-components';
 import { BalanceInputValue, BalanceInput, formatBalance, tokenEq } from '@acala-dapp/react-components';
-import { useApi, useSubscription, useBalance, useBalanceValidator, useInputValue, useConstants, useModal } from '@acala-dapp/react-hooks';
+import { useMemState, useApi, useSubscription, useBalance, useBalanceValidator, useInputValue, useConstants, useModal } from '@acala-dapp/react-hooks';
 import { token2CurrencyId, currencyId2Token, FixedPointNumber } from '@acala-network/sdk-core';
 import { TradeParameters } from '@acala-network/sdk-swap/trade-parameters';
 
@@ -72,7 +72,7 @@ const Title = styled.div`
 
 export const Inner: FC = () => {
   const { api } = useApi();
-  const [parameters, setParameters] = useState<TradeParameters | null>(null);
+  const [parameters, setParameters] = useMemState<TradeParameters | null>(null);
   const parametersRef = useRef<TradeParameters | null>(null);
   const {
     acceptSlippage,
@@ -83,7 +83,7 @@ export const Inner: FC = () => {
     tradeMode
   } = useContext(SwapContext);
   const { nativeCurrency, stableCurrency } = useConstants();
-  const [globalError, setGlobalError] = useState<string>('');
+  const [globalError, setGlobalError] = useMemState<string>('');
 
   const availableCurrencies = useMemo(() => {
     return Array.from(availableTokens).map((item) => token2CurrencyId(api, item));

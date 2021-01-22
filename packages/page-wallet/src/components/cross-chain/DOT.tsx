@@ -1,10 +1,10 @@
-import React, { FC, useCallback, useContext, useState, useEffect } from 'react';
+import React, { FC, useCallback, useContext, useEffect } from 'react';
 import { Form, Skeleton, Card, IconButton } from '@acala-dapp/ui-components';
 
 import { Fixed18 } from '@acala-network/app-util';
 
 import { Network, NetworkType, getNetworkName, FormatBalance, TxButton, numToFixed18Inner, UserAssetBalance, getCurrencyIdFromName } from '@acala-dapp/react-components';
-import { useAccounts, useApi } from '@acala-dapp/react-hooks';
+import { useAccounts, useApi, useMemState } from '@acala-dapp/react-hooks';
 import { CrossChainProvider, CrossChainContextData, CrossChainContext } from '@acala-dapp/react-environment';
 
 import classes from './DOT.module.scss';
@@ -56,7 +56,7 @@ const SelectNetwork: FC<SelectNetworkProps> = ({ onChange, value }) => {
 export const TransferIn: FC = () => {
   const { connected, getApi, getNativeBalance } = useContext<CrossChainContextData>(CrossChainContext);
   const { active } = useAccounts();
-  const [nativeBalance, setNativaBalance] = useState<Fixed18>(Fixed18.ZERO);
+  const [nativeBalance, setNativaBalance] = useMemState<Fixed18>(Fixed18.ZERO);
   const [form] = Form.useForm();
 
   const handleSuccess = useCallback(() => {
@@ -226,7 +226,7 @@ export const TransferOut: FC = () => {
 };
 
 export const _DOT: FC = () => {
-  const [direction, setDirection] = useState<TransferDirection>('in');
+  const [direction, setDirection] = useMemState<TransferDirection>('in');
 
   const renderTitle = useCallback(() => {
     if (direction === 'in') {

@@ -47,6 +47,14 @@ const Inner: FC = () => {
         )}
         path='/'
       />
+      <Route
+        element={<CreateProposal />}
+        path='/create'
+      />
+      <Route
+        element={<ProposalDetail />}
+        path='/proposals/:id'
+      />
     </Routes>
     //   <Routes>
     //     <Route

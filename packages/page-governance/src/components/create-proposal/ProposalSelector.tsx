@@ -1,8 +1,9 @@
 import React, { FC, useCallback, useContext, useMemo } from 'react';
+import { camelCase } from 'lodash';
 import clsx from 'clsx';
-import { Button, FlexBox, styled, Tabs, useTabs } from '@acala-dapp/ui-components';
-import { ClickAbleProps } from '@acala-dapp/ui-components/types';
-import { useModal } from '@acala-dapp/react-hooks';
+import { styled, Tabs, useTabs } from '@acala-dapp/ui-components';
+import type { BareProps } from '@acala-dapp/ui-components';
+import { useApi } from '@acala-dapp/react-hooks';
 
 import { ProposalData, CreateContext } from './CreateProvider';
 import { formatter } from '../../config';
@@ -13,20 +14,27 @@ const ProposalsList = styled.div`
   grid-gap: 16px;
 `;
 
-const ProposalCard = styled((props: ProposalData & ClickAbleProps) => {
-  const { className, collective, document, name, onClick } = props;
+const ProposalCard = styled(({ className, data }: { data: ProposalData } & BareProps) => {
+  const { api } = useApi();
+  const { collective, document, name, section } = data;
   const { onSelectProposal, selectedProposal } = useContext(CreateContext);
 
   const handleClick = useCallback(() => {
-    onSelectProposal(props);
-    onClick();
-  }, [onSelectProposal, props, onClick]);
+    onSelectProposal(data);
+  }, [onSelectProposal, data]);
 
   const isActive = useMemo(() => {
     return selectedProposal &&
       selectedProposal.name === name &&
       selectedProposal.collective === collective;
   }, [name, collective, selectedProposal]);
+
+  // const _document = useMemo(() => {
+  //   if (!api) return;
+
+  //   const extrinsic = api.tx[camelCase(section)][camelCase(name)];
+  //   const doc = extrinsic.meta.documentation.toArray().map((item) => item.toString());
+  // }, [api, section, name]);
 
   return (
     <div
@@ -37,7 +45,7 @@ const ProposalCard = styled((props: ProposalData & ClickAbleProps) => {
       <p className='proposal-card__document'>{document}</p>
     </div>
   );
-})<ProposalData & ClickAbleProps>`
+})`
   padding: 16px;
   border: 1px solid var(--border-color);
   border-radius: 8px;
@@ -69,41 +77,6 @@ const ProposalCard = styled((props: ProposalData & ClickAbleProps) => {
   }
 `;
 
-const SelectedProposal = styled(({ className, onClick }: ClickAbleProps) => {
-  const { selectedProposal } = useContext(CreateContext);
-
-  return (
-    <FlexBox
-      alignItems='center'
-      className={className}
-      justifyContent='space-between'
-    >
-      <p className='selected-proposal__proposal'>
-        {`${formatter(selectedProposal?.section)} / ${formatter(selectedProposal?.name)}`}
-      </p>
-      <Button
-        className='selected-proposal__change-btn'
-        onClick={onClick}
-        style='primary'
-        type='ghost'
-      >
-        Change
-      </Button>
-    </FlexBox>
-  );
-})`
-  .selected-proposal__proposal {
-    font-size: 18px;
-    font-weight: bold;
-    color: var(--information-title-color);
-  }
-
-  .selected-proposal__change-btn {
-    justify-content: flex-end;
-    padding-right: 0;
-  }
-`;
-
 export const ProposalSelector: FC = () => {
   const { allowedProposals } = useContext(CreateContext);
 
@@ -124,46 +97,35 @@ export const ProposalSelector: FC = () => {
     currentTab: selectedCollective
   } = useTabs(Object.keys(_allowedProposals)[0]);
 
-  const {
-    close: closeSelector,
-    open: showSelector,
-    status: selectorStatus
-  } = useModal(true);
-
-  if (selectorStatus) {
-    return (
-      <Tabs
-        active={selectedCollective}
-        onChange={handleSelectCollective}
-      >
-        {
-          Object.keys(_allowedProposals).map((collective): JSX.Element => {
-            return (
-              <Tabs.Panel
-                $key={collective}
-                header={formatter(collective)}
-                key={`proposal-module-list-${collective}`}
-              >
-                <ProposalsList>
-                  {
-                    _allowedProposals[collective].map((proposal) => {
-                      return (
-                        <ProposalCard
-                          key={`proposal-card-${collective}-${proposal.name}-${proposal.section}`}
-                          onClick={closeSelector}
-                          {...proposal}
-                        />
-                      );
-                    })
-                  }
-                </ProposalsList>
-              </Tabs.Panel>
-            );
-          })
-        }
-      </Tabs>
-    );
-  } else {
-    return <SelectedProposal onClick={showSelector} />;
-  }
+  return (
+    <Tabs
+      active={selectedCollective}
+      onChange={handleSelectCollective}
+    >
+      {
+        Object.keys(_allowedProposals).map((collective): JSX.Element => {
+          return (
+            <Tabs.Panel
+              $key={collective}
+              header={formatter(collective)}
+              key={`proposal-module-list-${collective}`}
+            >
+              <ProposalsList>
+                {
+                  _allowedProposals[collective].map((proposal) => {
+                    return (
+                      <ProposalCard
+                        data={proposal}
+                        key={`proposal-card-${collective}-${proposal.name}-${proposal.section}`}
+                      />
+                    );
+                  })
+                }
+              </ProposalsList>
+            </Tabs.Panel>
+          );
+        })
+      }
+    </Tabs>
+  );
 };

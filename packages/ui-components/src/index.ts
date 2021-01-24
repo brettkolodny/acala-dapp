@@ -1,4 +1,17 @@
-import { Radio as AntRadio, Menu, Dropdown, Drawer, Skeleton, DatePicker, Switch, Progress, Grid, Steps, Empty } from 'antd';
+import { Radio as AntRadio,
+  Input as AntInput,
+  Menu,
+  Dropdown,
+  Drawer,
+  Skeleton,
+  DatePicker,
+  Switch,
+  Progress,
+  Grid,
+  Steps,
+  InputNumber as AntInputNumber,
+  Select as AntSelect,
+  Empty } from 'antd';
 import { BareProps } from './types';
 import styled from 'styled-components';
 
@@ -17,7 +30,10 @@ export {
   DatePicker,
   Switch,
   Progress,
-  AntRadio
+  AntInputNumber,
+  AntRadio,
+  AntInput,
+  AntSelect
 };
 
 export * from './Alert';

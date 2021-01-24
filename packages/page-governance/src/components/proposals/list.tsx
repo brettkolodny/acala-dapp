@@ -1,4 +1,5 @@
 import React, { FC, useCallback } from 'react';
+import { NavLink } from 'react-router-dom';
 import { usePageTitle } from '@acala-dapp/react-environment';
 import { useProposals } from '@acala-dapp/react-hooks';
 import { Button, CardLoading, Col, FlexBox, PlusOutlined, Row } from '@acala-dapp/ui-components';
@@ -46,8 +47,10 @@ export const AllProposalList: FC = () => {
       <Col span={24}>
         <FlexBox justifyContent='flex-end'>
           <Button size='middle'>
-            <PlusOutlined />
-            Create Proposal
+            <NavLink to='/governance/create'>
+              <PlusOutlined />
+              Create Proposal
+            </NavLink>
           </Button>
         </FlexBox>
       </Col>

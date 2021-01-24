@@ -1,9 +1,10 @@
 import React, { FC, useMemo, ReactNode, useCallback } from 'react';
 import { Form, Switch, AntRadio, styled, MinusCircleOutlined, Button, Input } from '@acala-dapp/ui-components';
-import { NumberInput, CurrencySelector } from './ProposalFormInputs';
-import { formatter } from '../../config';
 import { useApi } from '@acala-dapp/react-hooks';
 import { BareProps } from '@acala-dapp/ui-components/types';
+
+import { NumberInput, CurrencySelector } from './ProposalFormInputs';
+import { formatter } from '../../../config';
 
 const ListFormItemArea = styled.div`
   display: flex;
@@ -155,8 +156,6 @@ export const ProposalFormItem: FC<ProposalFormItemProps> = ({
       </Form.List>
     );
   }
-
-  console.log(_type);
 
   if (typeof _type === 'object' && Reflect.has(_type, '_enum')) {
     return formItemRender(

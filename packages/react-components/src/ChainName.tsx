@@ -77,7 +77,7 @@ export const ChainName: FC<ChainNameProps> = ({ className, collapse }) => {
       </ChainNameRoot>
       <SelectNetwork
         onClose={close}
-        visiable={status}
+        visible={status}
       />
     </>
   );

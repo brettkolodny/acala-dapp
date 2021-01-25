@@ -34,7 +34,7 @@ export const TransferButton: FC<Props> = memo(({
             defaultCurrency={currency}
             mode={mode}
             onClose={close}
-            visiable={status}
+            visible={status}
           />
         ) : null
       }

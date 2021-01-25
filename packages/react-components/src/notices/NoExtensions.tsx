@@ -14,7 +14,7 @@ export const NoExtensions: React.FC = memo(() => {
       confirmText='GET IT'
       onConfirm={handleGetExtensionBtnClick}
       title={null}
-      visiable={true}
+      visible={true}
     >
       <p>{'No polkadot{.js} extension found, please install it first!'}</p>
       <a

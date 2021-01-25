@@ -10,15 +10,16 @@ interface Props extends BareProps {
   text: string;
   display?: string;
   render?: () => ReactNode;
-  withCopy?: boolean;
+  copyIcon?: boolean;
 }
 
 export const Copy = styled(({
   className,
+  children,
+  copyIcon = true,
   display,
   render,
-  text,
-  withCopy = true
+  text
 }) => {
   const handleCopy = useCallback((): void => {
     notification.success({
@@ -26,12 +27,12 @@ export const Copy = styled(({
     });
   }, [display, text]);
 
-  if (withCopy) {
+  if (copyIcon) {
     return (
       <span className={className}>
         { render ? render() : text }
         {
-          withCopy ? (
+          copyIcon ? (
             <CopyToClipboard
               onCopy={handleCopy}
               text={text}
@@ -50,14 +51,15 @@ export const Copy = styled(({
       text={text}
     >
       <span className={className}>
-        { render ? render() : text }
-        { withCopy ? <CopyOutlined style={{ marginLeft: 6 }} /> : null }
+        { render ? render() : children }
+        { copyIcon ? <CopyOutlined style={{ marginLeft: 6 }} /> : null }
       </span>
     </CopyToClipboard>
   );
 })`
   display: flex;
   align-items: center;
+  cursor: pointer;
 
   > svg {
     margin-left: 8px;

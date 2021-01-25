@@ -7,13 +7,14 @@ export * from './layout';
 export * from './Sidebar';
 export * from './ApiStatus';
 export * from './AppSettings';
+export * from './Account';
 export * from './TxButton';
 export * from './TransferButton';
 export * from './EventsWatcher';
 export * from './ChainName';
 export * from './SelectNetwork';
 export * from './Network';
-export * from './AccountBar';
+export * from './account-bar';
 
 // currency
 export * from './BalanceInput';

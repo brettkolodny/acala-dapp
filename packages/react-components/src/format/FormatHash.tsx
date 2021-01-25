@@ -6,7 +6,7 @@ import { formatHash } from '../utils';
 
 interface Props {
   hash: string;
-  withCopy?: boolean;
+  copyIcon?: boolean;
   withTooltip?: boolean;
   withPScan?: boolean;
 }
@@ -17,7 +17,7 @@ function getPScanUrl (hash: string): string {
 
 export const FormatHash: FC<Props> = ({
   hash,
-  withCopy = true,
+  copyIcon = true,
   withPScan = true,
   withTooltip = true
 }) => {
@@ -49,7 +49,7 @@ export const FormatHash: FC<Props> = ({
       display={`Copy ${formatHash(hash)} Success`}
       render={renderInner}
       text={hash}
-      withCopy={withCopy}
+      copyIcon={copyIcon}
     />
   );
 };

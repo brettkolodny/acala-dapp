@@ -11,7 +11,7 @@ interface Props extends BareProps {
   address: string;
   withFullAddress?: boolean;
   withMiniAddress?: boolean;
-  withCopy?: boolean;
+  copyIcon?: boolean;
   withIcon?: boolean;
   iconWidth?: number;
 }
@@ -19,8 +19,8 @@ interface Props extends BareProps {
 export const FormatAddress: FC<Props> = memo(({
   address,
   className,
+  copyIcon = false,
   iconWidth = 22,
-  withCopy = false,
   withFullAddress = false,
   withIcon = false,
   withMiniAddress = false
@@ -51,14 +51,14 @@ export const FormatAddress: FC<Props> = memo(({
     );
   }, [withIcon, _address, address, iconWidth]);
 
-  if (withCopy) {
+  if (copyIcon) {
     return (
       <Copy
         className={className}
+        copyIcon={copyIcon}
         display='Copy Address Success'
         render={renderInner}
         text={address}
-        withCopy={withCopy}
       />
     );
   }

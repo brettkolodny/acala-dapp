@@ -48,7 +48,7 @@ export const UserCard: FC = () => {
                 </div>
               )}
               text={active.address}
-              withCopy={false}
+              copyIcon={false}
             />
           </>
         ) : null

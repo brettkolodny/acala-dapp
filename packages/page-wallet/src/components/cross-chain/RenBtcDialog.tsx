@@ -210,7 +210,7 @@ export const RenBtcDialog: FC<RenBtcDialogProps> = ({
       className={classes.dialog}
       onCancel={(): void => setStep('confirm')}
       title='Deposit BTC'
-      visiable={show}
+      visible={show}
       withClose
     >
       {step === 'send' ? <BtcAddressContent {...props}/> : null}

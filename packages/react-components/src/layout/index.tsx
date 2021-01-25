@@ -2,11 +2,11 @@ import React, { FC, memo, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import { useApi, useIsAppReady, useSetting } from '@acala-dapp/react-hooks';
 import { styled, PageLoading, Page, SubMenu, Grid } from '@acala-dapp/ui-components';
+import { useStore } from '@acala-dapp/react-environment';
+import { noop } from 'lodash';
 
 import { Sidebar, SidebarConfig } from '../Sidebar';
-import { useStore } from '@acala-dapp/react-environment';
-import { AccountBar } from '../AccountBar';
-import { noop } from 'lodash';
+import { AccountBar } from '../account-bar';
 
 const MainContainer = styled.div`
   display: flex;

@@ -3,14 +3,14 @@ import React, { FC } from 'react';
 
 interface UploadMetadataProps {
   uploadMetadata: () => Promise<void>;
-  visiable: boolean;
+  visible: boolean;
   close: () => void;
 }
 
 export const UploadMetadata: FC<UploadMetadataProps> = ({
   close,
   uploadMetadata,
-  visiable
+  visible
 }) => {
   return (
     <Dialog
@@ -19,7 +19,7 @@ export const UploadMetadata: FC<UploadMetadataProps> = ({
       onCancel={close}
       onConfirm={uploadMetadata}
       showCancel={true}
-      visiable={visiable}
+      visible={visible}
     >
       <Typology.Body>Upload metadata for best experience.</Typology.Body>
     </Dialog>

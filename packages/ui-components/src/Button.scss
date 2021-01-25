@@ -1,8 +1,14 @@
 .aca-btn {
+  --btn-height: 58px;
+  --btn-font-size: 18px;
+  --btn-min-width: 178px; 
+  --btn-line-height: 30px;
+
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  height: var(--btn-height);
   border-radius: 2px;
   font-weight: 500;
   cursor: pointer;
@@ -24,6 +30,10 @@
   & .anticon {
     margin-right: 8px;
   }
+
+  &--rounder {
+    border-radius: var(--btn-height);
+  }
 }
 
 @keyframes loading {
@@ -32,27 +42,30 @@
 }
 
 .aca-btn--large {
-  min-width: 178px;
-  height: 58px;
-  font-size: 20px;
-  line-height: 30px;
+  --btn-height: 58px;
+  --btn-font-size: 20px;
+  --btn-min-width: 178px;
+  --btn-line-height: 30px;
+
   font-weight: bold;
 }
 
 .aca-btn--middle {
-  min-width: 120px;
-  height: 42px;
+  --btn-height: 42px;
+  --btn-font-size: 16px;
+  --btn-line-height: 16px;
+  --btn-min-width: 120px;
+
   padding: 0 16px;
-  font-size: 16px;
-  line-height: 16px;
 }
 
 .aca-btn--small {
-  min-width: 80px;
-  height: 32px;
+  --btn-height: 32px;
+  --btn-font-size: 14px;
+  --btn-line-height: 14px;
+  --btn-min-width: 80px;
+
   padding: 0 12px;
-  font-size: 14px;
-  line-height: 14px;
 }
 
 .aca-btn-style--primary {

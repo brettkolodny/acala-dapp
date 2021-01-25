@@ -8,7 +8,7 @@ import { CloseIcon } from './Icon';
 import './Dialog.scss';
 
 interface Props extends BareProps {
-  visiable: boolean;
+  visible: boolean;
   title?: ReactNode;
   action?: ReactNode;
   withClose?: boolean;
@@ -29,7 +29,7 @@ export const Dialog: FC<Props> = ({
   onConfirm,
   showCancel = false,
   title,
-  visiable = true,
+  visible = true,
   withClose = false
 }) => {
   const _action = useMemo(() => {
@@ -79,7 +79,7 @@ export const Dialog: FC<Props> = ({
       maskClosable={false}
       onCancel={onCancel}
       title={title}
-      visible={visiable}
+      visible={visible}
       width={480}
     >
       <div>{children}</div>

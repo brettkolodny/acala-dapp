@@ -1,12 +1,14 @@
 import React, { FC, useCallback, useState } from 'react';
 
 import { styled } from '@acala-dapp/ui-components';
-import { useAccounts, useConstants } from '@acala-dapp/react-hooks';
+import { useAccounts, useConstants, useModal } from '@acala-dapp/react-hooks';
 import Identicon from '@polkadot/react-identicon';
-import { FormatAddress } from './format';
-import { TokenSelector } from './TokenSelector';
 import { CurrencyId } from '@acala-network/types/interfaces';
-import { UserAssetBalance } from './Assets';
+
+import { FormatAddress } from '../format';
+import { TokenSelector } from '../TokenSelector';
+import { UserAssetBalance } from '../Assets';
+import { AccountModal } from './AccountModal';
 
 const AccountBarRoot = styled.div`
   display: flex;
@@ -81,14 +83,16 @@ const Asserts: FC = () => {
 };
 
 export const AccountBar: FC = () => {
-  const { active, openSelectAccount, selectAccountStatus } = useAccounts();
+  const { active } = useAccounts();
+  const { status: accountModalStatus, open: openAccountModal, close: closeAccountModal } = useModal(false);
+
 
   return (
     <AccountBarRoot>
       <Asserts />
       <Account
-        active={selectAccountStatus}
-        onClick={openSelectAccount}
+        active={active?.address}
+        onClick={openAccountModal}
       >
         <FormatAddress address={active?.name || active?.address || ''} />
         <AccountIcon
@@ -97,6 +101,10 @@ export const AccountBar: FC = () => {
           value={active?.address || ''}
         />
       </Account>
+      <AccountModal
+        visible={accountModalStatus}
+        close={closeAccountModal}
+      />
     </AccountBarRoot>
   );
 };

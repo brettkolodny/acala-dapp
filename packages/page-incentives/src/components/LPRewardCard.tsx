@@ -16,13 +16,13 @@ import { ActionContainer, CardRoot, ClimeBtn, DescriptionGray, EarnExtra, EarnNu
 interface ManagerModelProps {
   currency: CurrencyId;
   onClose: () => void;
-  visiable: boolean;
+  visible: boolean;
 }
 
 const ManagerModel: FC<ManagerModelProps> = ({
   currency,
   onClose,
-  visiable
+  visible
 }) => {
   const share = useIncentiveShare('DexIncentive', currency);
 
@@ -94,18 +94,18 @@ const ManagerModel: FC<ManagerModelProps> = ({
   }, [setWithdrawValue, share, currency]);
 
   useEffect(() => {
-    if (!visiable) {
+    if (!visible) {
       resetDepositValue();
       resetWithdrawValue();
     }
   /* eslint-disable-next-line */
-  }, [visiable]);
+  }, [visible]);
 
   return (
     <Dialog
       onCancel={onClose}
       title={Header}
-      visiable={visiable}
+      visible={visible}
       withClose
     >
       <Row gutter={[24, 24]}>
@@ -233,7 +233,7 @@ const Action: FC<ActionProps> = ({ currency }) => {
       <ManagerModel
         currency={currency}
         onClose={close}
-        visiable={status}
+        visible={status}
       />
     </ActionContainer>
   );

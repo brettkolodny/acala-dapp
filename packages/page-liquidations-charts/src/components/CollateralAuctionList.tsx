@@ -25,7 +25,7 @@ const AuctionLastBid: FC<{ id: string }> = ({ id }) => {
   return (
     <div>
       <FormatAddress address={bid[0].toString()}
-        withCopy />
+        copyIcon />
       <FormatBalance
         balance={bid[1]}
         currency='aUSD'
@@ -130,7 +130,7 @@ const CollateralAuctionList: FC = () => {
         key: 'owner',
         /* eslint-disable-next-line react/display-name */
         render: (item: any): JSX.Element => <FormatAddress address={item.owner}
-          withCopy
+          copyIcon
           withMiniAddress />,
         title: 'owner'
       },

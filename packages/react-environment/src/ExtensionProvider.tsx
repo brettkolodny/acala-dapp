@@ -261,7 +261,7 @@ export const ExtensionProvider: FC<AccountProviderProps> = ({
       <UploadMetadata
         close={closeUploadMatedata}
         uploadMetadata={uploadMetadata}
-        visiable={uploadMatedataStatus}
+        visible={uploadMatedataStatus}
       />
       {children}
       {renderError()}

@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { BareProps } from './types';
 import { IconType, getIcon } from './Icon';
 import './Button.scss';
+import { round } from 'lodash';
 
 type ButtonType = 'normal' | 'ghost' | 'border';
 type ButtonStyle = 'normal' | 'primary' | 'danger';
@@ -16,6 +17,7 @@ export interface ButtonProps extends BareProps {
   type?: ButtonType;
   style?: ButtonStyle;
   size?: ButtonSize;
+  rounder?: boolean;
 }
 
 export const Button: FC<ButtonProps> = ({
@@ -24,6 +26,7 @@ export const Button: FC<ButtonProps> = ({
   disabled,
   loading,
   onClick,
+  rounder = false,
   size = 'middle',
   style = 'primary',
   type = 'normal'
@@ -48,6 +51,7 @@ export const Button: FC<ButtonProps> = ({
           `aca-btn-style--${style}`,
           {
             'aca-btn--loading': loading,
+            'aca-btn--rounder': rounder,
             disabled: disabled
           }
         )

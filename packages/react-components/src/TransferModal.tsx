@@ -157,7 +157,7 @@ const TransferForm: FC<TransferFormProps> = ({
 interface TransferModalProps {
   mode: 'token' | 'lp-token';
   defaultCurrency: CurrencyId;
-  visiable: boolean;
+  visible: boolean;
   onClose: () => void;
 }
 
@@ -169,7 +169,7 @@ export const TransferModal: FC<TransferModalProps> = ({
   defaultCurrency,
   mode,
   onClose,
-  visiable
+  visible
 }) => {
   const { allCurrencies } = useConstants();
   const lpCurrencies = useLPCurrencies();
@@ -242,7 +242,7 @@ export const TransferModal: FC<TransferModalProps> = ({
   useEffect(() => {
     reset();
   /* eslint-disable-next-line */
-  }, [visiable]);
+  }, [visible]);
 
   return (
     <Dialog
@@ -272,7 +272,7 @@ export const TransferModal: FC<TransferModalProps> = ({
       }
       onCancel={onClose}
       title={renderHeader()}
-      visiable={visiable}
+      visible={visible}
       withClose
     >
       <AssetBoard

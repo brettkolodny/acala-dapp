@@ -7,7 +7,7 @@ import { EndpointConfigItem, EndpointType } from '@acala-dapp/react-environment/
 import classes from './SelectNetwork.module.scss';
 
 export interface SelectNetworkProps {
-  visiable: boolean;
+  visible: boolean;
   onClose: () => void;
 }
 
@@ -19,7 +19,7 @@ const TypeNameMap: Record<EndpointType, string> = {
 
 export const SelectNetwork: FC<SelectNetworkProps> = ({
   onClose,
-  visiable
+  visible
 }) => {
   const { changeEndpoint, endpoint, selectableEndpoints } = useSetting();
 
@@ -62,7 +62,7 @@ export const SelectNetwork: FC<SelectNetworkProps> = ({
 
   useEffect(() => {
     if (endpoint) setSelected(endpoint);
-  }, [endpoint, setSelected, visiable]);
+  }, [endpoint, setSelected, visible]);
 
   return (
     <Dialog
@@ -87,7 +87,7 @@ export const SelectNetwork: FC<SelectNetworkProps> = ({
       }
       onCancel={onClose}
       title='Choose Networks'
-      visiable={visiable}
+      visible={visible}
     >
       {
         Object.keys(selectableEndpoints).map((key) => renderEndpoints(key as EndpointType, selectableEndpoints[key as EndpointType]))

@@ -115,7 +115,7 @@ export const Controller: FC = () => {
       }
       <ReclaimModal
         onClose={closeReclaimModal}
-        visiable={status}
+        visible={status}
       />
     </div>
   );

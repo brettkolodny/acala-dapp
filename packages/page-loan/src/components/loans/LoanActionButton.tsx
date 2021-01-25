@@ -253,7 +253,7 @@ export const LonaActionButton: FC<Props> = ({
         }
         className={classes.dialog}
         title={dialogTitle}
-        visiable={status}
+        visible={status}
       >
         <BalanceInput
           error={error}

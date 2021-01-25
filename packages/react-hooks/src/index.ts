@@ -19,6 +19,7 @@ export * from './useInterval';
 export * from './useInitialize';
 export * from './useMemorized';
 export * from './systemHooks';
+export * from './transactions-history';
 
 // common
 export * from './useFormValidator';

@@ -89,7 +89,7 @@ export const SelectAccount: React.FC<Props> = ({
       onConfirm={confirmHandler}
       showCancel
       title='Choose Account'
-      visiable={visable}
+      visible={visable}
     >
       <AccountList>
         {

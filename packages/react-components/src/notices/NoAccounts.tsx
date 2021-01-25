@@ -10,7 +10,7 @@ export const NoAccounts: FC = memo(() => {
       confirmText='Retry'
       onConfirm={handleRetry}
       title={null}
-      visiable={true}
+      visible={true}
     >
       <p>
         No account found, please add account in your wallet extension or unlock it!

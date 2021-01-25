@@ -38,7 +38,7 @@ const AssetBoard: FC = () => {
 };
 
 interface ReclaimModalProps {
-  visiable: boolean;
+  visible: boolean;
   onClose: () => void;
 }
 
@@ -48,7 +48,7 @@ interface ReclaimModalProps {
  */
 export const ReclaimModal: FC<ReclaimModalProps> = ({
   onClose,
-  visiable
+  visible
 }) => {
   const { api } = useApi();
   const { stableCurrency } = useConstants();
@@ -103,7 +103,7 @@ export const ReclaimModal: FC<ReclaimModalProps> = ({
       className={classes.root}
       onCancel={onClose}
       title='Reclaim'
-      visiable={visiable}
+      visible={visible}
       withClose
     >
       <AssetBoard />

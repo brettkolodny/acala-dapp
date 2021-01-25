@@ -8,6 +8,7 @@ import { ReactComponent as ArrowIcon } from './assets/arrow-down.svg';
 import { ReactComponent as CheckedCircleIcon } from './assets/checked-circle.svg';
 import { ReactComponent as SwitchIcon } from './assets/switch.svg';
 import { ReactComponent as ArrowPixelIcon } from './assets/arrow-pixel.svg';
+import { ReactComponent as ShareIcon } from './assets/share.svg';
 
 export * from '@ant-design/icons';
 
@@ -19,7 +20,8 @@ export {
   EditIcon,
   SwapIcon,
   SwitchIcon,
-  ArrowPixelIcon
+  ArrowPixelIcon,
+  ShareIcon
 };
 
 export type IconType = 'copy' | 'swap' | 'edit' | 'close';

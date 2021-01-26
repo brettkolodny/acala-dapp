@@ -92,7 +92,7 @@ export const SwapProvider: FC<PropsWithChildren<{}>> = memo(({ children }) => {
   const maxTradePathLength = useMemo((): number => {
     if (!api) return 0;
 
-    return parseInt((api.consts.dex.tradingPathLimit as unknown as u32).toString());
+    return parseInt(api?.consts?.dex?.tradingPathLimit?.toString() || '3');
   }, [api]);
 
   const availableTokens = useMemo<Set<Token>>((): Set<Token> => {

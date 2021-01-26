@@ -1,4 +1,4 @@
-import React, { createContext, FC, useContext, useMemo, ReactNode, useLayoutEffect, useEffect } from 'react';
+import React, { createContext, FC, useContext, ReactNode, useLayoutEffect, useEffect } from 'react';
 
 import { useApi, useMemorized } from '@acala-dapp/react-hooks';
 import { BareProps } from '@acala-dapp/ui-components/types';
@@ -7,6 +7,8 @@ import { useOraclePricesStore } from './modules/oracle-prices';
 import { useUIConfig, UseUIConfigReturnType, UIData, SubMenu } from './modules/ui';
 import { useStakingStore, StakingPoolData } from './modules/staking';
 import { usePricesStore, PriceData } from './modules/prices';
+import { useTransitionsHistoryStore } from './modules/transitions-history';
+import { QueryData } from '@acala-dapp/react-hooks/transactions-history/data-provider';
 
 export type {
   StakingPoolData,
@@ -18,6 +20,7 @@ export type StoreData = {
   oraclePrices: ReturnType<typeof useOraclePricesStore>;
   prices: ReturnType<typeof usePricesStore>;
   staking: ReturnType<typeof useStakingStore>;
+  transitions: ReturnType<typeof useTransitionsHistoryStore>;
   ui: UseUIConfigReturnType;
 };
 
@@ -30,14 +33,16 @@ export const StoreProvier: FC<BareProps> = ({ children }) => {
   const ui = useUIConfig();
   const staking = useStakingStore();
   const prices = usePricesStore();
+  const transitions = useTransitionsHistoryStore();
 
-  const data = useMemo(() => ({
+  const data = useMemorized({
     apiQuery,
     oraclePrices,
     prices,
     staking,
+    transitions,
     ui
-  }), [apiQuery, oraclePrices, prices, ui, staking]);
+  });
 
   if (!api) return null;
 
@@ -76,4 +81,13 @@ export function useSubMenu (config: SubMenu | null): void {
     return (): void => ui.setSubMenu(null);
   /* eslint-disable-next-line */
   }, [_config]);
+}
+
+export function useTransitionQueryParams (data: QueryData[]): void {
+  const transitions = useStore('transitions');
+
+  useLayoutEffect(() => {
+    transitions.setQueryParams(data);
+  /* eslint-disable-next-line */
+  }, [data]);
 }

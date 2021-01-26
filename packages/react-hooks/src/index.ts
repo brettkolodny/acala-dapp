@@ -14,7 +14,6 @@ export * from './useIsAppReady';
 export * from './useStorage';
 export * from './useSetting';
 export * from './useConstants';
-export * from './useExtrinsicHistory';
 export * from './useInterval';
 export * from './useInitialize';
 export * from './useMemorized';

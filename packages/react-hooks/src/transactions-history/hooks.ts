@@ -10,13 +10,17 @@ interface UseTransitionHistoryParams {
   limit: number;
 }
 
-export const useTransitionsHistory = ({ dataProvider , queryData }: UseTransitionHistoryParams) => {
+export const useTransitionsHistory = ({ dataProvider, queryData }: UseTransitionHistoryParams): {
+  list: Extrinsic[];
+  loading: boolean;
+  refresh: () => void;
+} => {
   const _queryData = useMemorized(queryData);
-  const list = useState<Extrinsic[]>([]);
+  const [list, setList] = useState<Extrinsic[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [refresh, setRefresh] = useState<() => void>(noop);
-  const data = useMemorized({ list, loading, refresh });
   const dataProviderRef = useRef<TransitionsHistoryDataProvider>();
+  const refreshRef = useRef<() => void>(noop);
+  const data = useMemorized({ list, loading, refresh: refreshRef.current });
 
   useEffect(() => {
     if (dataProviderRef.current) return;
@@ -27,15 +31,18 @@ export const useTransitionsHistory = ({ dataProvider , queryData }: UseTransitio
 
     if (!dataProviderRef.current) return;
 
-    console.log('hello');
+    refreshRef.current = dataProviderRef.current.refresh.bind(dataProviderRef.current);
 
-    dataProviderRef.current.subscrite(_queryData).subscribe({
+    const subscriber = dataProviderRef.current.subscrite(_queryData).subscribe({
       next: (data) => {
-        console.log(data);
+        setList(data);
       }
     });
+
+    return (): void => {
+      subscriber.unsubscribe();
+    };
   }, [_queryData, dataProvider]);
 
   return data;
 };
-

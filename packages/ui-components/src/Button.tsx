@@ -4,7 +4,6 @@ import clsx from 'clsx';
 import { BareProps } from './types';
 import { IconType, getIcon } from './Icon';
 import './Button.scss';
-import { round } from 'lodash';
 
 type ButtonType = 'normal' | 'ghost' | 'border';
 type ButtonStyle = 'normal' | 'primary' | 'danger';

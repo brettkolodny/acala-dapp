@@ -143,6 +143,10 @@ export class BulletBarDrawer {
       .data(_sortedConfig)
       .enter()
       .append('text')
+      .attr('font-size', 20)
+      .attr('font-weight', 'bold')
+      .attr('text-anchor', 'middle')
+      .attr('y', 20)
       .attr('class', 'label');
 
     this.$canvas.selectAll('.poly-line')
@@ -181,10 +185,6 @@ export class BulletBarDrawer {
       .data(_sortedConfig)
       .attr('id', (_item, index) => `text-${index}`)
       .attr('fill', (item) => item.color)
-      .attr('font-size', 20)
-      .attr('font-weight', 'bold')
-      .attr('text-anchor', 'middle')
-      .attr('y', 20)
       .text((item) => item.dataTransfer ? item.dataTransfer(item.data) : item.data)
       .attr('x', (item) => this.getBarWidth(item.data, scale) + barX);
 

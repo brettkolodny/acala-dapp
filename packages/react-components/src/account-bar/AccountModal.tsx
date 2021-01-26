@@ -1,10 +1,12 @@
 import React from 'react';
 import { styled, Dialog, Button, CopyIcon, ShareIcon, Copy } from '@acala-dapp/ui-components';
 import type { BareProps } from '@acala-dapp/ui-components';
-import { useAccounts, useIsAppReady, useTransitionsHistory } from '@acala-dapp/react-hooks';
+import { useAccounts, useIsAppReady } from '@acala-dapp/react-hooks';
+import { useStore } from '@acala-dapp/react-environment';
 
 import { Account } from '../Account';
 import { SubscanLink } from '../BlockBrowerLink';
+import { TransitionList } from './TransitionList';
 
 const AccountStatus = styled(({ className }: BareProps) => {
   const { active, openSelectAccount } = useAccounts();
@@ -66,10 +68,11 @@ const AccountStatus = styled(({ className }: BareProps) => {
   }
   
   .account-status__title__change-btn {
-    --btn-height: 24px;
-    --btn-min-width: 60px;
+    --btn-height: auto;
     --btn-font-size: 14px;
     --btn-line-height: 16px;
+    padding: 4px 8px;
+    border-radius: 32px;
   }
 
   .account-status__address {
@@ -92,32 +95,38 @@ const AccountStatus = styled(({ className }: BareProps) => {
         & g {
           fill: var(--text-color-second);
         }
+        margin-left: 0;
         margin-right: 8px;
       }
     }
   }
 `;
 
-interface ExtrinsicProps extends BareProps {
-  section: [string];
-  method: [string];
-  limit: number;
-}
-
-const ExtrinsicsHistory = () => {
-  const data = useTransitionsHistory({
-    dataProvider: 'subscan',
-    limit: 20,
-    queryData: [{
-      method: 'transfer',
-      section: 'balances'
-    }]
-  });
+const ExtrinsicsHistory = styled(({ className }: BareProps) => {
+  const { data: { list } } = useStore('transitions');
 
   return (
-    <div>hello</div>
+    <div className={className}>
+      <div className='extrinsics-history__title'>
+        Transitions History
+      </div>
+      <div className='extrinsics-history__content'>
+        <TransitionList
+          data={list}
+        />
+      </div>
+    </div>
   );
-};
+})`
+  margin: 26px -24px -24px -24px;
+  padding: 24px;
+  background: #f7f8fa;
+
+  & .extrinsics-history__title {
+    font-size: 16px;
+    line-height: 18px;
+  }
+`;
 
 interface AccountModalProps extends BareProps {
   visible: boolean;
@@ -138,4 +147,7 @@ export const AccountModal = styled(({ className, close, visible }: AccountModalP
     </Dialog>
   );
 })`
+  & .ant-modal-body {
+    padding-bottom: 0;
+  }
 `;

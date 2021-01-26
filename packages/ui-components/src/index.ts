@@ -36,6 +36,7 @@ export {
   AntSelect
 };
 
+export * from './chart';
 export * from './Alert';
 export * from './AutoComplete';
 export * from './Button';

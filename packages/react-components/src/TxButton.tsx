@@ -8,7 +8,7 @@ import { ITuple, ISubmittableResult } from '@polkadot/types/types';
 import { DispatchError } from '@polkadot/types/interfaces';
 import { SubmittableExtrinsic } from '@polkadot/api/types';
 
-import { useAccounts, useApi, useHistory } from '@acala-dapp/react-hooks';
+import { useAccounts, useApi } from '@acala-dapp/react-hooks';
 import { Button, ButtonProps, notification, LoadingOutlined, styled } from '@acala-dapp/ui-components';
 import { CurrencyLike } from '@acala-dapp/react-hooks/types';
 
@@ -68,7 +68,6 @@ export const TxButton: FC<PropsWithChildren<Props>> = ({
   const { api: acalaApi } = useApi();
   const { active } = useAccounts();
   const [isSending, setIsSending] = useState<boolean>(false);
-  const { refresh } = useHistory();
 
   const _signAddress = useMemo(() => {
     if (signAddress) return signAddress;
@@ -230,7 +229,6 @@ export const TxButton: FC<PropsWithChildren<Props>> = ({
         }
 
         setIsSending(false);
-        setTimeout(refresh, 2000);
       })
     ).subscribe({
       error: (error: Error) => {
@@ -270,7 +268,7 @@ export const TxButton: FC<PropsWithChildren<Props>> = ({
         }
       }
     });
-  }, [call, preCheck, _api, _signAddress, afterSend, beforeSend, method, params, section, onExtrinsicSuccsss, onInblock, onFinalize, onFailed, refresh]);
+  }, [call, preCheck, _api, _signAddress, afterSend, beforeSend, method, params, section, onExtrinsicSuccsss, onInblock, onFinalize, onFailed]);
 
   return (
     <Button

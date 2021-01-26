@@ -63,13 +63,12 @@ export const BulletBar: FC<BulletBarProps> = ({ config }) => {
   useLayoutEffect(() => {
     if (!ref.current) return;
 
-    if (drawerRef.current) {
-      drawerRef.current.update(config);
-    } else {
+    if (!drawerRef.current) {
       drawerRef.current = new BulletBarDrawer(ref.current);
       drawerRef.current.create(config);
-      drawerRef.current.update(config);
     }
+
+    drawerRef.current.update(config);
   }, [ref, config]);
 
   return (

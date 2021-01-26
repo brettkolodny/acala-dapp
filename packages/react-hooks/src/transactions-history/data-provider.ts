@@ -1,7 +1,6 @@
 import axios from 'axios';
-import { Subject, interval, combineLatest, from } from 'rxjs';
-import { switchMap, startWith } from 'rxjs/operators';
-import { Observable, Subscription } from '@influxdata/influxdb-client';
+import { Subject, timer, combineLatest, from, Observable } from 'rxjs';
+import { switchMap, tap, map } from 'rxjs/operators';
 
 export interface Event {
   name: string;
@@ -9,6 +8,9 @@ export interface Event {
 }
 
 export interface Extrinsic {
+  block: number;
+  timestamp: number;
+  extrinsicHash: string;
   section: string;
   method: string;
   params: any[];
@@ -24,52 +26,61 @@ export interface QueryData {
 export abstract class TransitionsHistoryDataProvider {
   abstract refresh (): void;
   abstract subscrite (data: QueryData[], limit?: number): Observable<Extrinsic[]>;
-  abstract unsubscrite (): void;
 }
 
 class BaseTransitionsHistoryDataProvider {
-  $refresh: Subject<number>;
-  count: number;
+  protected $refresh: Subject<number>;
+  protected $data: Subject<Extrinsic[]>;
+  private count: number;
 
   constructor () {
     this.count = 0;
     this.$refresh = new Subject<number>();
+    this.$data = new Subject<Extrinsic[]>();
   }
 
   public refresh (): void {
-    this.count = this.count + 1;
-
     this.$refresh.next(this.count);
+
+    this.count = this.count + 1;
   }
 
   public autoRefresh (time = 1000 * 30): void {
-    interval(time || 1000 * 30)
-      .pipe(startWith(0))
+    timer(0, time || 1000 * 30)
       .subscribe(() => {
-        console.log('interval ??');
         this.refresh();
       });
   }
 }
 
 const SUBSCAN_QUERY_EXTRINSICS_API = 'https://acala-testnet.subscan.io/api/scan/extrinsics';
+const SUBSCAN_QUERY_EXTRINSIC_API = 'https://acala-testnet.subscan.io/api/scan/extrinsic';
 
 export class SubscanDataProvider extends BaseTransitionsHistoryDataProvider
   implements TransitionsHistoryDataProvider {
-  public subscrite (data: QueryData[], limit?: number): Observable<Extrinsic[]> {
+  public subscrite (
+    data: QueryData[],
+    limit?: number
+  ): Observable<Extrinsic[]> {
     this.autoRefresh();
 
     return this.$refresh.pipe(
+      tap((count) => {
+        console.log(count);
+      }),
       switchMap(() => {
-        console.log('??');
-
         return combineLatest(
-          data.map(({ account, method, section }) => {
-            return from(this.queryExtrinsics(section, method, limit, account));
+          data.map(({ account, method, section }) => from(this.queryExtrinsics(section, method, limit, account)))
+        ).pipe(
+          map((list) => {
+            return list
+              .reduce((acc, cur) => acc.concat(cur), [])
+              .sort((a, b) => a.timestamp - b.timestamp)
+              .slice(0, 20);
           })
         );
       })
-    ) as any as Observable<Extrinsic[]>;
+    );
   }
 
   public async queryExtrinsics (
@@ -77,7 +88,7 @@ export class SubscanDataProvider extends BaseTransitionsHistoryDataProvider
     method: string,
     limit = 20,
     account?: string
-  ): Promise<[]> {
+  ): Promise<Extrinsic[]> {
     const data = await axios.post(SUBSCAN_QUERY_EXTRINSICS_API, {
       address: account,
       call: method,
@@ -86,12 +97,41 @@ export class SubscanDataProvider extends BaseTransitionsHistoryDataProvider
       row: limit
     });
 
-    console.log(data);
+    let list = [];
 
-    return [];
+    if (data.status === 200 && data.data.code === 0) {
+      list = data?.data?.data?.extrinsics || [];
+    }
+
+    const getParams = (params: string): any[] => {
+      try {
+        return JSON.parse(params);
+      } catch (e) {
+        // ignore error
+      }
+
+      return [params];
+    };
+
+    return list.map((item: any) => ({
+      block: item.block_num,
+      extrinsicHash: item.extrinsic_hash,
+      method: item.call_module_function,
+      params: getParams(item.params),
+      section: item.call_module,
+      timestamp: item.block_timestamp
+    })) as Extrinsic[];
   }
 
-  public unsubscrite () {
-    this.$refresh.unsubscribe();
+  public async queryExtrinsicDetail (
+    hash: string
+  ): Promise<{}> {
+    const data = await axios.post(SUBSCAN_QUERY_EXTRINSIC_API, { hash });
+
+    if (data.status === 200 && data.data.code === 0) {
+      return data.data.data;
+    }
+
+    return {};
   }
 }

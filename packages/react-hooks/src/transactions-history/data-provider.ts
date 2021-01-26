@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Subject, interval, combineLatest, from } from 'rxjs';
 import { switchMap, startWith } from 'rxjs/operators';
-import { Observable } from '@influxdata/influxdb-client';
+import { Observable, Subscription } from '@influxdata/influxdb-client';
 
 export interface Event {
   name: string;
@@ -24,9 +24,10 @@ export interface QueryData {
 export abstract class TransitionsHistoryDataProvider {
   abstract refresh (): void;
   abstract subscrite (data: QueryData[], limit?: number): Observable<Extrinsic[]>;
+  abstract unsubscrite (): void;
 }
 
-class BaseTransitionsHistoryDataProvider implements TransitionsHistoryDataProvider {
+class BaseTransitionsHistoryDataProvider {
   $refresh: Subject<number>;
   count: number;
 
@@ -49,16 +50,12 @@ class BaseTransitionsHistoryDataProvider implements TransitionsHistoryDataProvid
         this.refresh();
       });
   }
-
-  /* eslint-disable-next-line */
-  public subscrite (data: QueryData[], limit?: number): Observable<Extrinsic[]> {
-    return from([]) as Observable<Extrinsic[]>;
-  }
 }
 
 const SUBSCAN_QUERY_EXTRINSICS_API = 'https://acala-testnet.subscan.io/api/scan/extrinsics';
 
-export class SubscanDataProvider extends BaseTransitionsHistoryDataProvider {
+export class SubscanDataProvider extends BaseTransitionsHistoryDataProvider
+  implements TransitionsHistoryDataProvider {
   public subscrite (data: QueryData[], limit?: number): Observable<Extrinsic[]> {
     this.autoRefresh();
 
@@ -92,5 +89,9 @@ export class SubscanDataProvider extends BaseTransitionsHistoryDataProvider {
     console.log(data);
 
     return [];
+  }
+
+  public unsubscrite () {
+    this.$refresh.unsubscribe();
   }
 }

@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useContext, useMemo } from 'react';
 import { camelCase } from 'lodash';
 import { FixedPointNumber } from '@acala-network/sdk-core';
-import { FlexBox, Button, FormInstance } from '@acala-dapp/ui-components';
+import { FlexBox, Button, FormInstance, notification } from '@acala-dapp/ui-components';
 import { TxButton } from '@acala-dapp/react-components';
 import { CreateContext } from './CreateProvider';
 import { useApi } from '@acala-dapp/react-hooks';
@@ -27,93 +27,99 @@ export const ProposalFormBottom: FC<ProposalFormBottomProps> = ({ form }) => {
   }, [api, selectedProposal]);
 
   const handleSubmit = useCallback(() => {
-    const values = form.getFieldsValue();
+    try {
+      const values = form.getFieldsValue();
 
-    if (!selectedProposal) return;
+      if (!selectedProposal) return;
 
-    const { name, origin, section } = selectedProposal;
-    const { args } = proposal;
+      const { name, origin, section } = selectedProposal;
+      const { args } = proposal;
 
-    const getData = (key: string, value: any): any => {
-      if (!key) return;
+      const getData = (key: string, value: any): any => {
+        if (!key) return;
 
-      const _key = key;
-      let definition = api.registry.getDefinition(key) || '';
+        const _key = key;
+        let definition = api.registry.getDefinition(key) || '';
 
-      definition = definition.replace(/^Option<(.*?)>$/, '$1');
-      definition = definition.replace(/^Compact<(.*?)>$/, '$1');
+        definition = definition.replace(/^Option<(.*?)>$/, '$1');
+        definition = definition.replace(/^Compact<(.*?)>$/, '$1');
 
-      if (key === 'Compact<BalanceOf>') {
-        return api.createType(_key as any, new FixedPointNumber(value || 0).toChainData());
-      }
-
-      if (['Ratio', 'Rate', 'UInt<128, Balance>', 'FixedU128', 'BalanceOf'].includes(definition)) {
-        return api.createType(_key as any, new FixedPointNumber(value || 0).toChainData());
-      }
-
-      return api.createType(_key as any, value);
-    };
-
-    const _params = args.map((key: any) => {
-      const _value = values[key.name];
-
-      if (key.type === 'CurrencyId' || key.type === 'CurrencyIdOf') return _value;
-
-      if (key.type.includes('Vec')) {
-        return values[key.name].map((item: any) => {
-          return Object.keys(item).map((n) => {
-            return getData(n, item[n]);
-          });
-        });
-      }
-
-      const definition = api.registry.getDefinition(key.type) || '';
-
-      if (definition.startsWith('{"_enum')) {
-        const temp = JSON.parse(definition);
-
-        if (_value === 'Null') {
-          return getData(key.type, _value);
+        if (key === 'Compact<BalanceOf>') {
+          return api.createType(_key as any, new FixedPointNumber(value || 0).toChainData());
         }
 
-        return getData(key.type, {
-          [_value]: getData(temp._enum[_value], values[`${key.name}-${_value}-value`])
-        });
+        if (['Ratio', 'Rate', 'UInt<128, Balance>', 'FixedU128', 'BalanceOf'].includes(definition)) {
+          return api.createType(_key as any, new FixedPointNumber(value || 0).toChainData());
+        }
+
+        return api.createType(_key as any, value);
+      };
+
+      const _params = args.map((key: any) => {
+        const _value = values[key.name];
+
+        if (key.type === 'CurrencyId' || key.type === 'CurrencyIdOf') return _value;
+
+        if (key.type.includes('Vec')) {
+          return values[key.name].map((item: any) => {
+            return Object.keys(item).map((n) => {
+              return getData(n, item[n]);
+            });
+          });
+        }
+
+        const definition = api.registry.getDefinition(key.type) || '';
+
+        if (definition.startsWith('{"_enum')) {
+          const temp = JSON.parse(definition);
+
+          if (_value === 'Null') {
+            return getData(key.type, _value);
+          }
+
+          return getData(key.type, {
+            [_value]: getData(temp._enum[_value], values[`${key.name}-${_value}-value`])
+          });
+        }
+
+        return getData(key.type, _value);
+      });
+
+      let _inner = api.tx[camelCase(section)][camelCase(name)].apply(api, _params);
+
+      console.log(values);
+
+      // try schedule
+      if (values.schedule) {
+        _inner = api.tx.authority.scheduleDispatch(
+          {
+            [values['schedule-data']?.when?.type]: values['schedule-data']?.when?.data,
+          },
+          values['schedule-data']?.priority || 0,
+          values['schedule-data']?.withDelayedOrigin || false,
+          _inner
+        );
       }
 
-      return getData(key.type, _value);
-    });
+      if (values.changeOrigin) {
+        _inner = api.tx.authorship.dispatchAs(
+          values['changeOrigin-data']?.asOrigin,
+          _inner
+        );
+      }
 
-    let _inner = api.tx[camelCase(section)][camelCase(name)].apply(api, _params);
-
-    console.log(values);
-
-    // try schedule
-    if (values.schedule) {
-      _inner = api.tx.authority.scheduleDispatch(
-        {
-          [values['schedule-data']?.when?.type]: values['schedule-data']?.when?.data,
-        },
-        values['schedule-data']?.priority || 0,
-        values['schedule-data']?.withDelayedOrigin || false,
-        _inner
+      const call = api.tx[origin.council].propose(
+        values.threshold,
+        _inner,
+        _inner.toU8a().length
       );
+
+      return call;
+    } catch (e) {
+      notification.info({
+        message: 'Build extrinsic failed, Please check params'
+      });
     }
-
-    if (values.changeOrigin) {
-      _inner = api.tx.authorship.dispatchAs(
-        values['changeOrigin-data']?.asOrigin,
-        _inner
-      );
-    }
-
-    const call = api.tx[origin.council].propose(
-      values.threshold,
-      _inner,
-      _inner.toU8a().length
-    );
-
-    return call;
   }, [form, selectedProposal, proposal, api]);
 
   const onSuccess = useCallback(() => {

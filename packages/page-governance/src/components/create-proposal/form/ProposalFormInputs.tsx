@@ -12,6 +12,7 @@ interface BasicFormInputProps<T> extends BareProps {
 }
 
 export const NumberInput = styled(SNumberInput)`
+  width: 100%;
   height: 48px;
   border-radius: 8px;
 `;

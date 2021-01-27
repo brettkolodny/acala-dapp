@@ -93,7 +93,7 @@ export const ProposalFormBottom: FC<ProposalFormBottomProps> = ({ form }) => {
       if (values.schedule) {
         _inner = api.tx.authority.scheduleDispatch(
           {
-            [values['schedule-data']?.when?.type]: values['schedule-data']?.when?.data,
+            [values['schedule-data']?.when?.type]: values['schedule-data']?.when?.data
           },
           values['schedule-data']?.priority || 0,
           values['schedule-data']?.withDelayedOrigin || false,
@@ -116,6 +116,8 @@ export const ProposalFormBottom: FC<ProposalFormBottomProps> = ({ form }) => {
 
       return call;
     } catch (e) {
+      console.log(e);
+
       notification.info({
         message: 'Build extrinsic failed, Please check params'
       });
@@ -137,7 +139,7 @@ export const ProposalFormBottom: FC<ProposalFormBottomProps> = ({ form }) => {
     >
       <Button
         onClick={handleCancel}
-        type='ghost'
+        type={selectedProposal ? 'ghost' : 'normal'}
       >
         Cancel
       </Button>

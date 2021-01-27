@@ -1,11 +1,7 @@
 import React, { useCallback } from 'react';
-import { AntRadio as Radio,
-  AntInput as Input,
-  Form,
+import { Form,
   styled,
-  Switch,
-  AntSelect as Select,
-  AntInputNumber as InputNumber
+  Switch
 } from '@acala-dapp/ui-components';
 import type { BareProps } from '@acala-dapp/ui-components';
 import { FormField } from './common';

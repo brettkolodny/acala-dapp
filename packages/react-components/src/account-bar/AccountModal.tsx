@@ -147,6 +147,9 @@ export const AccountModal = styled(({ className, close, visible }: AccountModalP
     </Dialog>
   );
 })`
+  & .ant-modal-content {
+    width: 640px;
+  }
   & .ant-modal-body {
     padding-bottom: 0;
   }

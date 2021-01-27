@@ -40,8 +40,8 @@ export const ScheduleFormField = styled(({ className, name, open }: ScheduleForm
                   noStyle
                 >
                   <Select>
-                    <Select.Option value='at'>at</Select.Option>
-                    <Select.Option value='when'>after</Select.Option>
+                    <Select.Option value='At'>at</Select.Option>
+                    <Select.Option value='After'>after</Select.Option>
                   </Select>
                 </FormItem>
                 <FormItem

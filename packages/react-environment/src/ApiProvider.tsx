@@ -30,6 +30,7 @@ interface Props {
   children: ReactNode;
 }
 
+
 /**
  * @name ApiProvider
  * @description context provider to support initialized api and chain information

@@ -1,4 +1,4 @@
-import React, { createContext, FC, useContext, ReactNode, useLayoutEffect, useEffect } from 'react';
+import React, { createContext, FC, useContext, ReactNode, useLayoutEffect, useEffect, useMemo } from 'react';
 
 import { useApi, useMemorized } from '@acala-dapp/react-hooks';
 import { BareProps } from '@acala-dapp/ui-components/types';
@@ -35,14 +35,14 @@ export const StoreProvier: FC<BareProps> = ({ children }) => {
   const prices = usePricesStore();
   const transitions = useTransitionsHistoryStore();
 
-  const data = useMemorized({
+  const data = useMemo(() => ({
     apiQuery,
     oraclePrices,
     prices,
     staking,
     transitions,
     ui
-  });
+  }), [apiQuery, oraclePrices, prices, staking, transitions, ui]);
 
   if (!api) return null;
 

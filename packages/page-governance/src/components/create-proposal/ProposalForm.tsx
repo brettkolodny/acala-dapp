@@ -21,7 +21,7 @@ interface ProposalFormProps extends BareProps {
   form: FormInstance;
 }
 
-export const ProposalForm: FC = styled(({ className, form }: ProposalFormProps) => {
+export const ProposalForm = styled(({ className, form }: ProposalFormProps) => {
   const { api } = useApi();
   const { selectedProposal } = useContext(CreateContext);
   const proposal = useMemo(() => {

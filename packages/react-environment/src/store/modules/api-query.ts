@@ -1,3 +1,4 @@
+import { useMemorized } from '@acala-dapp/react-hooks/';
 import { useCallback, useMemo, useReducer } from 'react';
 
 type ApiQueryData = {

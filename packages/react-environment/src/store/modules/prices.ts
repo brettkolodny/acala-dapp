@@ -1,5 +1,5 @@
 import { useEffect, useReducer } from 'react';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FixedPointNumber } from '@acala-network/sdk-core';
 import { CurrencyId } from '@acala-network/types/interfaces';
@@ -7,7 +7,7 @@ import { ApiRx } from '@polkadot/api';
 
 import { DerivedDexPool } from '@acala-network/api-derive';
 import { useApi } from '@acala-dapp/react-hooks';
-import { getCurrencyIdFromName } from '@acala-dapp/react-components';
+import { getCurrencyIdFromName, tokenEq } from '@acala-dapp/react-components';
 
 import { subscribeOraclePrices } from './oracle-prices';
 import { subscribeStakingPool } from './staking';
@@ -83,13 +83,13 @@ export const usePricesStore = (): PriceState => {
       dispatch({ type: 'update', value: data });
     });
 
-    const subscription3 = subscribeStakingPool(api).subscribe((result) => {
+    const subscription3 = combineLatest(subscribeOraclePrices(api, 'Aggregated'), subscribeStakingPool(api)).subscribe(([prices, result]) => {
       const exchangeRate = result.stakingPool.liquidExchangeRate();
-      const stakingCurrencyPrice = state.prices.get(result.derive.stakingCurrency.asToken.toString());
+      const stakingCurrency = prices.find((item) => tokenEq(item.currency, result.derive.stakingCurrency));
 
-      if (!stakingCurrencyPrice) return;
+      if (!stakingCurrency) return;
 
-      const price = stakingCurrencyPrice.times(exchangeRate);
+      const price = stakingCurrency.price.times(exchangeRate);
 
       dispatch({ type: 'update', value: new Map([[result.derive.liquidCurrency, price]]) });
     });

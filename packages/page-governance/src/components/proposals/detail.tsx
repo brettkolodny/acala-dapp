@@ -15,6 +15,7 @@ const Arguments = styled.div`
   line-height: 1.1875;
   color: var(--text-color-second);
   border: 1px solid #cccccc;
+  word-break: break-all;
 `;
 
 const VoteItem = styled(({ allCouncil, className, data, type }: { type: 'ayes' | 'nays'; data: AccountId[]; allCouncil: number } & BareProps) => {
@@ -306,10 +307,6 @@ export const ProposalDetail: FC = () => {
       {
         content: 'Governance Overview',
         path: '/governance'
-      },
-      {
-        content: 'Council Proposals',
-        path: '/governance/proposals'
       }
     ],
     content: data ? camelToDisplay(data.proposal.method) : ''

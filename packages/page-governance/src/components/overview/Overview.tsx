@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useContext } from 'react';
 import { useNavigate } from 'react-router';
 
 import { ArrowPixelIcon, Row, Col, styled, SubTitle } from '@acala-dapp/ui-components';
@@ -12,6 +12,7 @@ import { GovernanceIntro } from './GovernanceIntro';
 import { RecentProposals } from './RecentProposals';
 import { CouncilMembers } from '../council/CouncilMembers';
 import { CouncilType } from '../../config';
+import { GovernanceContext } from '../Provider';
 
 const OverviewSubTitleExtra = styled<FC<{ content: string } & BareProps & ClickAbleProps >>(({ className, content, onClick }) => {
   return (
@@ -38,15 +39,15 @@ const OverviewSubTitleExtra = styled<FC<{ content: string } & BareProps & ClickA
 `;
 
 export const Overview: FC = () => {
-  const naviagete = useNavigate();
+  const { changeTab } = useContext(GovernanceContext);
 
   const goToCouncilDetailPage = useCallback(() => {
-    naviagete('councils');
-  }, [naviagete]);
+    changeTab('council');
+  }, [changeTab]);
 
   const goToAllProposals = useCallback(() => {
-    naviagete('proposals');
-  }, [naviagete]);
+    changeTab('proposal');
+  }, [changeTab]);
 
   const memberRender = useCallback((council: CouncilType) => <CouncilMembers council={council} />, []);
 

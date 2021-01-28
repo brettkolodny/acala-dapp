@@ -28,6 +28,7 @@ export * from './UploadMetadata';
 export * from './WalletBalance';
 export * from './Assets';
 export * from './UserBalance';
+export * from './AddressInput';
 
 // airdrop
 export * from './AirDropAmount';

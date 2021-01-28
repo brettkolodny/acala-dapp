@@ -63,7 +63,7 @@ export const ScheduleFormField = styled(({ className, name, open }: ScheduleForm
               />
             </FormItem>
             <FormItem
-              initialValue={true}
+              initialValue={'checked'}
               label='With Delayed Origin'
               name={getFieldName(['withDelayedOrigin'])}
             >

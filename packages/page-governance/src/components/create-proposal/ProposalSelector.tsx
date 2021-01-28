@@ -1,5 +1,4 @@
 import React, { FC, useCallback, useContext, useMemo } from 'react';
-import { camelCase } from 'lodash';
 import clsx from 'clsx';
 import { styled, Tabs, useTabs } from '@acala-dapp/ui-components';
 import type { BareProps } from '@acala-dapp/ui-components';
@@ -15,7 +14,6 @@ const ProposalsList = styled.div`
 `;
 
 const ProposalCard = styled(({ className, data }: { data: ProposalData } & BareProps) => {
-  const { api } = useApi();
   const { collective, document, name, section } = data;
   const { onSelectProposal, selectedProposal } = useContext(CreateContext);
 
@@ -25,9 +23,10 @@ const ProposalCard = styled(({ className, data }: { data: ProposalData } & BareP
 
   const isActive = useMemo(() => {
     return selectedProposal &&
+      selectedProposal.section === section &&
       selectedProposal.name === name &&
       selectedProposal.collective === collective;
-  }, [name, collective, selectedProposal]);
+  }, [name, collective, selectedProposal, section]);
 
   // const _document = useMemo(() => {
   //   if (!api) return;

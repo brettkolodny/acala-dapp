@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useContext, useMemo } from 'react';
+import React, { useCallback, useContext, useMemo } from 'react';
 import { camelCase } from 'lodash';
 import { CreateContext } from './CreateProvider';
 import { styled, Form } from '@acala-dapp/ui-components';
@@ -8,7 +8,7 @@ import { BareProps } from '@acala-dapp/ui-components/types';
 import { NumberInput, ScheduleFormField, ChangeOriginFormField, CreateProposalForm } from './form';
 
 const formItemLayout = {
-  labelCol: { span: 6 },
+  labelCol: { span: 8 },
   wrapperCol: { span: 10 }
 };
 

@@ -3,8 +3,9 @@ import { camelCase } from 'lodash';
 import { FixedPointNumber } from '@acala-network/sdk-core';
 import { FlexBox, Button, FormInstance, notification } from '@acala-dapp/ui-components';
 import { TxButton } from '@acala-dapp/react-components';
-import { CreateContext } from './CreateProvider';
 import { useApi } from '@acala-dapp/react-hooks';
+
+import { CreateContext } from './CreateProvider';
 
 interface ProposalFormBottomProps {
   form: FormInstance;
@@ -28,12 +29,17 @@ export const ProposalFormBottom: FC<ProposalFormBottomProps> = ({ form }) => {
 
   const handleSubmit = useCallback(() => {
     try {
-      const values = form.getFieldsValue();
-
       if (!selectedProposal) return;
 
+      const values = form.getFieldsValue();
       const { name, origin, section } = selectedProposal;
       const { args } = proposal;
+
+      if (!name || !origin || !section) return;
+
+      if (selectedProposal?.patchParams) {
+        Object.assign(values, selectedProposal.patchParams);
+      }
 
       const getData = (key: string, value: any): any => {
         if (!key) return;
@@ -68,26 +74,10 @@ export const ProposalFormBottom: FC<ProposalFormBottomProps> = ({ form }) => {
           });
         }
 
-        const definition = api.registry.getDefinition(key.type) || '';
-
-        if (definition.startsWith('{"_enum')) {
-          const temp = JSON.parse(definition);
-
-          if (_value === 'Null') {
-            return getData(key.type, _value);
-          }
-
-          return getData(key.type, {
-            [_value]: getData(temp._enum[_value], values[`${key.name}-${_value}-value`])
-          });
-        }
-
         return getData(key.type, _value);
       });
 
       let _inner = api.tx[camelCase(section)][camelCase(name)].apply(api, _params);
-
-      console.log(values);
 
       // try schedule
       if (values.schedule) {
@@ -116,8 +106,6 @@ export const ProposalFormBottom: FC<ProposalFormBottomProps> = ({ form }) => {
 
       return call;
     } catch (e) {
-      console.log(e);
-
       notification.info({
         message: 'Build extrinsic failed, Please check params'
       });

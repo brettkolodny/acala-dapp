@@ -1,14 +1,9 @@
-import { EnsureProportionMoreThan, ModuleProposalCouncilConfig, proposalsConfig } from '../../config';
+import { ModuleCalls, ModuleProposalCouncilConfig, proposalsConfig } from '../../config';
 import React, { createContext, FC, PropsWithChildren, useCallback, useEffect, useMemo, useReducer } from 'react';
 import { useApi } from '@acala-dapp/react-hooks';
 
-export type ProposalData = {
+export interface ProposalData extends ModuleCalls {
   collective: string;
-  document: string;
-  name: string;
-  section: string;
-  origin: EnsureProportionMoreThan<any, any, any, any>;
-  showChangeOrigin?: boolean;
 }
 
 type CreateProposalState = 'select_module'

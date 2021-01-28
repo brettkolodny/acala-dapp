@@ -1,10 +1,12 @@
 import React, { FC, useMemo, ReactNode, useCallback } from 'react';
 import { Form, Switch, AntRadio, styled, MinusCircleOutlined, Button, Input } from '@acala-dapp/ui-components';
 import { useApi } from '@acala-dapp/react-hooks';
+import { getTypeDef } from '@polkadot/types';
 import { BareProps } from '@acala-dapp/ui-components/types';
 
 import { NumberInput, CurrencySelector } from './ProposalFormInputs';
 import { formatter } from '../../../config';
+import { Param } from './Params/Param';
 
 const ListFormItemArea = styled.div`
   display: flex;
@@ -65,6 +67,8 @@ export const ProposalFormItem: FC<ProposalFormItemProps> = ({
 
     let definition = api.registry.getDefinition(type as any);
     let temp = definition;
+
+    console.log(getTypeDef(api.createType(type as any).toRawType()));
 
     while (definition) {
       temp = definition;
@@ -214,10 +218,15 @@ export const CreateProposalForm = styled(({ className, data }: { data: ProposalF
       {
         data.map((item, index) => {
           return (
-            <ProposalFormItem
+            <Form.Item
               key={`create-proposal-${index}`}
-              {...item}
-            />
+              label={formatter(item?.name.toString() || '')}
+              name={item.name}
+            >
+              <Param
+                type={item.type}
+              />
+            </Form.Item>
           );
         })
       }
@@ -241,10 +250,5 @@ export const CreateProposalForm = styled(({ className, data }: { data: ProposalF
   .ant-form-item {
     margin: 0;
   }
-}
-
-.ant-form-item {
-  display: flex;
-  align-items: center;
 }
 `;

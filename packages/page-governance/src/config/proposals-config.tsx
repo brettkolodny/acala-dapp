@@ -1,15 +1,17 @@
 import { upperFirst } from 'lodash';
 import { EnsureProportionMoreThan, ensureRootOrHalfHomaCouncil, ensureRootOrHalfHonzonCouncil, ensureRootOrHalfGeneralCouncil, ensureRootOrTwoThirdsGeneralCouncil } from './councils-config';
 
-export type ModuleProposalCouncilConfig = {
+export interface ModuleCalls {
+  document: string;
+  name: string;
+  section: string;
+  origin?: EnsureProportionMoreThan<any, any, any, true>;
+  patchParams?: Record<string, any>;
+}
+
+export interface ModuleProposalCouncilConfig {
   collective: string;
-  calls: {
-    document: string;
-    name: string;
-    section: string;
-    origin?: EnsureProportionMoreThan<any, any, any, true>;
-    showChangeOrigin?: boolean;
-  }[];
+  calls: ModuleCalls[];
   origin: EnsureProportionMoreThan<any, any, any, true>;
 }
 
@@ -91,8 +93,11 @@ const commonProposalsConfig = [
       {
         document: 'Withdraw Treasury',
         name: 'transfer',
-        section: 'currencies',
-        showChangeOrigin: true
+        patchParams: {
+          changeOrigin: true,
+          'changeOrigin-data': 'Honzon Treatury'
+        },
+        section: 'currencies'
       }
     ],
     collective: 'Loan',
@@ -135,24 +140,27 @@ const commonProposalsConfig = [
     collective: 'staking_pool',
     origin: ensureRootOrHalfHomaCouncil
   },
-  // {
-  //   calls: [
-  //     {
-  //       document: 'List a new trading pair, trading pair will become Enabled status after provision process.',
-  //       name: 'list_trading_pair'
-  //     },
-  //     {
-  //       document: 'Enable a new trading pair(without the provision process),',
-  //       name: 'enable_trading_pair'
-  //     },
-  //     {
-  //       document: 'Disbale a trading pair',
-  //       name: 'disable_trading_pair'
-  //     }
-  //   ],
-  //   module: 'dex',
-  //   origin: ensureRootOrHalfGeneralCouncil
-  // },
+  {
+    calls: [
+      {
+        document: 'List a new trading pair, trading pair will become Enabled status after provision process.',
+        name: 'list_trading_pair',
+        section: 'dex'
+      },
+      {
+        document: 'Enable a new trading pair(without the provision process),',
+        name: 'enable_trading_pair',
+        section: 'dex'
+      },
+      {
+        document: 'Disbale a trading pair',
+        name: 'disable_trading_pair',
+        section: 'dex'
+      }
+    ],
+    collective: 'dex',
+    origin: ensureRootOrHalfGeneralCouncil
+  },
   {
     calls: [
       {

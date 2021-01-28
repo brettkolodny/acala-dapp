@@ -13,4 +13,7 @@ export const Empty = styled(({ className, description }: { description: string }
   align-items: center;
   justify-content: center;
   height: 640px;
+  font-size: 16px;
+  color: var(--text-color-second);
+  font-weight: 500;
 `;

@@ -219,7 +219,7 @@ const Action: FC<ActionProps> = ({ currency }) => {
       {
         showManager ? (
           <ExtraBtn onClick={(): void => open()}>
-            Manager
+            Manage
           </ExtraBtn>
         ) : (
           <ExtraBtn

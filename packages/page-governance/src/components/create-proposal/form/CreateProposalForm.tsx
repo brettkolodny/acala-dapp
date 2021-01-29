@@ -238,4 +238,5 @@ export const CreateProposalForm = styled(({ className, data }: { data: ProposalF
       }
     </div>
   );
-})``;
+})`
+`;

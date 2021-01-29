@@ -1,23 +1,20 @@
-import React, { createContext, FC, Dispatch, SetStateAction } from 'react';
+import React, { createContext, FC } from 'react';
 import { BareProps } from '@acala-dapp/ui-components/types';
-import { useMemState } from '@acala-dapp/react-hooks';
+import { useTabs, UseTabsReturnType } from '@acala-dapp/ui-components';
 
 export type WalletTabType = 'acala' | 'cross-chain' | 'collectibles';
 
-export interface WalletContextData {
-  activeTab: WalletTabType;
-  changeActiveTab: Dispatch<SetStateAction<WalletTabType>>;
-}
+export type WalletContextData = UseTabsReturnType<WalletTabType>;
 
 export const WalletContext = createContext<WalletContextData>({} as WalletContextData);
 
 export const WalletProvider: FC<BareProps> = ({ children }) => {
-  const [activeTab, changeActiveTab] = useMemState<WalletTabType>('acala');
+  const { changeTab, currentTab } = useTabs<WalletTabType>('acala');
 
   return (
     <WalletContext.Provider value={{
-      activeTab,
-      changeActiveTab
+      changeTab,
+      currentTab
     }} >
       {children}
     </WalletContext.Provider>

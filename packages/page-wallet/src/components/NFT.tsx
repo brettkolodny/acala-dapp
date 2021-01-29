@@ -49,7 +49,7 @@ export const NFT: FC = () => {
           metadata: classes.metadata.toUtf8(),
           totalIssuance: classes.totalIssuance.toBn().toNumber()
         },
-        externalUrl: metadata?.external_url,
+        externalUrl: `https://ipfs.io/${metadata?.image.replace('ipfs://', '')}`,
         name: metadata?.name,
         publisher: metadata?.publisher
       };

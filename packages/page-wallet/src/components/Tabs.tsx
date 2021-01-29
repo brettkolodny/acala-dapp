@@ -10,28 +10,31 @@ import { NFT } from './NFT';
 
 export const Tabs: FC = () => {
   const { t } = useTranslation('page-wallet');
-  const { activeTab, changeActiveTab } = useContext(WalletContext);
+  const { changeTab, currentTab } = useContext(WalletContext);
 
   return (
     <UITabs<WalletTabType>
-      active={activeTab}
-      onChange={changeActiveTab}
+      active={currentTab}
+      onChange={changeTab}
     >
       <UITabs.Panel
         $key='acala'
         header='Acala'
+        key='acala'
       >
         <AcalaConsole />
       </UITabs.Panel>
       <UITabs.Panel
         $key='collectibles'
         header={t('Collectibles')}
+        key='collectibles'
       >
         <NFT />
       </UITabs.Panel>
       <UITabs.Panel
         $key='cross-chain'
         header={t('Cross-Chain')}
+        key='cross-chain'
       >
         <CrossChainConsole />
       </UITabs.Panel>

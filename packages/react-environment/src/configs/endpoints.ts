@@ -16,26 +16,14 @@ export const DEFAULT_ENDPOINTS: EndpointConfig = {
     //   url: 'wss://rococo-demo-acala.phala.network/ws'
     // },
     {
-      name: 'Mandala TC5-1',
-      url: 'wss://node-6714447553777491968.jm.onfinality.io/ws'
-    },
-    {
-      name: 'Mandala TC5-2',
-      url: 'wss://node-6714447553211260928.rz.onfinality.io/ws'
-    },
-    {
-      name: 'Mandala TC5-3',
-      url: 'wss://acala-testnet-1.polkawallet.io:9904'
+      name: 'Mandala TC6-1',
+      url: 'wss://mandala.laminar.codes/ws'
     }
   ],
   development: [
     {
       name: 'Local',
       url: 'ws://127.0.0.1:9944'
-    },
-    {
-      name: 'HZY',
-      url: 'ws://192.168.8.123:9944'
     }
   ]
 };

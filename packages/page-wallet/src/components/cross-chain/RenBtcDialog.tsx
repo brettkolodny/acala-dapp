@@ -1,10 +1,9 @@
 import React, { FC, useContext, useCallback } from 'react';
 import clsx from 'clsx';
-import axios from 'axios';
 
-import { Dialog, Button, Row, Col, List, message } from '@acala-dapp/ui-components';
+import { Dialog, Button, Row, Col, List } from '@acala-dapp/ui-components';
 import { TokenImage, FormatBalance, getCurrencyIdFromName } from '@acala-dapp/react-components';
-import { useAccounts, useApi } from '@acala-dapp/react-hooks';
+import { useApi, useFaucet } from '@acala-dapp/react-hooks';
 
 import { RenBtcMintContext } from './RenBtcContext';
 import classes from './RenBtc.module.scss';
@@ -50,34 +49,12 @@ const BtcAddressContent: FC<Omit<RenBtcDialogProps, 'show'>> = ({
 }) => {
   const { api } = useApi();
   const { setStep } = useContext(RenBtcMintContext);
-  const { active } = useAccounts();
+  const { loading, run } = useFaucet('ren');
 
   const handleNext = useCallback(() => {
-    if (!active) return;
-
-    axios.post(
-      'https://api.polkawallet.io/v2/faucet/faucet',
-      {
-        account: active.address,
-        address: active.address,
-        strategy: 'ren'
-      },
-      {
-        headers: { 'Content-Type': 'application/json' }
-      }).then((result) => {
-      if (result.data === 'LIMIT') {
-        return message.error('Reached quota');
-      }
-
-      if (result.data === 'ERROR') {
-        return message.error('Unknown Error');
-      }
-
-      message.info('Success');
-    });
-
+    run();
     setStep('success');
-  }, [setStep, active]);
+  }, [setStep, run]);
 
   return (
     <Row className={classes.sendDialog}
@@ -96,6 +73,7 @@ const BtcAddressContent: FC<Omit<RenBtcDialogProps, 'show'>> = ({
       <Col span={24}>
         <Button
           className={classes.btn}
+          loading={loading}
           onClick={handleNext}
         >
           Get test renBTC from Faucet

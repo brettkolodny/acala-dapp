@@ -4,7 +4,9 @@ import { BareProps } from './types';
 import styled from 'styled-components';
 import { Motion, spring } from 'react-motion';
 
-function useTabs<T = string | number> (defaultTab: T): { currentTab: T; changeTab: Dispatch<SetStateAction<T>>} {
+export type UseTabsReturnType<T> = { currentTab: T; changeTab: Dispatch<SetStateAction<T>> };
+
+function useTabs<T = string | number> (defaultTab: T): UseTabsReturnType<T> {
   const [currentTab, changeTab] = useState<T>(defaultTab);
 
   return useMemo(() => ({
@@ -207,7 +209,9 @@ function Tabs<T> ({
                 active={activeTabIndex === index}
                 disabled={disabledList[index]}
                 key={`tab-${header}-${index}`}
-                onClick={(): unknown => !disabledList[index] && onChange && onChange(keyList ? keyList[index] : firstKey) }
+                onClick={(): void => {
+                  !disabledList[index] && onChange && onChange(keyList ? keyList[index] : firstKey);
+                }}
               >
                 {header}
               </TabHeader>

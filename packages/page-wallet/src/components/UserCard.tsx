@@ -40,6 +40,7 @@ export const UserCard: FC = () => {
               <p className={classes.action}>Change</p>
             </div>
             <Copy
+              copyIcon={false}
               display='Copy Address Success'
               render={(): JSX.Element => (
                 <div className={classes.copy}>
@@ -48,7 +49,6 @@ export const UserCard: FC = () => {
                 </div>
               )}
               text={active.address}
-              copyIcon={false}
             />
           </>
         ) : null

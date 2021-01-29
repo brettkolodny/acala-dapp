@@ -25,8 +25,6 @@ export const useAllNFTTokens = (): { data: [ClassInfoOf, TokenInfoOf][]; loading
         };
       })),
       mergeMap((result: { classes: string; tokenId: string }[]) => {
-        console.log(result);
-
         if (result.length === 0) return of([]);
 
         return combineLatest(result.map((item) => {

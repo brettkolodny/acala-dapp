@@ -64,3 +64,6 @@ export * from './dashboardHomeHooks';
 
 // nft
 export * from './nftHooks';
+
+// faucet
+export * from './useFaucet';

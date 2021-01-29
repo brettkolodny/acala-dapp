@@ -31,7 +31,7 @@ const StepRoot = styled.ul`
     content: '';
     position: absolute;
     height: 1px;
-    top: calc(50% - 1px);
+    top: 15px;
     left: 16px;
     right: 16px;
     background: #d8d8d8;
@@ -52,7 +52,7 @@ const StepItem = styled.li`
     position: absolute;
     width: 20%;
     height: 1px;
-    top: calc(50% - 1px);
+    top: 15px;
     background: #d8d8d8;
   }
 

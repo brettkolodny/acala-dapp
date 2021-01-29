@@ -9,6 +9,7 @@
   align-items: center;
   justify-content: center;
   height: var(--btn-height);
+  min-width: var(--btn-min-width);
   border-radius: 2px;
 
   font-size: var(--btn-font-size);

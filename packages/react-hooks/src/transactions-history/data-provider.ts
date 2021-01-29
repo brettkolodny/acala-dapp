@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Subject, timer, combineLatest, from, Observable } from 'rxjs';
-import { switchMap, tap, map } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 
 export interface Event {
   name: string;
@@ -65,9 +65,6 @@ export class SubscanDataProvider extends BaseTransitionsHistoryDataProvider
     this.autoRefresh();
 
     return this.$refresh.pipe(
-      tap((count) => {
-        console.log(count);
-      }),
       switchMap(() => {
         return combineLatest(
           data.map(({ account, method, section }) => from(this.queryExtrinsics(section, method, limit, account)))

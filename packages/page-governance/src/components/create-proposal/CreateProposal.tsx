@@ -27,7 +27,7 @@ export const Inner: FC = () => {
       <CheckCouncilAuthority>
         <ProposalSelector />
         {selectedProposal ? <ProposalForm form={form} /> : null}
-        <SpaceBox height={16} />
+        <SpaceBox height={24} />
         <ProposalFormBottom form={form} />
       </CheckCouncilAuthority>
     </Card>

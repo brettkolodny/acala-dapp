@@ -4,7 +4,7 @@ import { FixedPointNumber } from '@acala-network/sdk-core';
 import { NumberInput as UINumberInput } from '@acala-dapp/ui-components';
 import { BaseParamProps } from './types';
 
-const NumberInput: FC<BaseParamProps> = ({ onChange }) => {
+const Fixed18Input: FC<BaseParamProps> = ({ onChange }) => {
   const _onChange = useCallback((value) => {
     if (onChange) {
       onChange(new FixedPointNumber(value).toChainData());
@@ -19,4 +19,4 @@ const NumberInput: FC<BaseParamProps> = ({ onChange }) => {
   );
 };
 
-export default memo(NumberInput);
+export default memo(Fixed18Input);

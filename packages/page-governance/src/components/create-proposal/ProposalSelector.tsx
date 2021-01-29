@@ -2,7 +2,6 @@ import React, { FC, useCallback, useContext, useMemo } from 'react';
 import clsx from 'clsx';
 import { styled, Tabs, useTabs } from '@acala-dapp/ui-components';
 import type { BareProps } from '@acala-dapp/ui-components';
-import { useApi } from '@acala-dapp/react-hooks';
 
 import { ProposalData, CreateContext } from './CreateProvider';
 import { formatter } from '../../config';

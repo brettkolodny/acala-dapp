@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useContext, useMemo } from 'react';
 import { camelCase } from 'lodash';
 import { FixedPointNumber } from '@acala-network/sdk-core';
-import { FlexBox, Button, FormInstance, notification } from '@acala-dapp/ui-components';
+import { FlexBox, Button, FormInstance, notification, ButtonGroup } from '@acala-dapp/ui-components';
 import { TxButton } from '@acala-dapp/react-components';
 import { useApi } from '@acala-dapp/react-hooks';
 
@@ -27,7 +27,13 @@ export const ProposalFormBottom: FC<ProposalFormBottomProps> = ({ form }) => {
     return call.toJSON();
   }, [api, selectedProposal]);
 
-  const handleSubmit = useCallback(() => {
+  const handleSubmit = useCallback(async () => {
+    try {
+      await form.validateFields();
+    } catch (e) {
+      return;
+    }
+
     try {
       if (!selectedProposal) return;
 
@@ -121,13 +127,10 @@ export const ProposalFormBottom: FC<ProposalFormBottomProps> = ({ form }) => {
   }, []);
 
   return (
-    <FlexBox
-      alignItems='center'
-      justifyContent='flex-end'
-    >
+    <ButtonGroup>
       <Button
         onClick={handleCancel}
-        type={selectedProposal ? 'ghost' : 'normal'}
+        type={'border'}
       >
         Cancel
       </Button>
@@ -141,6 +144,6 @@ export const ProposalFormBottom: FC<ProposalFormBottomProps> = ({ form }) => {
           </TxButton>
         ) : null
       }
-    </FlexBox>
+    </ButtonGroup>
   );
 };

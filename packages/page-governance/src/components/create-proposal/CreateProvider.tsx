@@ -2,7 +2,7 @@ import { ModuleCalls, ModuleProposalCouncilConfig, proposalsConfig } from '../..
 import React, { createContext, FC, PropsWithChildren, useCallback, useEffect, useMemo, useReducer } from 'react';
 import { useApi } from '@acala-dapp/react-hooks';
 
-export interface ProposalData extends ModuleCalls {
+export interface ProposalData extends Required<ModuleCalls> {
   collective: string;
 }
 

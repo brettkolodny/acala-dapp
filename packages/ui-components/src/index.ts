@@ -40,6 +40,7 @@ export * from './chart';
 export * from './Alert';
 export * from './AutoComplete';
 export * from './Button';
+export * from './ButtonGroup';
 export * from './Card';
 export * from './Controller';
 export * from './Empty';

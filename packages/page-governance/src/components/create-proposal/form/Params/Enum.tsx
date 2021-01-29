@@ -1,11 +1,11 @@
 import React, { FC, memo, useCallback, useState } from 'react';
-import { AntSelect as Select } from '@acala-dapp/ui-components';
+import { AntSelect as Select, styled } from '@acala-dapp/ui-components';
 import { TypeDef } from '@polkadot/types/types';
 
 import { BaseParamProps } from './types';
 import { Param } from './Param';
 
-const Enum: FC<BaseParamProps> = ({ onChange, typeDef }) => {
+const Enum = styled(({ className, onChange, typeDef }: BaseParamProps) => {
   const [selected, setSelected] = useState<TypeDef | null>();
   const subTypes = typeDef.sub as TypeDef[];
 
@@ -27,7 +27,7 @@ const Enum: FC<BaseParamProps> = ({ onChange, typeDef }) => {
   }, [selected]);
 
   return (
-    <div>
+    <div className={className}>
       <Select
         onSelect={handleSelected}
       >
@@ -52,6 +52,10 @@ const Enum: FC<BaseParamProps> = ({ onChange, typeDef }) => {
       }
     </div>
   );
-};
+})`
+& .ant-select {
+  margin-bottom: 8px;
+}
+`;
 
 export default memo(Enum);

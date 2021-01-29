@@ -222,6 +222,12 @@ export const CreateProposalForm = styled(({ className, data }: { data: ProposalF
               key={`create-proposal-${index}`}
               label={formatter(item?.name.toString() || '')}
               name={item.name}
+              rules={[
+                {
+                  message: `${item.name} is required`,
+                  required: true
+                }
+              ]}
             >
               <Param
                 type={item.type}
@@ -232,23 +238,4 @@ export const CreateProposalForm = styled(({ className, data }: { data: ProposalF
       }
     </div>
   );
-})`
-.ant-radio-group {
-  display: flex;
-
-  label {
-    font-size: 18px;
-    font-weight: normal;
-    color: var(--text-color-primary);
-  }
-}
-
-.ant-radio-wrapper {
-  display: flex;
-  align-items: center;
-
-  .ant-form-item {
-    margin: 0;
-  }
-}
-`;
+})``;

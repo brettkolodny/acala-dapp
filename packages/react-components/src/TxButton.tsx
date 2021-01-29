@@ -32,7 +32,7 @@ interface Props extends ButtonProps {
   section?: string; // extrinsic section
   method?: string; // extrinsic method
   params?: any[] | (() => any[] | null | undefined); // extrinsic params
-  call?: (() => SubmittableExtrinsic<'rxjs'> | undefined) | SubmittableExtrinsic<'rxjs'>;
+  call?: (() => Promise<SubmittableExtrinsic<'rxjs'> | undefined>) | (() => SubmittableExtrinsic<'rxjs'> | undefined) | SubmittableExtrinsic<'rxjs'>;
 
   preCheck?: () => Promise<boolean>;
   beforeSend?: () => void; // the callback will be executed before send
@@ -102,10 +102,12 @@ export const TxButton: FC<PropsWithChildren<Props>> = ({
       return;
     }
 
-    let _call: SubmittableExtrinsic<'rxjs'>;
+    let _call: SubmittableExtrinsic<'rxjs'> | null = null;
 
     if (call) {
-      _call = isFunction(call) ? call() as SubmittableExtrinsic<'rxjs'> : call;
+      _call = isFunction(call)
+        ? await call() as SubmittableExtrinsic<'rxjs'>
+        : call;
     } else if (section && method) {
       _call = _api.tx[section][method].apply(_api, _params || []);
     }
@@ -113,6 +115,12 @@ export const TxButton: FC<PropsWithChildren<Props>> = ({
     // ensuer that account is exist
     if (!_signAddress) {
       console.error('can not find available address');
+
+      return;
+    }
+
+    if (!_call) {
+      console.error('can not build extrinsic');
 
       return;
     }

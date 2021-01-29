@@ -1,8 +1,7 @@
 import React, { FC, ChangeEventHandler, useState, useEffect, forwardRef, useCallback, useMemo, useRef, FocusEvent, FocusEventHandler } from 'react';
 import clsx from 'clsx';
 import { noop } from 'lodash';
-import './NumberInput.scss';
-import { styled } from '.';
+import styled from 'styled-components';
 import { getInputBorder, getInputShadow } from './utils';
 
 const NUMBER_PATTERN = '^[0-9]*(\\.)?[0-9]*$';
@@ -88,7 +87,7 @@ export const NumberInputInner: FC<NumberInputProps> = forwardRef<HTMLInputElemen
   }, [onFocus, isInEditMode]);
 
   useEffect(() => {
-    // dont update value if user is input
+    // don't update value if user is input
     if (isInEditMode.current) return;
 
     _setValue(value ? value.toString() : '');

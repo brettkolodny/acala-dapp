@@ -85,6 +85,7 @@ export const AddressInput: FC<AddressInputProps> = ({
 
   return (
     <AutoComplete
+      className='aca-address-input'
       onChange={handleChange}
       onSelect={handleSelect}
       options={options}

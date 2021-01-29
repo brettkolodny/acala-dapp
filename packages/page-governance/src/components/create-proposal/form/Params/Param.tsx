@@ -18,7 +18,7 @@ import { BaseParamProps } from './types';
 
 const PARAMS_COMPONENT_CONFIG: [string[], ComponentType<any>][] = [
   [['Enum'], Enum],
-  [['FixedU128', 'Balance', 'Ratio', 'Rate'], Fixed18Input],
+  [['FixedU128', 'Balance', 'Ratio', 'Rate', 'BalanceOf'], Fixed18Input],
   [['u32', 'BlockNumber'], NumberInput],
   [['AccountId'], Account],
   [['bool'], Bool],

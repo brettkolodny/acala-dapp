@@ -10,11 +10,11 @@
     "yarn": "1.x"
   },
   "resolutions": {
-    "@polkadot/api": "^3.2.4-13",
-    "@acala-network/api": "^0.6.2-4",
-    "@acala-network/types": "^0.6.2-4",
-    "@acala-network/app-util": "^0.6.2-4",
-    "@acala-network/api-derive": "^0.6.2-4"
+    "@polkadot/api": "3.6.4",
+    "@acala-network/api": "^0.6.2-9",
+    "@acala-network/types": "^0.6.2-9",
+    "@acala-network/app-util": "^0.6.2-9",
+    "@acala-network/api-derive": "^0.6.2-9"
   },
   "scripts": {
     "bump-version": "node scripts/bump-version.js",

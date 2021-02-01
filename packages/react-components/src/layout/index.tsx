@@ -1,12 +1,16 @@
 import React, { FC, memo, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router';
-import { useApi, useIsAppReady, useSetting } from '@acala-dapp/react-hooks';
-import { styled, PageLoading, Page, SubMenu, Grid } from '@acala-dapp/ui-components';
+import { useApi, useIsAppReady, useSetting, useTranslation } from '@acala-dapp/react-hooks';
+import { styled, PageLoading, Page, SubMenu, Alert, Grid } from '@acala-dapp/ui-components';
+
 import { useStore } from '@acala-dapp/react-environment';
 import { noop } from 'lodash';
 
 import { Sidebar, SidebarConfig } from '../Sidebar';
 import { AccountBar } from '../account-bar';
+const CAlert = styled(Alert)`
+  margin-top: 32px;
+`;
 
 const MainContainer = styled.div`
   display: flex;
@@ -25,6 +29,7 @@ const Main: FC<MainLayoutProps> = memo(({
   enableCollapse = true,
   sidebar
 }) => {
+  const { t } = useTranslation('react-components');
   const { init } = useApi();
   const { allEndpoints, endpoint } = useSetting();
   const screen = Grid.useBreakpoint();
@@ -64,6 +69,7 @@ const Main: FC<MainLayoutProps> = memo(({
 
     return (
       <Page>
+        <CAlert message={t('TESTNET_SCAMES')} />
         <Page.Title
           breadcrumb={breadcrumb}
           extra={<AccountBar />}
@@ -80,7 +86,7 @@ const Main: FC<MainLayoutProps> = memo(({
         <Page.Content>{children}</Page.Content>
       </Page>
     );
-  }, [isAppReady, ui.pageTitle, ui.subMenu, breadcrumb, children]);
+  }, [isAppReady, ui.pageTitle, ui.subMenu, breadcrumb, children, t]);
 
   return (
     <MainContainer>

@@ -91,8 +91,8 @@ export const ApiProvider: FC<Props> = ({
     api.rpc.system.properties().subscribe((result) => {
       setProperties({
         ss58Format: result.ss58Format.unwrapOrDefault().toString(),
-        tokenDecimals: result.tokenDecimals.unwrapOrDefault().toNumber(),
-        tokenSymbol: result.tokenSymbol.unwrapOrDefault().toString()
+        tokenDecimals: result.tokenDecimals.unwrapOrDefault()[0].toNumber(),
+        tokenSymbol: result.tokenSymbol.unwrapOrDefault()[0].toString()
       });
     });
   }, [api, connected]);

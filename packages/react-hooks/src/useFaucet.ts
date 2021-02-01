@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useAccounts } from './useAccounts';
 import { message } from '@acala-dapp/ui-components';
 
-const FUACET_API = 'https://api.polkawallet.io/v2/faucet/faucet';
+const FUACET_API = 'https://api.polkawallet.io/v2/faucet-tc6/faucet';
 
 export const useFaucet = (strategy = 'ren'): { loading: boolean; run: () => void } => {
   const { active } = useAccounts();

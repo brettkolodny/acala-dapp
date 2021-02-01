@@ -13,7 +13,7 @@ export const AcalaConsole: FC = () => {
     <Row gutter={[24, 24]}>
       <Col span={24}>
         <FlexBox
-          alignItems='flex-end'
+          alignItems='flex-start'
           justifyContent='space-between'
         >
           <UserCard />

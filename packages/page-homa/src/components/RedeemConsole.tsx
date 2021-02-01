@@ -143,7 +143,7 @@ export const RedeemConsole: FC = () => {
     reset();
     setFee(FixedPointNumber.ZERO);
     setReceived(FixedPointNumber.ZERO);
-  }, [setRedeemType, reset]);
+  }, [setRedeemType, setFee, setReceived, reset]);
 
   const params = useMemo((): string[] => {
     const _params = [

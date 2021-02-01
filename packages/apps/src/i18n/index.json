@@ -14,7 +14,8 @@
       "Change": "Change",
       "Copy": "Copy",
       "Transfer": "Transfer",
-      "My Address": "My Address"
+      "My Address": "My Address",
+      "Collectibles": "收藏品"
     },
     "page-loan": {},
     "page-swap": {},
@@ -48,7 +49,8 @@
       "Change": "更改",
       "Copy": "复制",
       "Transfer": "转账",
-      "My Address": "我的账户"
+      "My Address": "我的账户",
+      "Collectibles": "收藏品"
     },
     "page-loan": {},
     "page-swap": {},

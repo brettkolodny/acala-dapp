@@ -1,17 +1,17 @@
-import React, { FC, useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 
 import { CurrencyId } from '@acala-network/types/interfaces';
 
 import { FormatBalance } from '@acala-dapp/react-components';
-import { SwapOutlined, Tag } from '@acala-dapp/ui-components';
+import { styled, SwapOutlined, Tag } from '@acala-dapp/ui-components';
+import type { BareProps } from '@acala-dapp/ui-components';
 import { useLPExchangeRate, useApi } from '@acala-dapp/react-hooks';
 
-import classes from './LPExchangeRate.module.scss';
 import { getCurrenciesFromDexShare } from './utils';
 
-interface Props { lp: CurrencyId }
+interface LPExchangeRateProps { lp: CurrencyId }
 
-export const LPExchangeRate: FC<Props> = ({ lp }) => {
+export const LPExchangeRate = styled(({ className, lp }: LPExchangeRateProps & BareProps) => {
   const { api } = useApi();
   const [isForward, setIsForward] = useState<boolean>(true);
 
@@ -25,7 +25,7 @@ export const LPExchangeRate: FC<Props> = ({ lp }) => {
   }, [isForward, setIsForward]);
 
   return (
-    <div className={classes.root}>
+    <div className={className}>
       <FormatBalance
         pair={
           isForward ? [
@@ -51,11 +51,24 @@ export const LPExchangeRate: FC<Props> = ({ lp }) => {
         pairSymbol='≈'
       />
       <Tag
-        className={classes.swap}
+        className='lp-exchange-rate__swap-btn'
         onClick={handleSwapDirection}
       >
         <SwapOutlined />
       </Tag>
     </div>
   );
-};
+})`
+  display: flex;
+  align-items: center;
+
+  .lp-exchange-rate__swap-btn {
+    margin-right: 0;
+    height: 19px;
+
+    &:hover {
+      background: var(--color-primary);
+      color: var(--color-white);
+    }
+  }
+`;

@@ -3,8 +3,6 @@
 }
 
 .number, .balance {
-  white-space: nowrap;
-
   &:global(.primary) {
     color: var(--color-primary);
   }

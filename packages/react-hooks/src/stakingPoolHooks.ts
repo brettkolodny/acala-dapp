@@ -113,8 +113,7 @@ export const useStakingTotalAmount = (): FixedPointNumber => {
   const totalAmount = useMemo<FixedPointNumber>((): FixedPointNumber => {
     if (!stakingPool) return FixedPointNumber.ZERO;
 
-    // return stakingPool.stakingPool. getTotalCommunalBalance().times(ratio);
-    return FixedPointNumber.ZERO;
+    return stakingPool.stakingPool.ledger.total.times(ratio);
   }, [stakingPool, ratio]);
 
   return totalAmount;

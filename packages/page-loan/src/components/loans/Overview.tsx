@@ -69,7 +69,7 @@ const ManagerBtn: FC<{ currency: CurrencyId; onClick: (currency: CurrencyId) => 
         onClick={handleClick}
         size='small'
       >
-        Manager
+        Manage
       </Button>
     </FlexBox>
   );

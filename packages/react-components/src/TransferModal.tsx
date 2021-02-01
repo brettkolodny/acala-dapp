@@ -2,7 +2,8 @@ import React, { FC, useState, ReactNode, useCallback, useMemo, useEffect } from 
 import clsx from 'clsx';
 
 import { CurrencyId } from '@acala-network/types/interfaces';
-import { Dialog, ArrowIcon, CheckedCircleIcon, FormItem, Button, InlineBlockBox } from '@acala-dapp/ui-components';
+import { styled, Dialog, ArrowIcon, CheckedCircleIcon, FormItem, Button, InlineBlockBox } from '@acala-dapp/ui-components';
+import type { BareProps } from '@acala-network/ui-componets';
 import { useModal, useAccounts, useConstants, useLPCurrencies, useBalance } from '@acala-dapp/react-hooks';
 import { useInputValue } from '@acala-dapp/react-hooks/useInputValue';
 import { FixedPointNumber } from '@acala-network/sdk-core';
@@ -154,6 +155,14 @@ const TransferForm: FC<TransferFormProps> = ({
   );
 };
 
+const DialogHeader = styled(({ className, currency }: { currency: CurrencyId } & BareProps) => {
+  return (
+    <div className={className}>
+      Transfer <TokenName currency={currency} />
+    </div>
+  );
+})``;
+
 interface TransferModalProps {
   mode: 'token' | 'lp-token';
   defaultCurrency: CurrencyId;
@@ -177,17 +186,6 @@ export const TransferModal: FC<TransferModalProps> = ({
   const { close, open, status: isOpenSelect } = useModal();
   const [value, setValue, { reset }] = useInputValue<AccountBalanceValue>({ account: '', balance: 0 });
   const balance = useBalance(selectedCurrency);
-
-  const renderHeader = useCallback((): JSX.Element => {
-    return (
-      <>
-        <InlineBlockBox margin={[0, 8]}>
-          <span>Transfer</span>
-        </InlineBlockBox>
-        <TokenName currency={selectedCurrency}/>
-      </>
-    );
-  }, [selectedCurrency]);
 
   const renderTransfer = useCallback((): JSX.Element => {
     return (
@@ -271,7 +269,7 @@ export const TransferModal: FC<TransferModalProps> = ({
         ) : null
       }
       onCancel={onClose}
-      title={renderHeader()}
+      title={<DialogHeader currency={selectedCurrency} />}
       visible={visible}
       withClose
     >

@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from 'react';
 import { useNavigate } from 'react-router';
 import { useDexIncentiveReward } from '@acala-dapp/react-hooks';
-import { styled, GridBox, Row, Col, InformationRoot, InformationTitle, Button } from '@acala-dapp/ui-components';
+import { styled, GridBox, Row, Col, InformationRoot, InformationTitle, Button, ComingSoon } from '@acala-dapp/ui-components';
 
 import { LPRewardCard } from './LPRewardCard';
 
@@ -28,7 +28,7 @@ export const LPIncentivesReward: FC = () => {
   const navigate = useNavigate();
 
   const goToLoan = useCallback(() => {
-    navigate({ pathname: '/swap?tab=add-liquidity' });
+    navigate({ pathname: '/swap/liquidity' });
   }, [navigate]);
 
   return (
@@ -44,23 +44,29 @@ export const LPIncentivesReward: FC = () => {
         </CInformationRoot>
       </Col>
       <Col span={24}>
-        <GridBox
-          column={4}
-          padding={40}
-          row={'auto'}
-        >
-          {
-            rewardPool.map((item) => (
-              <LPRewardCard
-                accumulatePeriod={params.accumulatePeriod}
-                key={`lp-reward-${item.currency.toString()}`}
-                lp={item.currency}
-                rewardCurrency={params.currency}
-                totalReward={item.reward}
-              />
-            ))
-          }
-        </GridBox>
+        {
+          rewardPool.length === 0
+            ? <ComingSoon />
+            : (
+              <GridBox
+                column={4}
+                padding={40}
+                row={'auto'}
+              >
+                {
+                  rewardPool.map((item) => (
+                    <LPRewardCard
+                      accumulatePeriod={params.accumulatePeriod}
+                      key={`lp-reward-${item.currency.toString()}`}
+                      lp={item.currency}
+                      rewardCurrency={params.currency}
+                      totalReward={item.reward}
+                    />
+                  ))
+                }
+              </GridBox>
+            )
+        }
       </Col>
     </Row>
   );

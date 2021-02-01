@@ -32,6 +32,7 @@ export const Console: FC = () => {
         <Tabs.Panel
           $key='staking'
           header='Mint & State'
+          key='staking'
         >
           <Content>
             <StakingConsole />
@@ -40,6 +41,7 @@ export const Console: FC = () => {
         <Tabs.Panel
           $key='redeem'
           header='Redeem'
+          key='redeem'
         >
           <Content>
             <RedeemConsole />

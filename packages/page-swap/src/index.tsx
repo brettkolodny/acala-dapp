@@ -29,8 +29,7 @@ const PageSwap: FC = () => {
     changeTab: changeSubMenu,
     currentTab: currentSubMenu
   } = useTabs<SwapPageType>('swap');
-
-  const params = useParams();
+  const { tab: pageTypeFromURL } = useParams();
 
   useSubMenu({
     active: currentSubMenu,
@@ -39,16 +38,17 @@ const PageSwap: FC = () => {
   });
 
   useLayoutEffect(() => {
-    if (params.tab) {
-      changeTab(params.tab as SwapTabType);
+    if (pageTypeFromURL) {
+      changeSubMenu(pageTypeFromURL as SwapPageType);
     }
-  /* eslint-disable-next-line */
-  }, [changeTab]);
+  }, [pageTypeFromURL, changeSubMenu]);
 
+  // show swap
   if (currentSubMenu === 'swap') {
     return <SwapConsole />;
   }
 
+  // show liquidity
   return (
     <Row gutter={[0, 24]}>
       <Col span={24}>

@@ -42,13 +42,13 @@ export const config: RouterConfigData[] = [
       },
       {
         element: <CSuspense><PageSwap /></CSuspense>,
-        path: 'swap',
-        title: 'Swap'
+        path: 'swap/:tab',
+        title: ''
       },
       {
         element: <CSuspense><PageSwap /></CSuspense>,
-        path: 'swap/:tab',
-        title: ''
+        path: 'swap',
+        title: 'Swap'
       },
       {
         element: <CSuspense><PageIncentives /></CSuspense>,

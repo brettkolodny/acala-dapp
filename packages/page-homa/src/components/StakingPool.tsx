@@ -1,19 +1,18 @@
 import React, { FC, ReactNode } from 'react';
 import { Table, Card, ColumnsType } from '@acala-dapp/ui-components';
 import { Token, FormatBalance, FormatRatio } from '@acala-dapp/react-components';
-import { useStakingPool, useConstants } from '@acala-dapp/react-hooks';
+import { useStakingPool } from '@acala-dapp/react-hooks';
 import { StakingPoolData } from '@acala-dapp/react-environment/store';
 
 export const StakingPool: FC = () => {
-  const { stakingCurrency } = useConstants();
   const stakingPool = useStakingPool();
   const tableConfig: ColumnsType<StakingPoolData> = [
     {
       align: 'left',
       /* eslint-disable-next-line react/display-name */
-      render: (): ReactNode => (
+      render: (value: StakingPoolData): ReactNode => (
         <Token
-          currency={stakingCurrency}
+          currency={value.derive.stakingCurrency}
           icon
         />
       ),
@@ -60,6 +59,7 @@ export const StakingPool: FC = () => {
             columns={tableConfig}
             dataSource={[stakingPool]}
             pagination={false}
+            rowKey={'stakingPool'}
           />
         ) : null
       }

@@ -1,10 +1,12 @@
 import React, { FC } from 'react';
 import { useLoansIncentiveReward } from '@acala-dapp/react-hooks';
-import { GridBox } from '@acala-dapp/ui-components';
+import { ComingSoon, GridBox } from '@acala-dapp/ui-components';
 import { LoanRewardCard } from './LoanRewardCard';
 
 export const LoansReward: FC = () => {
   const { params, rewardPool } = useLoansIncentiveReward();
+
+  if (rewardPool && rewardPool.length === 0) return <ComingSoon />;
 
   return (
     <GridBox

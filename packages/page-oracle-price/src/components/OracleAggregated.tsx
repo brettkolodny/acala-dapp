@@ -3,7 +3,7 @@ import React, { FC, useEffect, useRef } from 'react';
 import { FixedPointNumber } from '@acala-network/sdk-core';
 
 import { useStore } from '@acala-dapp/react-environment';
-import { Card, GridBox, styled } from '@acala-dapp/ui-components';
+import { Card, ComingSoon, GridBox, styled } from '@acala-dapp/ui-components';
 import { FormatPrice, FormatRatio, getCurrencyIdFromName, TokenName } from '@acala-dapp/react-components';
 import { useApi, useMemState } from '@acala-dapp/react-hooks';
 
@@ -180,6 +180,8 @@ const OracleAggregatedCard: FC<OracleAggregatedCardProps> = ({ currency, price }
 
 export const OracleAggregated: FC = () => {
   const oraclePrice = useStore('oraclePrices');
+
+  if (oraclePrice && oraclePrice.Aggregated.length === 0) return <ComingSoon />;
 
   return (
     <GridBox

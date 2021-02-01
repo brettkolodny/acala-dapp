@@ -44,20 +44,22 @@ const Price = styled(FormatPrice)<{ isHighest: boolean }>`
   transition: color, background .2s ease-in-out;
 `;
 
-const PriceWithChange: FC<{ price: FixedPointNumber; isHighest: boolean }> = ({ isHighest, price }) => {
-  const [latestUpdateTime, setLatestUpdateTime] = useMemState<number>(0);
+interface PriceWithChangeProps {
+  price: FixedPointNumber;
+  isHighest: boolean;
+  updateAt?: Date;
+}
+
+const PriceWithChange: FC<PriceWithChangeProps> = ({ isHighest, price, updateAt }) => {
   const [latestPrice, setLatestPrice] = useMemState<FixedPointNumber>(FixedPointNumber.ZERO);
 
   useEffect(() => {
     if (!price) return;
 
-    const currentTime = new Date().getTime();
-
     if (price.toString() !== latestPrice.toString()) {
-      setLatestUpdateTime(currentTime);
       setLatestPrice(price);
     }
-  }, [price, setLatestUpdateTime, setLatestPrice, latestPrice]);
+  }, [price, setLatestPrice, latestPrice]);
 
   return (
     <div>
@@ -66,16 +68,19 @@ const PriceWithChange: FC<{ price: FixedPointNumber; isHighest: boolean }> = ({ 
         isHighest={isHighest}
         prefix='$'
       />
-      { isHighest ? <CTimeChange latest={latestUpdateTime} /> : <TimeChangePlaceholder /> }
+      {
+        isHighest
+          ? <CTimeChange latest={updateAt?.getTime() || 0} />
+          : <TimeChangePlaceholder />
+      }
     </div>
   );
 };
 
 export const OracleDetails: FC = () => {
   const oraclePrices = useStore('oraclePrices');
-
   const data = useMemo(() => {
-    const result: Record<string, FixedPointNumber | string>[] = [];
+    const result: Record<string, any>[] = [];
 
     Object.keys(oraclePrices).forEach((provider) => {
       const data = oraclePrices[provider as OracleProvider];
@@ -88,12 +93,18 @@ export const OracleDetails: FC = () => {
             temp.highest = item.price;
           }
 
-          temp[provider] = item.price;
+          temp[provider] = {
+            price: item.price,
+            timestamp: item.timestamp
+          };
         } else {
           result.push({
             currency: item.currency,
             highest: item.price,
-            [provider]: item.price
+            [provider]: {
+              price: item.price,
+              timestamp: item.timestamp
+            }
           });
         }
       });
@@ -120,8 +131,12 @@ export const OracleDetails: FC = () => {
           /* eslint-disable-next-line react/display-name */
           render: (data: any): JSX.Element => (
             <PriceWithChange
-              isHighest={(data.highest as FixedPointNumber).isEqualTo(data[item])}
-              price={data[item]}
+              isHighest={
+                (data[item]?.price) &&
+                (data.highest as FixedPointNumber).isEqualTo(data[item].price)
+              }
+              price={data[item]?.price}
+              updateAt={data[item]?.timestamp}
             />
           ),
           title: item

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 
 import { FixedPointNumber } from '@acala-network/sdk-core';
 
@@ -55,20 +55,15 @@ const format = (time: number): string => {
 };
 
 export const TimeChange: FC<{ latest: number }> = styled(({ className, latest }: { className: string; latest: number }) => {
-  const [spacing, setSpacing] = useMemState<number>(0);
-  const latestRef = useRef<number>(latest);
+  const [spacing, setSpacing] = useState<number>(-1);
   const intervalRef = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
-    if (latestRef.current !== latest) {
-      latestRef.current = latest;
+    intervalRef.current = setInterval(() => {
+      const now = new Date().getTime();
 
-      intervalRef.current = setInterval(() => {
-        const now = new Date().getTime();
-
-        setSpacing(now - latest);
-      }, 1000);
-    }
+      setSpacing(now - latest);
+    }, 1000);
 
     return (): void => {
       if (intervalRef.current) {
@@ -76,10 +71,10 @@ export const TimeChange: FC<{ latest: number }> = styled(({ className, latest }:
         intervalRef.current = undefined;
       }
     };
-  }, [latest]);
+  }, [latest, setSpacing]);
 
   return (
-    <p className={className}>{spacing === 0 ? '-' : format(spacing) + ' ago'}</p>
+    <p className={className}>{spacing === -1 ? '-' : format(spacing) + ' ago'}</p>
   );
 })`
   margin-top: 18px;
@@ -125,7 +120,7 @@ const PriceChange: FC<{ latest: FixedPointNumber }> = ({ latest }) => {
 
       latestRef.current = latest;
     }
-  }, [latest]);
+  }, [latest, setRatio, setDirection]);
 
   if (!ratio.isFinaite() || ratio.isZero()) return null;
 
@@ -147,21 +142,18 @@ const PriceChange: FC<{ latest: FixedPointNumber }> = ({ latest }) => {
 interface OracleAggregatedCardProps {
   currency: string;
   price: FixedPointNumber;
+  updateAt?: Date;
 }
 
-const OracleAggregatedCard: FC<OracleAggregatedCardProps> = ({ currency, price }) => {
+const OracleAggregatedCard: FC<OracleAggregatedCardProps> = ({ currency, price, updateAt }) => {
   const { api } = useApi();
-  const [latestUpdateTime, setLatestUpdateTime] = useMemState<number>(0);
   const [latestPrice, setLatestPrice] = useMemState<FixedPointNumber>(FixedPointNumber.ZERO);
 
   useEffect(() => {
-    const currentTime = new Date().getTime();
-
     if (price.toString() !== latestPrice.toString()) {
-      setLatestUpdateTime(currentTime);
       setLatestPrice(price);
     }
-  }, [price, setLatestUpdateTime, setLatestPrice, latestPrice]);
+  }, [price, setLatestPrice, latestPrice]);
 
   return (
     <AggregatedCard padding={false}>
@@ -173,7 +165,7 @@ const OracleAggregatedCard: FC<OracleAggregatedCardProps> = ({ currency, price }
         data={price}
         prefix='$'
       />
-      <TimeChange latest={latestUpdateTime} />
+      <TimeChange latest={updateAt?.getTime() || 0} />
     </AggregatedCard>
   );
 };
@@ -196,6 +188,7 @@ export const OracleAggregated: FC = () => {
               currency={item.currency}
               key={`aggregated-price-${item.currency}`}
               price={item.price}
+              updateAt={item.timestamp}
             />
           );
         })

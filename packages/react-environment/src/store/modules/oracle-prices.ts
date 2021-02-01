@@ -13,6 +13,7 @@ export type OracleProvider = 'Aggregated' | 'Acala' | 'Band';
 export type OraclePriceData = {
   currency: string;
   price: FixedPointNumber;
+  timestamp?: Date;
 }[];
 
 type OraclePriceAction = {
@@ -40,8 +41,6 @@ const reducer = (state: OraclePriceState, action: OraclePriceAction): OraclePric
       };
     }
   }
-
-  return state;
 };
 
 export const getOraclePrices = (api: ApiRx, type: OracleProvider = 'Aggregated'): Observable<OraclePriceData> => {
@@ -50,7 +49,8 @@ export const getOraclePrices = (api: ApiRx, type: OracleProvider = 'Aggregated')
       return result.map((item) => {
         return {
           currency: item[0].asToken.toString(),
-          price: FixedPointNumber.fromInner((item[1]?.value as any)?.value?.toString() || '0')
+          price: FixedPointNumber.fromInner((item[1]?.value as any)?.value?.toString() || '0'),
+          timestamp: new Date((item[1]?.value as any)?.timestamp.toNumber())
         };
       });
     })

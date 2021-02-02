@@ -13,7 +13,7 @@ const ProposalsList = styled.div`
 `;
 
 const ProposalCard = styled(({ className, data }: { data: ProposalData } & BareProps) => {
-  const { collective, document, name, section } = data;
+  const { call, collective, document, name, section } = data;
   const { onSelectProposal, selectedProposal } = useContext(CreateContext);
 
   const handleClick = useCallback(() => {
@@ -23,9 +23,9 @@ const ProposalCard = styled(({ className, data }: { data: ProposalData } & BareP
   const isActive = useMemo(() => {
     return selectedProposal &&
       selectedProposal.section === section &&
-      selectedProposal.name === name &&
+      selectedProposal.call === call &&
       selectedProposal.collective === collective;
-  }, [name, collective, selectedProposal, section]);
+  }, [call, collective, selectedProposal, section]);
 
   // const _document = useMemo(() => {
   //   if (!api) return;
@@ -39,7 +39,7 @@ const ProposalCard = styled(({ className, data }: { data: ProposalData } & BareP
       className={clsx(className, { active: isActive })}
       onClick={handleClick}
     >
-      <p className='proposal-card__name'>{formatter(name)}</p>
+      <p className='proposal-card__name'>{name}</p>
       <p className='proposal-card__document'>{document}</p>
     </div>
   );

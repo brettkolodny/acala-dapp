@@ -18,11 +18,11 @@ export const ProposalFormBottom: FC<ProposalFormBottomProps> = ({ form }) => {
   const proposal = useMemo(() => {
     if (!api || !selectedProposal) return;
 
-    const { name, section } = selectedProposal;
+    const { call: callName, section } = selectedProposal;
 
     if (!api.tx) return;
 
-    const call = api.tx[camelCase(section)][camelCase(name)];
+    const call = api.tx[camelCase(section)][camelCase(callName)];
 
     return call.toJSON();
   }, [api, selectedProposal]);
@@ -38,10 +38,10 @@ export const ProposalFormBottom: FC<ProposalFormBottomProps> = ({ form }) => {
       if (!selectedProposal) return;
 
       const values = form.getFieldsValue();
-      const { name, origin, section } = selectedProposal;
+      const { call: callName, origin, section } = selectedProposal;
       const { args } = proposal;
 
-      if (!name || !origin || !section) return;
+      if (!callName || !origin || !section) return;
 
       if (selectedProposal?.patchParams) {
         Object.assign(values, selectedProposal.patchParams);
@@ -83,7 +83,7 @@ export const ProposalFormBottom: FC<ProposalFormBottomProps> = ({ form }) => {
         return getData(key.type, _value);
       });
 
-      let _inner = api.tx[camelCase(section)][camelCase(name)].apply(api, _params);
+      let _inner = api.tx[camelCase(section)][camelCase(callName)].apply(api, _params);
 
       // try schedule
       if (values.schedule) {
@@ -98,7 +98,7 @@ export const ProposalFormBottom: FC<ProposalFormBottomProps> = ({ form }) => {
       }
 
       if (values.changeOrigin) {
-        _inner = api.tx.authorship.dispatchAs(
+        _inner = api.tx.authority.dispatchAs(
           values['changeOrigin-data']?.asOrigin,
           _inner
         );
@@ -112,6 +112,8 @@ export const ProposalFormBottom: FC<ProposalFormBottomProps> = ({ form }) => {
 
       return call;
     } catch (e) {
+      console.log(e);
+
       notification.info({
         message: 'Build extrinsic failed, Please check params'
       });

@@ -4,6 +4,7 @@ import { EnsureProportionMoreThan, ensureRootOrHalfHomaCouncil, ensureRootOrHalf
 export interface ModuleCalls {
   document: string;
   name: string;
+  call: string;
   section: string;
   origin?: EnsureProportionMoreThan<any, any, any, true>;
   patchParams?: Record<string, any>;
@@ -25,34 +26,60 @@ const commonProposalsConfig = [
   {
     calls: [
       {
+        call: 'add_member',
         document: 'Add Member To General Council',
-        name: 'add_member',
+        name: 'Add General Council Member',
         section: 'general_council_membership'
       },
       {
+        call: 'remove_member',
         document: 'Remove Member From General Council',
-        name: 'remove_member',
+        name: 'Remove General Council Member',
         section: 'general_council_membership'
       },
       {
+        call: 'add_member',
         document: 'Add Member To Homa Council',
-        name: 'add_member',
+        name: 'Add Homa Council Member',
         section: 'homa_council_membership'
       },
       {
+        call: 'remove_member',
         document: 'Remove Member From Homa Council',
-        name: 'remove_member',
+        name: 'Remove Homa Council Member',
         section: 'homa_council_membership'
       },
       {
+        call: 'add_member',
         document: 'Add Member To Honzon Council',
-        name: 'add_member',
+        name: 'Add Honzon Council Member',
         section: 'honzon_council_membership'
       },
       {
+        call: 'remove_member',
         document: 'Remove Member From Honzon Council',
-        name: 'remove_member',
+        name: 'Remove Honzon Council Member',
         section: 'honzon_council_membership'
+      },
+      {
+        call: 'transfer',
+        document: 'Withdraw Treasury',
+        name: 'Withdraw DSWF Treasury',
+        patchParams: {
+          changeOrigin: true,
+          'changeOrigin-data': 'Root'
+        },
+        section: 'currencies'
+      },
+      {
+        call: 'transfer',
+        document: 'Withdraw Treasury',
+        name: 'Withdraw Acala Treasury',
+        patchParams: {
+          changeOrigin: true,
+          'changeOrigin-data': 'AcalaTreasury'
+        },
+        section: 'currencies'
       }
     ],
     collective: 'Council',
@@ -61,41 +88,48 @@ const commonProposalsConfig = [
   {
     calls: [
       {
+        call: 'auction_surplus',
         document: 'Start surplus auction',
-        name: 'auction_surplus',
+        name: 'Start Auction Surplus',
         section: 'cdp_treasury'
       },
       {
+        call: 'auction_debit',
         document: 'Start debit auction',
-        name: 'auction_debit',
+        name: 'Start Debit Auction',
         section: 'cdp_treasury'
       },
       {
+        call: 'auction_collateral',
         document: 'Start collateral auction',
-        name: 'auction_collateral',
+        name: 'Seart Collateral Auction',
         section: 'cdp_treasury'
       },
       {
+        call: 'set_collateral_auction_maximum_size',
         document: 'Set collateral auction maximum size',
-        name: 'set_collateral_auction_maximum_size',
+        name: 'Set Collateral Auction Maximum Size',
         section: 'cdp_treasury'
       },
       {
+        call: 'set_global_params',
         document: 'Update global parameters related to risk management of CDP',
-        name: 'set_global_params',
+        name: 'Set CDP Engine Global Params',
         section: 'cdp_engine'
       },
       {
+        call: 'set_collateral_params',
         document: 'Update parameters related to risk management of CDP under specific collateral type',
-        name: 'set_collateral_params',
+        name: 'Set Collateral Loan Params',
         section: 'cdp_engine'
       },
       {
+        call: 'transfer',
         document: 'Withdraw Treasury',
-        name: 'transfer',
+        name: 'Withdraw Honzon Treasury',
         patchParams: {
           changeOrigin: true,
-          'changeOrigin-data': 'Honzon Treatury'
+          'changeOrigin-data': 'HonzonTreasury'
         },
         section: 'currencies'
       }
@@ -106,23 +140,27 @@ const commonProposalsConfig = [
   {
     calls: [
       {
+        call: 'update_loans_incentive_rewards',
         document: 'Update loans incentive rewawrds',
-        name: 'update_loans_incentive_rewards',
+        name: 'Update Loans Incentive Rewards',
         section: 'incentives'
       },
       {
+        call: 'update_dex_incentive_rewards',
         document: 'Update dex incentive rewards',
-        name: 'update_dex_incentive_rewards',
+        name: 'Update Dex Incentive Rewards',
         section: 'incentives'
       },
       {
+        call: 'update_homa_incentive_reward',
         document: 'Update homa incentive rewards',
-        name: 'update_homa_incentive_reward',
+        name: 'Update Homa Incentive Reward',
         section: 'incentives'
       },
       {
+        call: 'update_dex_saving_rates',
         document: 'Update dex saving reates',
-        name: 'update_dex_saving_rates',
+        name: 'Update Dex Saving Rates',
         section: 'incentives'
       }
     ],
@@ -132,9 +170,20 @@ const commonProposalsConfig = [
   {
     calls: [
       {
+        call: 'set_staking_pool_params',
         document: 'Set staking pool params',
-        name: 'set_staking_pool_params',
+        name: 'Set Staking Pool Params',
         section: 'staking_pool'
+      },
+      {
+        call: 'transfer',
+        document: 'Withdraw Treasury',
+        name: 'Withdraw Homa Treasury',
+        patchParams: {
+          changeOrigin: true,
+          'changeOrigin-data': 'HomaTreasury'
+        },
+        section: 'currencies'
       }
     ],
     collective: 'staking_pool',
@@ -143,18 +192,21 @@ const commonProposalsConfig = [
   {
     calls: [
       {
+        call: 'list_trading_pair',
         document: 'List a new trading pair, trading pair will become Enabled status after provision process.',
-        name: 'list_trading_pair',
+        name: 'List Trading Pair',
         section: 'dex'
       },
       {
+        call: 'enable_trading_pair',
         document: 'Enable a new trading pair(without the provision process),',
-        name: 'enable_trading_pair',
+        name: 'Enable Trading Pair',
         section: 'dex'
       },
       {
+        call: 'disable_trading_pair',
         document: 'Disbale a trading pair',
-        name: 'disable_trading_pair',
+        name: 'Disable Trading Pair',
         section: 'dex'
       }
     ],
@@ -164,13 +216,15 @@ const commonProposalsConfig = [
   {
     calls: [
       {
+        call: 'emergency_shutdown',
         document: 'Start emergency shutdown',
-        name: 'emergency_shutdown',
+        name: 'Emergency Shutdown',
         section: 'emergency_shutdown'
       },
       {
+        call: 'open_collateral_refund',
         document: 'Open final redemption if settlement is completed.',
-        name: 'open_collateral_refund',
+        name: 'Open Collateral Refund',
         section: 'emergency_shutdown'
       }
     ],

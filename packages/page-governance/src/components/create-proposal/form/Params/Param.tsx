@@ -27,8 +27,8 @@ const PARAMS_COMPONENT_CONFIG: [string[], ComponentType<any>][] = [
   [['Vec'], Vec]
 ];
 
-const pretreatmentType = ({ info, sub, type }: TypeDef): string => {
-  if (type === 'LookupSource') return 'AccountId';
+const pretreatmentType = ({ info, name, sub, type }: TypeDef): string => {
+  if (name === 'LookupSource') return 'AccountId';
 
   switch (info) {
     case TypeDefInfo.Compact:
@@ -65,15 +65,11 @@ const pretreatmentType = ({ info, sub, type }: TypeDef): string => {
     default:
       return type;
   }
-
-  return '';
 };
 
 const getActualParamsComponent = (type: TypeDef): ComponentType<any> => {
   const _type = pretreatmentType(type);
   let acturalComponent: ComponentType<any> = Null;
-
-  console.log(_type);
 
   for (const [types, component] of PARAMS_COMPONENT_CONFIG) {
     const isMatch = types.find((item) => _type === item);
@@ -96,10 +92,8 @@ export const Param: FC<ParamProps> = ({ onChange, type, value }) => {
   const typeDef = useMemo(() => {
     const instance = api.createType(type as any);
 
-    return getTypeDef(instance.toRawType());
+    return getTypeDef(instance.toRawType(), { name: type });
   }, [type, api]);
-
-  console.log(typeDef, type);
 
   return createElement(
     getActualParamsComponent(typeDef),

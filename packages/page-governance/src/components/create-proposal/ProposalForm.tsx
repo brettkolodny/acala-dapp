@@ -27,11 +27,11 @@ export const ProposalForm = styled(({ className, form }: ProposalFormProps) => {
   const proposal = useMemo(() => {
     if (!api || !selectedProposal) return;
 
-    const { name, section } = selectedProposal;
+    const { call: callName, section } = selectedProposal;
 
     if (!api.tx) return;
 
-    const call = api.tx[camelCase(section)][camelCase(name)];
+    const call = api.tx[camelCase(section)][camelCase(callName)];
 
     return call.toJSON();
   }, [api, selectedProposal]);

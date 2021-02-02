@@ -48,14 +48,18 @@ export const ProposalFormBottom: FC<ProposalFormBottomProps> = ({ form }) => {
       }
 
       const _params = args.map((key: any) => {
-        console.log(key.name);
-
         return values[key.name];
       });
 
-      console.log(_params);
-
       let _inner = api.tx[camelCase(section)][camelCase(callName)].apply(api, _params);
+
+      // try change origin
+      if (values['change-origin']) {
+        _inner = api.tx.authority.dispatchAs(
+          values['change-origin-data']?.asOrigin,
+          _inner
+        );
+      }
 
       // try schedule
       if (values.schedule) {
@@ -65,13 +69,6 @@ export const ProposalFormBottom: FC<ProposalFormBottomProps> = ({ form }) => {
           },
           values['schedule-data']?.priority || 0,
           values['schedule-data']?.withDelayedOrigin || false,
-          _inner
-        );
-      }
-
-      if (values.changeOrigin) {
-        _inner = api.tx.authority.dispatchAs(
-          values['changeOrigin-data']?.asOrigin,
           _inner
         );
       }

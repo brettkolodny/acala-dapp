@@ -20,7 +20,10 @@ export interface ProposalData {
 }
 
 function getAllCouncil (api: ApiRx): string[] {
-  return Object.keys(api.query).filter((key: string): boolean => key.endsWith('Council'));
+  return Object.keys(api.query)
+    .filter((key: string): boolean => {
+      return key.endsWith('Council') || key === 'technicalCommittee';
+    });
 }
 
 function fetchProposalAndVote (api: ApiRx, council: string, hash: string): Observable<ProposalData> {
@@ -85,8 +88,7 @@ export const useAllCouncilMembers = (): { loading: boolean; init: boolean; membe
 };
 
 export const useCouncilMembers = (council: string): Vec<AccountId> | undefined => {
-  const _council = council.endsWith('Council') ? council : council + 'Council';
-  const { data: members } = useQuery<Vec<AccountId>>(`query.${_council}.members`, []);
+  const { data: members } = useQuery<Vec<AccountId>>(`query.${council}.members`, []);
 
   return members;
 };
@@ -176,7 +178,7 @@ export const useScheduler = (): { data: SchedulerData[]; loading: boolean } => {
       startWith([{ event: { section: 'scheduler' } }] as unknown as Vec<EventRecord>),
       // if receive events from scheduler, reflash data
       filter((events) => {
-        return events.findIndex((event) => event?.event?.section === 'scheduler') !== -1;
+        return events.findIndex((event: EventRecord) => event?.event?.section === 'scheduler') !== -1;
       }),
       tap(() => setLoading(true)),
       switchMap(() => {

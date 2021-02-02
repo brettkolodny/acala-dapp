@@ -10,7 +10,7 @@ const CouncilTabHeader = styled(TabHeader)<{ type: CouncilType }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 160px;
+  min-width: 160px;
   height: 46px;
   padding: 8px;
   border-radius: 8px;

@@ -211,8 +211,10 @@ const commonProposalsConfig = [
         name: 'Withdraw DSWF Treasury',
         origin: ensureRootOrHalfGeneralCouncil,
         patchParams: {
-          changeOrigin: true,
-          'changeOrigin-data': 'DSWF'
+          'change-origin': true,
+          'change-origin-data': {
+            asOrigin: 'DSWF'
+          }
         },
         section: 'currencies'
       },
@@ -222,8 +224,10 @@ const commonProposalsConfig = [
         name: 'Withdraw Acala Treasury',
         origin: ensureRootOrHalfGeneralCouncil,
         patchParams: {
-          changeOrigin: true,
-          'changeOrigin-data': 'AcalaTreasury'
+          'change-origin': true,
+          'change-origin-data': {
+            asOrigin: 'AcalaTreasury'
+          }
         },
         section: 'currencies'
       },
@@ -233,8 +237,10 @@ const commonProposalsConfig = [
         name: 'Withdraw Honzon Treasury',
         origin: ensureRootOrHalfHonzonCouncil,
         patchParams: {
-          changeOrigin: true,
-          'changeOrigin-data': 'HonzonTreasury'
+          'change-origin': true,
+          'change-origin-data': {
+            asOrigin: 'HonzonTreasury'
+          }
         },
         section: 'currencies'
       },
@@ -244,8 +250,10 @@ const commonProposalsConfig = [
         name: 'Withdraw Homa Treasury',
         origin: ensureRootOrHalfHomaCouncil,
         patchParams: {
-          changeOrigin: true,
-          'changeOrigin-data': 'HomaTreasury'
+          'change-origin': true,
+          'change-origin-data': {
+            asOrigin: 'HomaTreasury'
+          }
         },
         section: 'currencies'
       }

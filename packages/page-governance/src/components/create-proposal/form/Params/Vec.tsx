@@ -24,7 +24,7 @@ const Vec: FC<BaseParamProps> = ({ onChange, typeDef }) => {
         {(fields, { add, remove }): JSX.Element => {
           return (
             <>
-              {fields.map((field, index) => {
+              {fields.map((field) => {
                 return (
                   <div key={`field-${field.name}`}>
                     {
@@ -34,6 +34,7 @@ const Vec: FC<BaseParamProps> = ({ onChange, typeDef }) => {
                     }
                     <FlexBox
                       alignItems='center'
+                      className='proposal-form__remove'
                       justifyContent='flex-end'
                     >
                       <Button

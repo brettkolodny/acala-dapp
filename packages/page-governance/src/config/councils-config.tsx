@@ -1,6 +1,11 @@
 export type CouncilType = 'generalCouncil' | 'honzonCouncil' | 'homaCouncil' | 'technicalCommittee';
 
-export type EnsureProportionMoreThan<N extends number, D extends number, C extends CouncilType, R extends boolean> = {
+export type EnsureProportionMoreThan<
+  N extends number,
+  D extends number,
+  C extends CouncilType,
+  R extends boolean
+> = {
   numerator: N;
   denominator: D;
   council: C;

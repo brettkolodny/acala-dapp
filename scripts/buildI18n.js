@@ -84,9 +84,19 @@ const dappModules = [
   'react-components'
 ];
 
+const dashboardModules = [
+  'dashboard',
+  'react-components'
+];
+
 const APP_NAME = process.env.APP_NAME;
 
 if (APP_NAME === 'dapp') {
   buildI18n(dappModules, 'apps/src/i18n/index.json');
   writeInitI18n(dappModules, 'apps/src/initI18n.ts');
+}
+
+if (APP_NAME === 'dashboard') {
+  buildI18n(dashboardModules, 'dashboard/src/i18n/index.json');
+  writeInitI18n(dashboardModules, 'dashboard/src/initI18n.ts');
 }

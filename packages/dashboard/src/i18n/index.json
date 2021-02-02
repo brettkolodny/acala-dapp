@@ -1,0 +1,18 @@
+{
+  "en": {
+    "dashboard": {},
+    "react-components": {
+      "My Address": "MyAddress",
+      "Transfer": "Transfer",
+      "TESTNET_SCAMES": "WARNING: All assets in the current TESTNET are for testing purposes only and have no real value."
+    }
+  },
+  "zh": {
+    "dashboard": {},
+    "react-components": {
+      "My Address": "MyAddress",
+      "Transfer": "Transfer",
+      "TESTNET_SCAMES": "警告：当前测试网中所有资产仅供测试使用，无真实价值。"
+    }
+  }
+}

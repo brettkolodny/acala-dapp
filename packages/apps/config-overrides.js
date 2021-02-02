@@ -1,6 +1,6 @@
-const { override } = require("customize-cra");
-const ModuleScopePlugin = require("react-dev-utils/ModuleScopePlugin");
-const path = require("path");
+const { override } = require('customize-cra');
+const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
+const path = require('path');
 
 const findPackages = require('../../scripts/findPackages');
 
@@ -11,7 +11,7 @@ module.exports = override(function(config, env) {
     config.module.rules.push({
         test: /\.mjs$/,
         include: /node_modules/,
-        type: "javascript/auto"
+        type: 'javascript/auto'
     });
 
     // include lib

@@ -7,6 +7,13 @@ const findPackages = require('../../scripts/findPackages');
 const packages = findPackages();
 
 module.exports = override(function (config) {
+  // support mjs
+  config.module.rules.push({
+    test: /\.mjs$/,
+    include: /node_modules/,
+    type: 'javascript/auto'
+  });
+
   // include lib
   config.module.rules.forEach((rule) => {
     if (!Reflect.has(rule, 'oneOf')) {

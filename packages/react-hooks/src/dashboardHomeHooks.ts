@@ -52,7 +52,7 @@ export const useDashboard = (): HooksReturnType => {
     return {
       DOTStaked: {
         history: DOTStakedHistory,
-        value: stakingPool?.stakingPool.getCommunalBonded()?.toString(0)
+        value: stakingPool?.stakingPool.ledger.total?.toString()
       },
       aUSDIssued: {
         history: aUSDIssuedHistory,

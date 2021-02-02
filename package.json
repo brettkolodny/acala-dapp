@@ -19,7 +19,7 @@
   "scripts": {
     "bump-version": "node scripts/bump-version.js",
     "start:dapp": "APP_NAME='dapp' yarn run build:i18n && cd packages/apps && react-app-rewired start",
-    "build:dapp": "APP_NAME='dapp' yarn run build:i18n cd packages/apps && react-app-rewired build",
+    "build:dapp": "APP_NAME='dapp' yarn run build:i18n && cd packages/apps && react-app-rewired build",
     "start:dashboard": "APP_NAME='dashboard' yarn run build:i18n && cd packages/dashboard && react-app-rewired start",
     "build:dashboard": "APP_NAME='dashboard' yarn run build:i18n && cd packages/dashboard && react-app-rewired build",
     "build:i18n": "node scripts/buildI18n.js",

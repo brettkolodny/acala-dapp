@@ -1,34 +1,50 @@
-import React, { FC, memo } from 'react';
-import { TypeDef } from '@polkadot/types/type';
-import { Form, MinusCircleOutlined, Button } from '@acala-dapp/ui-components';
+import React, { FC, memo, useCallback } from 'react';
+import type { TypeDef } from '@polkadot/types/types';
+import { Form, Button, FlexBox } from '@acala-dapp/ui-components';
 import { BaseParamProps } from './types';
-import { useTransitionQueryParams } from '@acala-dapp/react-environment/';
 import { Param } from './Param';
 
-const Vec: FC<BaseParamProps> = ({ typeDef, onChange }) => {
+const Vec: FC<BaseParamProps> = ({ onChange, typeDef }) => {
   const [form] = Form.useForm();
   const subTypes = typeDef.sub as TypeDef;
+  const handleValueChange = useCallback((_changedValue, values) => {
+    console.log(values);
+
+    if (onChange) {
+      onChange(values[typeDef.name || 0]);
+    }
+  }, [onChange, typeDef]);
 
   return (
-    <Form form={form}>
-      <Form.List name={typeDef.name || ''}>
+    <Form
+      form={form}
+      onValuesChange={handleValueChange}
+    >
+      <Form.List name={typeDef.name || 0}>
         {(fields, { add, remove }): JSX.Element => {
           return (
             <>
-              {fields.map((field) => {
+              {fields.map((field, index) => {
                 return (
-                  <>
+                  <div key={`field-${field.name}`}>
                     {
-                      <Form.Item>
+                      <Form.Item name={[field.name]}>
                         <Param type={subTypes.type} />
                       </Form.Item>
                     }
-                    <MinusCircleOutlined
-                      className='list-form-item__remove-btn'
-                      onClick={(): void => remove(field.name)}
-                      size={32}
-                    />
-                  </>
+                    <FlexBox
+                      alignItems='center'
+                      justifyContent='flex-end'
+                    >
+                      <Button
+                        className='proposal-form__remove-btn'
+                        onClick={(): void => remove(field.name)}
+                        type='ghost'
+                      >
+                        remove
+                      </Button>
+                    </FlexBox>
+                  </div>
                 );
               })}
               <Form.Item>

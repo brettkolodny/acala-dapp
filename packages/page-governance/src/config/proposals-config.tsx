@@ -13,7 +13,7 @@ export interface ModuleCalls {
 export interface ModuleProposalCouncilConfig {
   collective: string;
   calls: ModuleCalls[];
-  origin: EnsureProportionMoreThan<any, any, any, true>;
+  origin?: EnsureProportionMoreThan<any, any, any, true>;
 }
 
 export function formatter (str?: string): string {
@@ -62,24 +62,16 @@ const commonProposalsConfig = [
         section: 'honzon_council_membership'
       },
       {
-        call: 'transfer',
-        document: 'Withdraw Treasury',
-        name: 'Withdraw DSWF Treasury',
-        patchParams: {
-          changeOrigin: true,
-          'changeOrigin-data': 'Root'
-        },
-        section: 'currencies'
+        call: 'add_member',
+        document: 'Add Member To Acala Oracle',
+        name: 'Add Acala Oracle Member',
+        section: 'operator_membership_acala'
       },
       {
-        call: 'transfer',
-        document: 'Withdraw Treasury',
-        name: 'Withdraw Acala Treasury',
-        patchParams: {
-          changeOrigin: true,
-          'changeOrigin-data': 'AcalaTreasury'
-        },
-        section: 'currencies'
+        call: 'add_member',
+        document: 'Add Member To Band Oracle',
+        name: 'Add Band Oracle Member',
+        section: 'operator_membership_band'
       }
     ],
     collective: 'Council',
@@ -122,16 +114,6 @@ const commonProposalsConfig = [
         document: 'Update parameters related to risk management of CDP under specific collateral type',
         name: 'Set Collateral Loan Params',
         section: 'cdp_engine'
-      },
-      {
-        call: 'transfer',
-        document: 'Withdraw Treasury',
-        name: 'Withdraw Honzon Treasury',
-        patchParams: {
-          changeOrigin: true,
-          'changeOrigin-data': 'HonzonTreasury'
-        },
-        section: 'currencies'
       }
     ],
     collective: 'Loan',
@@ -174,16 +156,6 @@ const commonProposalsConfig = [
         document: 'Set staking pool params',
         name: 'Set Staking Pool Params',
         section: 'staking_pool'
-      },
-      {
-        call: 'transfer',
-        document: 'Withdraw Treasury',
-        name: 'Withdraw Homa Treasury',
-        patchParams: {
-          changeOrigin: true,
-          'changeOrigin-data': 'HomaTreasury'
-        },
-        section: 'currencies'
       }
     ],
     collective: 'staking_pool',
@@ -229,6 +201,56 @@ const commonProposalsConfig = [
       }
     ],
     collective: 'emergency_shutdown',
+    origin: ensureRootOrHalfGeneralCouncil
+  },
+  {
+    calls: [
+      {
+        call: 'transfer',
+        document: 'Withdraw Treasury',
+        name: 'Withdraw DSWF Treasury',
+        origin: ensureRootOrHalfGeneralCouncil,
+        patchParams: {
+          changeOrigin: true,
+          'changeOrigin-data': 'DSWF'
+        },
+        section: 'currencies'
+      },
+      {
+        call: 'transfer',
+        document: 'Withdraw Acala Treasury',
+        name: 'Withdraw Acala Treasury',
+        origin: ensureRootOrHalfGeneralCouncil,
+        patchParams: {
+          changeOrigin: true,
+          'changeOrigin-data': 'AcalaTreasury'
+        },
+        section: 'currencies'
+      },
+      {
+        call: 'transfer',
+        document: 'Withdraw Honzon Treasury',
+        name: 'Withdraw Honzon Treasury',
+        origin: ensureRootOrHalfHonzonCouncil,
+        patchParams: {
+          changeOrigin: true,
+          'changeOrigin-data': 'HonzonTreasury'
+        },
+        section: 'currencies'
+      },
+      {
+        call: 'transfer',
+        document: 'Withdraw Treasury',
+        name: 'Withdraw Homa Treasury',
+        origin: ensureRootOrHalfHomaCouncil,
+        patchParams: {
+          changeOrigin: true,
+          'changeOrigin-data': 'HomaTreasury'
+        },
+        section: 'currencies'
+      }
+    ],
+    collective: 'treasury',
     origin: ensureRootOrHalfGeneralCouncil
   }
 ];

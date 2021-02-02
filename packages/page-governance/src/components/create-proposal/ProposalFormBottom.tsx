@@ -47,41 +47,13 @@ export const ProposalFormBottom: FC<ProposalFormBottomProps> = ({ form }) => {
         Object.assign(values, selectedProposal.patchParams);
       }
 
-      const getData = (key: string, value: any): any => {
-        if (!key) return;
-
-        const _key = key;
-        let definition = api.registry.getDefinition(key) || '';
-
-        definition = definition.replace(/^Option<(.*?)>$/, '$1');
-        definition = definition.replace(/^Compact<(.*?)>$/, '$1');
-
-        if (key === 'Compact<BalanceOf>') {
-          return api.createType(_key as any, new FixedPointNumber(value || 0).toChainData());
-        }
-
-        if (['Ratio', 'Rate', 'UInt<128, Balance>', 'FixedU128', 'BalanceOf'].includes(definition)) {
-          return api.createType(_key as any, new FixedPointNumber(value || 0).toChainData());
-        }
-
-        return api.createType(_key as any, value);
-      };
-
       const _params = args.map((key: any) => {
-        const _value = values[key.name];
+        console.log(key.name);
 
-        if (key.type === 'CurrencyId' || key.type === 'CurrencyIdOf') return _value;
-
-        if (key.type.includes('Vec')) {
-          return values[key.name].map((item: any) => {
-            return Object.keys(item).map((n) => {
-              return getData(n, item[n]);
-            });
-          });
-        }
-
-        return getData(key.type, _value);
+        return values[key.name];
       });
+
+      console.log(_params);
 
       let _inner = api.tx[camelCase(section)][camelCase(callName)].apply(api, _params);
 

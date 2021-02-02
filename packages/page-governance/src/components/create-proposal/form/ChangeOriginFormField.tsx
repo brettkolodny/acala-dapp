@@ -5,7 +5,7 @@ import { Form,
 } from '@acala-dapp/ui-components';
 import type { BareProps } from '@acala-dapp/ui-components';
 import { FormField } from './common';
-import { ProposalFormItem } from './CreateProposalForm';
+// import { ProposalFormItem } from './CreateProposalForm';
 
 const FormItem = Form.Item;
 
@@ -28,7 +28,7 @@ export const ChangeOriginFormField = styled(({ className, name, open }: ChangeOr
       >
         <Switch />
       </FormItem>
-      {
+      {/* {
         open ? (
           <FormField className={className} >
             <ProposalFormItem
@@ -39,7 +39,7 @@ export const ChangeOriginFormField = styled(({ className, name, open }: ChangeOr
             />
           </FormField>
         ) : null
-      }
+      } */}
     </FormItem>
   );
 })`

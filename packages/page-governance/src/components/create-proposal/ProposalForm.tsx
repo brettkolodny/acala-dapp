@@ -118,4 +118,11 @@ export const ProposalForm = styled(({ className, form }: ProposalFormProps) => {
   & .aca-number-input {
     width: 100%;
   }
+
+  & .proposal-form__remove-btn {
+    --btn-min-width: 0;
+    margin-top: -24px;
+    margin-bottom: 24px;
+    padding: 0;
+  }
 `;

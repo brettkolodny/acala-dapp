@@ -37,9 +37,9 @@ export const CheckCouncilAuthority: FC<BareProps> = ({ children }) => {
         return acc.concat(
           cur.calls.map((item) => ({
             collective: cur.collective,
-            origin: cur.origin,
+            origin: cur.origin || item.origin,
             ...item
-          }))
+          } as ProposalData))
         );
       }, [] as ProposalData[])
       .filter((config) => {

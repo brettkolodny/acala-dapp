@@ -24,8 +24,9 @@ const ProposalCard = styled(({ className, data }: { data: ProposalData } & BareP
     return selectedProposal &&
       selectedProposal.section === section &&
       selectedProposal.call === call &&
+      selectedProposal.name === name &&
       selectedProposal.collective === collective;
-  }, [call, collective, selectedProposal, section]);
+  }, [call, collective, selectedProposal, section, name]);
 
   // const _document = useMemo(() => {
   //   if (!api) return;

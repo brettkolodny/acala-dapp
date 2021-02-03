@@ -3,11 +3,13 @@ import React, { FC } from 'react';
 import { Card, Tabs, useTabs, CardTabHeader } from '@acala-dapp/ui-components';
 
 import { RenBtcMint } from './RenBtcMint';
+import { useTranslation } from '@acala-dapp/react-hooks';
 
 type RenBTCTabType = 'mint' | 'release';
 
 export const RenBtc: FC = () => {
   const { changeTab, currentTab } = useTabs<RenBTCTabType>('mint');
+  const { t } = useTranslation('page-wallet');
 
   return (
     <Card padding={false}>
@@ -23,7 +25,7 @@ export const RenBtc: FC = () => {
               active={currentTab === 'mint'}
               disabled={false}
             >
-              Mint
+              {t('Mint')}
             </CardTabHeader>
           }
         >
@@ -36,7 +38,7 @@ export const RenBtc: FC = () => {
               active={currentTab === 'release'}
               disabled={true}
             >
-              Release
+              {t('Release')}
             </CardTabHeader>
           }
         >

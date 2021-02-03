@@ -80,6 +80,8 @@ export const useLoanHelper = (currency: CurrencyId, account?: AccountLike): Loan
       return null;
     }
 
+    console.log(type.requiredCollateralRatio.toString());
+
     return new LoanHelper({
       collateralPrice: focusToFixed18(loanCurrencyPrice),
       collaterals: loan.collateral,

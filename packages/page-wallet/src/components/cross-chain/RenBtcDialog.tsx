@@ -3,7 +3,7 @@ import clsx from 'clsx';
 
 import { Dialog, Button, Row, Col, List } from '@acala-dapp/ui-components';
 import { TokenImage, FormatBalance, getCurrencyIdFromName } from '@acala-dapp/react-components';
-import { useApi, useFaucet } from '@acala-dapp/react-hooks';
+import { useApi, useFaucet, useTranslation } from '@acala-dapp/react-hooks';
 
 import { RenBtcMintContext } from './RenBtcContext';
 import classes from './RenBtc.module.scss';
@@ -28,6 +28,7 @@ const AddressBar: FC<AddressBar> = ({
   amount
 }) => {
   const { api } = useApi();
+  const { t } = useTranslation('page-wallet');
 
   return (
     <div className={clsx(classes.bar, classes.send)}>
@@ -35,7 +36,7 @@ const AddressBar: FC<AddressBar> = ({
         className={classes.icon}
         currency={getCurrencyIdFromName(api, 'XBTC')}
       />
-      <div>Deposit {amount} BTC To</div>
+      <div>{t('Deposit {{amount}} BTC To', { amount })}</div>
       <div>{address}</div>
     </div>
   );
@@ -50,6 +51,7 @@ const BtcAddressContent: FC<Omit<RenBtcDialogProps, 'show'>> = ({
   const { api } = useApi();
   const { setStep } = useContext(RenBtcMintContext);
   const { loading, run } = useFaucet('ren');
+  const { t } = useTranslation('page-wallet');
 
   const handleNext = useCallback(() => {
     run();
@@ -67,8 +69,8 @@ const BtcAddressContent: FC<Omit<RenBtcDialogProps, 'show'>> = ({
         />
       </Col>
       <Col span={24}>
-        <p style={{ fontSize: 16, fontWeight: 'bold' }}>For testnet purpose, renBTC is minted from faucet. RenVM will be used upon mainnet launch.</p>
-        <p style={{ color: 'var(--text-color-second)', fontSize: 14 }}>Quota: max 1 renBTC / month</p>
+        <p style={{ fontSize: 16, fontWeight: 'bold' }}>{t('REN_VM_FAUCET_ALERT')}</p>
+        <p style={{ color: 'var(--text-color-second)', fontSize: 14 }}>{t('REN_VM_FAUCET_QUOTA')}</p>
       </Col>
       <Col span={24}>
         <Button
@@ -76,17 +78,17 @@ const BtcAddressContent: FC<Omit<RenBtcDialogProps, 'show'>> = ({
           loading={loading}
           onClick={handleNext}
         >
-          Get test renBTC from Faucet
+          {t('Get test renBTC from Faucet')}
         </Button>
       </Col>
       <Col span={24}>
         <List>
           <List.Item
-            label='Integrator'
+            label={t('Integrator')}
             value='apps.acala.network'
           />
           <List.Item
-            label='BTC Fees'
+            label={t('BTC Fees')}
             value={(
               <FormatBalance
                 balance={btcTxFee}
@@ -95,7 +97,7 @@ const BtcAddressContent: FC<Omit<RenBtcDialogProps, 'show'>> = ({
             )}
           />
           <List.Item
-            label='RenVM Network Fees'
+            label={t('RenVM Fees')}
             value={(
               <FormatBalance
                 balance={renNetworkFee}
@@ -124,11 +126,12 @@ const SuccessContent: FC<Omit<RenBtcDialogProps, 'show'>> = ({
   renNetworkFee
 }) => {
   const { api } = useApi();
-  const { changeActiveTab } = useContext(WalletContext);
+  const { changeTab } = useContext(WalletContext);
+  const { t } = useTranslation('page-wallet');
 
   const handleNext = useCallback(() => {
-    changeActiveTab('acala');
-  }, [changeActiveTab]);
+    changeTab('acala');
+  }, [changeTab]);
 
   return (
     <Row
@@ -149,11 +152,11 @@ const SuccessContent: FC<Omit<RenBtcDialogProps, 'show'>> = ({
       <Col span={24}>
         <List>
           <List.Item
-            label='Integrator'
+            label={t('Integrator')}
             value='apps.acala.network'
           />
           <List.Item
-            label='BTC Fees'
+            label={t('BTC Fees')}
             value={(
               <FormatBalance
                 balance={btcTxFee}
@@ -162,7 +165,7 @@ const SuccessContent: FC<Omit<RenBtcDialogProps, 'show'>> = ({
             )}
           />
           <List.Item
-            label='RenVM Network Fees'
+            label={t('RenVM Network Fees')}
             value={(
               <FormatBalance
                 balance={renNetworkFee}
@@ -181,13 +184,14 @@ export const RenBtcDialog: FC<RenBtcDialogProps> = ({
   ...props
 }) => {
   const { setStep, step } = useContext(RenBtcMintContext);
+  const { t } = useTranslation('page-wallet');
 
   return (
     <Dialog
       action={null}
       className={classes.dialog}
       onCancel={(): void => setStep('confirm')}
-      title='Deposit BTC'
+      title={t('Deposit BTC')}
       visible={show}
       withClose
     >

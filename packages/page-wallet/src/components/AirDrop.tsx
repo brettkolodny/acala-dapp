@@ -1,11 +1,12 @@
 import React, { FC, useMemo } from 'react';
 import { Card, ColumnsType, Table, FlexBox } from '@acala-dapp/ui-components';
-import { useApi } from '@acala-dapp/react-hooks';
+import { useApi, useTranslation } from '@acala-dapp/react-hooks';
 import { tokenEq, AirDropAmount } from '@acala-dapp/react-components';
 import { AirDropCurrencyId } from '@acala-network/types/interfaces';
 
 export const AirDrop: FC = () => {
   const { api } = useApi();
+  const { t } = useTranslation('page-wallet');
   const airdropTypes = useMemo(() => {
     if (!api) return [];
 
@@ -20,14 +21,14 @@ export const AirDrop: FC = () => {
       dataIndex: 'token',
       key: 'token',
       render: (token: string): string => tokenEq(token, 'ACA') ? `${token} (Mainnet)` : token,
-      title: 'Token'
+      title: t('Token')
     },
     {
       align: 'right',
       key: 'balance',
       /* eslint-disable-next-line react/display-name */
       render: ({ token }): JSX.Element => <AirDropAmount currency={token} />,
-      title: 'Balance'
+      title: t('Balance')
     }
   ];
 
@@ -35,7 +36,7 @@ export const AirDrop: FC = () => {
     <Card
       header={
         <FlexBox justifyContent='space-between'>
-          <p>AirDrop</p>
+          <p>{t('AirDrop')}</p>
         </FlexBox>
       }
       padding={false}

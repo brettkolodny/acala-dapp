@@ -8,20 +8,17 @@ import { List, Button, Row, Col, Condition } from '@acala-dapp/ui-components';
 import { BalanceInput, FormatAddress, FormatBalance, getCurrencyIdFromName, BalanceInputValue } from '@acala-dapp/react-components';
 
 import classes from './RenBtc.module.scss';
-import { useAccounts, useApi, useMemState } from '@acala-dapp/react-hooks';
+import { useAccounts, useApi, useMemState, useTranslation } from '@acala-dapp/react-hooks';
 import { RenBtcDialog } from './RenBtcDialog';
 import { RenBtcMintContext, MintStep } from './RenBtcContext';
 
 /* eslint-disable  react/no-unescaped-entities */
 const Alert: FC = () => {
+  const { t } = useTranslation('page-wallet');
+
   return (
     <div className={classes.alert}>
-      <p>
-        RenVM is new technology and security audits don't completely
-      </p>
-      <p>
-        eliminate risks. Please don’t supply assets you can’t afford to lose.
-      </p>
+      {t('REN_VM_ALERT')}
     </div>
   );
 };
@@ -52,6 +49,7 @@ const InputStep: FC = () => {
     setAmount(form.values.amount);
     setStep('confirm');
   }, [setAmount, setStep, form]);
+  const { t } = useTranslation('page-wallet');
 
   return (
     <div className={classes.step}>
@@ -72,14 +70,14 @@ const InputStep: FC = () => {
           <List className={classes.inputStepInfo}>
             <List.Item
               className={clsx(classes.item, classes.destination)}
-              label='From'
+              label={t('From')}
               value={
-                <div>BTC Network</div>
+                <div>{t('BTC Network')}</div>
               }
             />
             <List.Item
               className={clsx(classes.item, classes.receive)}
-              label='You will receive'
+              label={t('You Will Receive')}
               value={
                 <>
                   <span>≈</span>
@@ -99,7 +97,7 @@ const InputStep: FC = () => {
           disabled={isDisabled}
           onClick={handleNext}
         >
-          Next
+          {t('Next')}
         </Button>
       </div>
     </div>
@@ -110,6 +108,7 @@ const ConfirmStep: FC = () => {
   const { api } = useApi();
   const { amount, setStep } = useContext(RenBtcMintContext);
   const { active } = useAccounts();
+  const { t } = useTranslation('page-wallet');
 
   const handlePrev = useCallback(() => {
     setStep('input');
@@ -131,7 +130,7 @@ const ConfirmStep: FC = () => {
       >
         <List.Item
           className={classes.item}
-          label='Destination'
+          label={t('Destination')}
           value={
             <div>
               { active ? <FormatAddress address={active.address} /> : null }
@@ -140,7 +139,7 @@ const ConfirmStep: FC = () => {
         />
         <List.Item
           className={classes.item}
-          label='RenVM Fee'
+          label={t('RenVM Fees')}
           value={
             <FormatBalance
               balance={Fixed18.fromNatural(0.000001)}
@@ -150,7 +149,7 @@ const ConfirmStep: FC = () => {
         />
         <List.Item
           className={classes.item}
-          label='Bitcoin Network Fee'
+          label={t('BTC Fee')}
           value={
             <FormatBalance
               balance={Fixed18.fromNatural(0.000001)}
@@ -160,7 +159,7 @@ const ConfirmStep: FC = () => {
         />
         <List.Item
           className={classes.item}
-          label='You Will Receive'
+          label={t('You Will Receive')}
           value={
             <FormatBalance
               balance={Fixed18.fromNatural(amount - 0.000002)}
@@ -175,13 +174,13 @@ const ConfirmStep: FC = () => {
           onClick={handlePrev}
           type='ghost'
         >
-          Previous
+          {t('Previous')}
         </Button>
         <Button
           className={classes.nextBtn}
           onClick={handleNext}
         >
-          Confirm
+          {t('Confirm')}
         </Button>
       </div>
     </div>

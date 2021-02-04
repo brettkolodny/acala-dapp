@@ -2,12 +2,13 @@ import React, { FC, useContext, useMemo, useCallback } from 'react';
 
 import { FormatBalance, TxButton, numToFixed18Inner, FormatRatio } from '@acala-dapp/react-components';
 import { createProviderContext } from './CreateProvider';
-import { useConstants, useLoanHelper } from '@acala-dapp/react-hooks';
+import { useConstants, useLoanHelper, useTranslation } from '@acala-dapp/react-hooks';
 import { Fixed18, stableCoinToDebit, calcCollateralRatio } from '@acala-network/app-util';
 import { Button, List } from '@acala-dapp/ui-components';
 import classes from './Confirm.module.scss';
 
 export const Confirm: FC = () => {
+  const { t } = useTranslation('page-loan');
   const {
     cancelCreate,
     deposit,
@@ -62,7 +63,7 @@ export const Confirm: FC = () => {
     <div className={classes.root}>
       <List style='list'>
         <List.Item
-          label='Depositing'
+          label={t('Depositing')}
           value={
             <FormatBalance
               balance={deposit}
@@ -71,7 +72,7 @@ export const Confirm: FC = () => {
           }
         />
         <List.Item
-          label='Borrowing'
+          label={t('Borrowing')}
           value={
             <FormatBalance
               balance={generate}
@@ -80,13 +81,13 @@ export const Confirm: FC = () => {
           }
         />
         <List.Item
-          label='Collateralization Ratio'
+          label={t('Collateralization Ratio')}
           value={
             <FormatRatio data={collateralRatio} />
           }
         />
         <List.Item
-          label='Interest Rate'
+          label={t('Interest Rate')}
           value={
             <FormatRatio data={helper.stableFeeAPR} />
           }
@@ -98,14 +99,14 @@ export const Confirm: FC = () => {
           size='small'
           type='ghost'
         >
-          Cancel
+          {t('Cancel')}
         </Button>
         <Button
           onClick={handlePrevious}
           size='small'
           type='border'
         >
-          Prev
+          {t('Prev')}
         </Button>
         <TxButton
           disabled={isDisabled}
@@ -115,7 +116,7 @@ export const Confirm: FC = () => {
           section='honzon'
           size='small'
         >
-          Confirm
+          {t('Confirm')}
         </TxButton>
       </div>
     </div>

@@ -4,7 +4,7 @@ import { Fixed18, calcCanGenerate } from '@acala-network/app-util';
 import { FixedPointNumber } from '@acala-network/sdk-core';
 
 import { BalanceInput, UserBalance, FormatBalance, getTokenName, BalanceInputValue, focusToFixedPointNumber } from '@acala-dapp/react-components';
-import { useConstants, useBalance, useLoanHelper, useBalanceValidator, useMemState } from '@acala-dapp/react-hooks';
+import { useConstants, useBalance, useLoanHelper, useBalanceValidator, useMemState, useTranslation } from '@acala-dapp/react-hooks';
 import { Button } from '@acala-dapp/ui-components';
 
 import { createProviderContext } from './CreateProvider';
@@ -19,6 +19,7 @@ export const Generate: FC = () => {
     setGenerate,
     setStep
   } = useContext(createProviderContext);
+  const { t } = useTranslation('page-loan');
   const { minmumDebitValue, stableCurrency } = useConstants();
   const selectedCurrencyBalance = useBalance(selectedToken);
   const helper = useLoanHelper(selectedToken);
@@ -60,7 +61,7 @@ export const Generate: FC = () => {
     checkBalance: false,
     currency: stableCurrency,
     max: [maxGenerate, ''],
-    min: [FixedPointNumber.ONE, 'Generate must larger than minimum debit (1aUSD)'],
+    min: [FixedPointNumber.ONE, t('MINIMUM_DEBIT_ALERT')],
     updateValidator: setGenerateValidator
   });
 
@@ -84,7 +85,7 @@ export const Generate: FC = () => {
     setDeposit(selectedCurrencyBalance.toNumber());
     setColalteralAmount(selectedCurrencyBalance.toNumber());
     setDepositValue({ amount: selectedCurrencyBalance.toNumber() });
-  }, [setDepositValue, selectedCurrencyBalance, setDeposit]);
+  }, [setDepositValue, selectedCurrencyBalance, setDeposit, setColalteralAmount]);
 
   const handleDepositChange = useCallback(({ amount }: Partial<BalanceInputValue>) => {
     setDeposit(amount || 0);
@@ -99,16 +100,14 @@ export const Generate: FC = () => {
     setGenerateValue({ amount });
   }, [setGenerateValue, setGenerate]);
 
-  if (!helper) {
-    return null;
-  }
+  if (!helper) return null;
 
   return (
     <div className={classes.root}>
       <div className={classes.content}>
         <div className={classes.console}>
           <p className={classes.title}>
-            How much {getTokenName(selectedToken.asToken.toString())} would you deposit as collateral?
+            {t('DEPOSIT_TITLE', { currency: getTokenName(selectedToken.asToken.toString()) })}
           </p>
           <BalanceInput
             className={classes.input}
@@ -120,9 +119,11 @@ export const Generate: FC = () => {
           />
           <div className={classes.addon}>
             <UserBalance currency={selectedToken} />
-            <span>Max to Lock</span>
+            <span>{t('Max To Lock')}</span>
           </div>
-          <p className={classes.title}>How much {getTokenName(stableCurrency.asToken.toString())} would you like to borrow?</p>
+          <p className={classes.title}>
+            {t('BOWORRE_TITLE', { currency: getTokenName(stableCurrency.asToken.toString()) })}
+          </p>
           <BalanceInput
             className={classes.input}
             error={generateError}
@@ -135,41 +136,39 @@ export const Generate: FC = () => {
               balance={maxGenerate}
               currency={stableCurrency}
             />
-            <span>Max to borrow</span>
+            <span>{t('Max To Borrow')}</span>
           </div>
           <div className={classes.addon}>
             <FormatBalance
               balance={minmumDebitValue}
               currency={stableCurrency}
             />
-            <span>Min to borrow</span>
+            <span>{t('Min To Borrow')}</span>
           </div>
         </div>
       </div>
-      <div className={classes.tips}>
-        Note: collateralization ratio = total collateral in USD / amount borrowed must be above the required collateral ratio.
-      </div>
+      <div className={classes.tips}>{t('COLLATERALIZATION_NOTE')}</div>
       <div className={classes.action}>
         <Button
           onClick={cancelCreate}
           size='small'
           type='ghost'
         >
-          Cancel
+          {t('Cancel')}
         </Button>
         <Button
           onClick={handlePrevious}
           size='small'
           type='border'
         >
-          Prev
+          {t('Prev')}
         </Button>
         <Button
           disabled={isDisabled}
           onClick={handleNext}
           size='small'
         >
-          Next
+          {t('Next')}
         </Button>
       </div>
     </div>

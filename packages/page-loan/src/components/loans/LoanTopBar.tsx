@@ -2,7 +2,7 @@ import React, { FC, memo, useCallback, useContext, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import { CurrencyId } from '@acala-network/types/interfaces';
 import { TokenImage, TokenName, CollateralRate, tokenEq } from '@acala-dapp/react-components';
-import { useAllUserLoans, filterEmptyLoan, useLoanHelper } from '@acala-dapp/react-hooks';
+import { useAllUserLoans, filterEmptyLoan, useLoanHelper, useTranslation } from '@acala-dapp/react-hooks';
 import { styled } from '@acala-dapp/ui-components';
 
 import { ReactComponent as OverviewIcon } from '../../assets/overview.svg';
@@ -145,6 +145,7 @@ const OverviewContent = styled(LoanItemContent)`
 
 const LoanOverview: FC = memo(() => {
   const { changeToOverview, isOverview } = useContext(LoanContext);
+  const { t } = useTranslation('page-loan');
 
   return (
     <LoanItemRoot
@@ -155,7 +156,7 @@ const LoanOverview: FC = memo(() => {
         <OverviewIcon />
       </LoanItemIcon>
       <OverviewContent>
-        OVERVIEW
+        {t('OVERVIEW')}
       </OverviewContent>
     </LoanItemRoot>
   );
@@ -188,6 +189,7 @@ const LoanAdd: FC = () => {
   const handleClick = useCallback(() => {
     navigate('create');
   }, [navigate]);
+  const { t } = useTranslation('page-loan');
 
   return (
     <LoanAddRoot onClick={handleClick}>
@@ -195,7 +197,7 @@ const LoanAdd: FC = () => {
         <AddIcon />
       </LoanItemIcon>
       <LoanAddContent>
-        Create
+        {t('Create')}
       </LoanAddContent>
     </LoanAddRoot>
   );

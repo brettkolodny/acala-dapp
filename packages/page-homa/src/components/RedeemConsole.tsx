@@ -1,9 +1,9 @@
-import React, { FC, useMemo, useCallback } from 'react';
+import React, { FC, useMemo, useCallback, useState } from 'react';
 
 import { FixedPointNumber } from '@acala-network/sdk-core';
 import { Row, Col, Radio, List, Condition, FlexBox } from '@acala-dapp/ui-components';
 import { TxButton, BalanceInput, formatDuration, FormatBalance, BalanceInputValue, getTokenName } from '@acala-dapp/react-components';
-import { useMemState, useStakingPool, useStakingPoolFreeList, useBalance, useConstants, useInputValue, useBalanceValidator } from '@acala-dapp/react-hooks';
+import { useStakingPool, useStakingPoolFreeList, useBalance, useConstants, useInputValue, useBalanceValidator } from '@acala-dapp/react-hooks';
 
 import classes from './RedeemConsole.module.scss';
 import { TargetRedeemList } from './TargetRedeemList';
@@ -14,12 +14,12 @@ export const RedeemConsole: FC = () => {
   const { liquidCurrency, stakingCurrency } = useConstants();
   const stakingPool = useStakingPool();
   const freeList = useStakingPoolFreeList();
-  const [redeemType, setRedeemType] = useMemState<RedeemType>('Immediately');
-  const [era, setEra] = useMemState<number>(0);
+  const [redeemType, setRedeemType] = useState<RedeemType>('Immediately');
+  const [era, setEra] = useState<number>(0);
   const liquidBalnace = useBalance(liquidCurrency);
 
-  const [received, setReceived] = useMemState<FixedPointNumber>(FixedPointNumber.ZERO);
-  const [fee, setFee] = useMemState<FixedPointNumber>(FixedPointNumber.ZERO);
+  const [received, setReceived] = useState<FixedPointNumber>(FixedPointNumber.ZERO);
+  const [fee, setFee] = useState<FixedPointNumber>(FixedPointNumber.ZERO);
 
   const duration = useMemo((): number => {
     if (!stakingPool) return 0;

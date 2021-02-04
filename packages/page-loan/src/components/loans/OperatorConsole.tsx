@@ -1,6 +1,6 @@
 import React, { FC, useMemo } from 'react';
 import { CurrencyId } from '@acala-network/types/interfaces';
-import { useConstants, useLoanHelper, useBalance } from '@acala-dapp/react-hooks';
+import { useConstants, useLoanHelper, useBalance, useTranslation } from '@acala-dapp/react-hooks';
 import { getTokenName, TokenImage, FormatBalance, FormatValue } from '@acala-dapp/react-components';
 import { Card } from '@acala-dapp/ui-components';
 import classes from './OperatorConsole.module.scss';
@@ -14,6 +14,7 @@ interface OperatorConsoleProps {
 export const DebitConsole: FC<OperatorConsoleProps> = ({ currency }) => {
   const { stableCurrency } = useConstants();
   const helper = useLoanHelper(currency);
+  const { t } = useTranslation('page-loan');
   const header = useMemo(() => `Borrowed(${getTokenName(stableCurrency)})`, [stableCurrency]);
   const isPayBackDisabled = useMemo((): boolean => {
     if (!helper) return true;
@@ -52,7 +53,7 @@ export const DebitConsole: FC<OperatorConsoleProps> = ({ currency }) => {
       <div className={classes.actionArea}>
         <div className={classes.item}>
           <div className={classes.information}>
-            <p className={classes.title}>Can Pay Back</p>
+            <p className={classes.title}>{t('Can Pay Back')}</p>
             <FormatBalance
               balance={helper.canPayBack}
               className={classes.balance}
@@ -62,14 +63,14 @@ export const DebitConsole: FC<OperatorConsoleProps> = ({ currency }) => {
           <LonaActionButton
             className={classes.actionBtn}
             disabled={isPayBackDisabled}
-            text='Payback'
+            text={t('Payback')}
             token={currency}
             type='payback'
           />
         </div>
         <div className={classes.item}>
           <div className={classes.information}>
-            <p className={classes.title}>Can Generate</p>
+            <p className={classes.title}>{t('Can Generate')}</p>
             <FormatBalance
               balance={helper.canGenerate}
               className={classes.balance}
@@ -79,7 +80,7 @@ export const DebitConsole: FC<OperatorConsoleProps> = ({ currency }) => {
           <LonaActionButton
             className={classes.actionBtn}
             disabled={isGenerateDisabled}
-            text='Generate'
+            text={t('Generate')}
             token={currency}
             type='generate'
           />
@@ -93,6 +94,7 @@ export const CollateralConsole: FC<OperatorConsoleProps> = ({ currency }) => {
   const helper = useLoanHelper(currency);
   const header = useMemo(() => `Collateral(${getTokenName(currency)})`, [currency]);
   const balance = useBalance(currency);
+  const { t } = useTranslation('page-loan');
   const isDepositDisabled = useMemo(() => {
     if (!helper) return true;
     if (!balance) return true;
@@ -131,7 +133,7 @@ export const CollateralConsole: FC<OperatorConsoleProps> = ({ currency }) => {
       <div className={classes.actionArea}>
         <div className={classes.item}>
           <div className={classes.information}>
-            <p className={classes.title}>Required for Safety</p>
+            <p className={classes.title}>{t('Required For Safety')}</p>
             <FormatBalance
               balance={helper.requiredCollateral}
               className={classes.balance}
@@ -141,14 +143,14 @@ export const CollateralConsole: FC<OperatorConsoleProps> = ({ currency }) => {
           <LonaActionButton
             className={classes.actionBtn}
             disabled={isDepositDisabled}
-            text='Deposit'
+            text={t('Deposit')}
             token={currency}
             type='deposit'
           />
         </div>
         <div className={classes.item}>
           <div className={classes.information}>
-            <p className={classes.title}>Able to Withdraw</p>
+            <p className={classes.title}>{t('Able To Withdraw')}</p>
             <FormatBalance
               balance={helper.collaterals.sub(helper.requiredCollateral)}
               className={classes.balance}
@@ -158,7 +160,7 @@ export const CollateralConsole: FC<OperatorConsoleProps> = ({ currency }) => {
           <LonaActionButton
             className={classes.actionBtn}
             disabled={isWithdrawDisabled}
-            text='Withdraw'
+            text={t('Withdraw')}
             token={currency}
             type='withdraw'
           />

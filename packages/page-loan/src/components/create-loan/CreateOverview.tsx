@@ -2,6 +2,7 @@ import React, { FC, useContext } from 'react';
 
 import { Row, Col, Card } from '@acala-dapp/ui-components';
 import { StableFeeAPR, LiquidationPenalty } from '@acala-dapp/react-components';
+import { useTranslation } from '@acala-dapp/react-hooks';
 
 import { createProviderContext } from './CreateProvider';
 import { DynamicLiquidationPrice } from '../common/LiquidationPriceCard';
@@ -10,6 +11,7 @@ import classes from './CreateOverview.module.scss';
 
 export const CreateOverview: FC = () => {
   const { deposit, generate, selectedToken } = useContext(createProviderContext);
+  const { t } = useTranslation('page-loan');
 
   return (
     <Row gutter={[24, 24]}>
@@ -32,12 +34,12 @@ export const CreateOverview: FC = () => {
           contentClassName={classes.content}
         >
           <div className={classes.item}>
-            <p>Interest Rate</p>
+            <p>{t('Interest Rate')}</p>
             <StableFeeAPR className={classes.data}
               currency={selectedToken} />
           </div>
           <div className={classes.item}>
-            <p>Liquidation Penalty</p>
+            <p>{t('Liquidation Penalty')}</p>
             <LiquidationPenalty className={classes.data}
               currency={selectedToken} />
           </div>

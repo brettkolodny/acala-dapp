@@ -5,7 +5,7 @@ import { Fixed18, calcCollateralRatio } from '@acala-network/app-util';
 import { CurrencyId } from '@acala-network/types/interfaces';
 
 import { Card, BulletBar, BulletBarConfigItem } from '@acala-dapp/ui-components';
-import { useLoanHelper, usePrice } from '@acala-dapp/react-hooks';
+import { useLoanHelper, usePrice, useTranslation } from '@acala-dapp/react-hooks';
 
 import { getLoanStatus, LoanStatus } from '../../utils';
 import classes from './Liquidation.module.scss';
@@ -30,6 +30,7 @@ function dataTransfer (i: number): string {
 export const LiquidationRatioCard: FC<Props> = ({ currency }) => {
   const helper = useLoanHelper(currency);
   const price = usePrice(currency);
+  const { t } = useTranslation('page-loan');
   const status = useMemo<LoanStatus | null>(() => {
     if (!helper) return null;
 
@@ -44,17 +45,17 @@ export const LiquidationRatioCard: FC<Props> = ({ currency }) => {
         color: status.color,
         data: convertToPercentage(helper.collateralRatio),
         dataTransfer,
-        label: 'Current Ratio',
+        label: t('Current Collateral Ratio'),
         labelStatus: status.description
       },
       {
         color: '#0f32da',
         data: convertToPercentage(helper.liquidationRatio),
         dataTransfer,
-        label: 'Liquidatio Ratio'
+        label: t('Liquidatio Ratio')
       }
     ];
-  }, [helper, status]);
+  }, [helper, status, t]);
 
   if (!helper || !price || !status) {
     return null;
@@ -63,7 +64,7 @@ export const LiquidationRatioCard: FC<Props> = ({ currency }) => {
   return (
     <Card
       divider={false}
-      header='Liquidation Ratio'
+      header={t('Collateral Ratio')}
       headerClassName={clsx(classes.header, classes[status.status])}
       overflowHidden
     >
@@ -85,6 +86,7 @@ export const DynamicLiquidationRatio: FC<DynamicLiquidationProps> = ({
 }) => {
   const helper = useLoanHelper(currency);
   const price = usePrice(currency);
+  const { t } = useTranslation('page-loan');
 
   const collateralRatio = useMemo<Fixed18>(() => {
     if (!helper) return Fixed18.ZERO;
@@ -109,17 +111,17 @@ export const DynamicLiquidationRatio: FC<DynamicLiquidationProps> = ({
         color: status.color,
         data: convertToPercentage(collateralRatio),
         dataTransfer,
-        label: 'Current Ratio',
+        label: t('Current Collateral Ratio'),
         labelStatus: status.description
       },
       {
         color: '#0f32da',
         data: convertToPercentage(helper.liquidationRatio),
         dataTransfer,
-        label: 'Liquidation Ratio'
+        label: t('Liquidatio Ratio')
       }
     ];
-  }, [helper, status, collateralRatio]);
+  }, [helper, status, collateralRatio, t]);
 
   if (!helper || !price || !status) {
     return null;
@@ -128,7 +130,7 @@ export const DynamicLiquidationRatio: FC<DynamicLiquidationProps> = ({
   return (
     <Card
       divider={false}
-      header='Liquidation Ratio'
+      header={t('Collateral Ratio')}
       headerClassName={clsx(classes.header, classes[status.status])}
       overflowHidden
     >

@@ -4,11 +4,10 @@ import { stableCoinToDebit, Fixed18, calcLiquidationPrice, calcCollateralRatio }
 import { FixedPointNumber } from '@acala-network/sdk-core';
 import { CurrencyId } from '@acala-network/types/interfaces';
 
-import { Dialog, ButtonProps, Button, List, InlineBlockBox } from '@acala-dapp/ui-components';
+import { styled, Dialog, ButtonProps, Button, List, InlineBlockBox } from '@acala-dapp/ui-components';
 import { useModal, useConstants, useBalance, useLoanHelper, useBalanceValidator } from '@acala-dapp/react-hooks';
 import { BalanceInput, TxButton, FormatBalance, FormatRatio, FormatPrice, focusToFixed18, BalanceInputValue, TokenName } from '@acala-dapp/react-components';
 
-import classes from './LoanActionButton.module.scss';
 import { useInputValue } from '@acala-dapp/react-hooks/useInputValue';
 
 type ActionType = 'payback' | 'generate' | 'deposit' | 'withdraw';
@@ -18,6 +17,13 @@ interface Props extends Omit<ButtonProps, 'onClick' | 'type'> {
   text: string;
   token: CurrencyId;
 }
+
+const CDialog = styled(Dialog)`
+  & .aca-list--style-list {
+    margin-top: 24px;
+    padding: 0;
+  }
+`;
 
 export const LonaActionButton: FC<Props> = ({
   text,
@@ -228,7 +234,7 @@ export const LonaActionButton: FC<Props> = ({
       >
         {text}
       </Button>
-      <Dialog
+      <CDialog
         action={
           <>
             <Button
@@ -251,7 +257,6 @@ export const LonaActionButton: FC<Props> = ({
             </TxButton>
           </>
         }
-        className={classes.dialog}
         title={dialogTitle}
         visible={status}
       >
@@ -261,10 +266,7 @@ export const LonaActionButton: FC<Props> = ({
           onMax={type === 'generate' ? undefined : handleMax}
           value={inputValue}
         />
-        <List
-          className={classes.list}
-          style='list'
-        >
+        <List style='list'>
           <List.Item
             label='Borrowed aUSD'
             value={
@@ -284,7 +286,7 @@ export const LonaActionButton: FC<Props> = ({
             }
           />
         </List>
-      </Dialog>
+      </CDialog>
     </>
   );
 };

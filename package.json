@@ -11,16 +11,16 @@
   },
   "resolutions": {
     "@polkadot/api": "3.6.4",
-    "@acala-network/api": "^0.6.2-9",
-    "@acala-network/types": "^0.6.2-9",
-    "@acala-network/app-util": "^0.6.2-9",
-    "@acala-network/api-derive": "^0.6.2-9"
+    "@acala-network/api": "^0.6.2-12",
+    "@acala-network/types": "^0.6.2-12",
+    "@acala-network/app-util": "^0.6.2-12",
+    "@acala-network/api-derive": "^0.6.2-12"
   },
   "scripts": {
     "bump-version": "node scripts/bump-version.js",
-    "start:dapp": "APP_NAME='dapp' yarn run build:i18n && cd packages/apps && react-app-rewired start",
+    "start:dapp": "NODE_ENV='development' APP_NAME='dapp' yarn run build:i18n && cd packages/apps && react-app-rewired start",
     "build:dapp": "APP_NAME='dapp' yarn run build:i18n && cd packages/apps && react-app-rewired build",
-    "start:dashboard": "APP_NAME='dashboard' yarn run build:i18n && cd packages/dashboard && react-app-rewired start",
+    "start:dashboard": "NODE_ENV='development' APP_NAME='dashboard' yarn run build:i18n && cd packages/dashboard && react-app-rewired start",
     "build:dashboard": "APP_NAME='dashboard' yarn run build:i18n && cd packages/dashboard && react-app-rewired build",
     "build:i18n": "node scripts/buildI18n.js",
     "release:ghpages": "gh-pages -d packages/apps/build",

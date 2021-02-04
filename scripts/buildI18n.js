@@ -1,4 +1,5 @@
 const fs = require('fs');
+const { camelCase } = require('lodash');
 const path = require('path');
 const findPackages = require('./findPackages.js');
 
@@ -50,12 +51,40 @@ function buildI18n (modules, to) {
 
 function writeInitI18n (modules, to) {
   const temp = `
+/* eslint-disable */
 // @ts-nocheck
 // auto generate by buildI18n.js
 
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import resources from '../src/i18n/index.json';
+${
+  (() => {
+    if (process.env.NODE_ENV !== 'development') {
+      return "import resources from '../src/i18n/index.json';"
+    } else {
+      const enModules = modules.map(i => `import ${camelCase(i) + 'EN'} from '@acala-dapp/${i}/i18n/en.json';`);
+      const zhModules = modules.map(i => `import ${camelCase(i) + 'ZH'} from '@acala-dapp/${i}/i18n/zh.json';`);
+
+      const temp = [
+        ...enModules,
+        ...zhModules
+      ];
+
+      temp.push(`
+const resources = {
+  en: {
+${modules.map((i) => `    '${i}': ${camelCase(i) + 'EN'},`).join('\r\n')}
+  },
+  zh: {
+${modules.map((i) => `    '${i}': ${camelCase(i) + 'ZH'},`).join('\r\n')}
+  }
+}
+      `)
+
+      return temp.join('\r\n');
+    }
+  })()
+}
 
 // for debug
 if (process.env.NODE_ENV === 'development') {

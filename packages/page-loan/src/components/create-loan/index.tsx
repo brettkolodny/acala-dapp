@@ -1,7 +1,7 @@
 import React, { FC, useContext, useMemo } from 'react';
 
 import { Card, Step, Condition, Row, Col, SubTitle, styled } from '@acala-dapp/ui-components';
-import { useConstants } from '@acala-dapp/react-hooks';
+import { useConstants, useTranslation } from '@acala-dapp/react-hooks';
 import { getTokenName } from '@acala-dapp/react-components';
 
 import { SelectCollateral } from './SelectCollateral';
@@ -10,21 +10,6 @@ import { CreateProvider, createProviderContext } from './CreateProvider';
 import { Confirm } from './Confirm';
 import { Success } from './Success';
 import { CreateOverview } from './CreateOverview';
-
-const stepConfig = [
-  {
-    index: 'select',
-    text: 'Select Collateral'
-  },
-  {
-    index: 'generate',
-    text: 'Generate aUSD'
-  },
-  {
-    index: 'confirm',
-    text: 'Confirmation'
-  }
-];
 
 const CreateConsoleRoot = styled(Card)`
   padding: 30px 0 24px 0;
@@ -42,24 +27,40 @@ const Tips = styled.p`
 `;
 
 const Main: FC = () => {
+  const { t } = useTranslation('page-loan');
   const { selectedToken, step } = useContext(createProviderContext);
   const { stableCurrency } = useConstants();
-
-  const tips = useMemo((): string => {
-    if (step === 'select') {
-      return 'Each collateral type has its own unique risk profiles.';
+  const stepConfig = useMemo(() => [
+    {
+      index: 'select',
+      text: t('Select Collateral')
+    },
+    {
+      index: 'generate',
+      text: t('Generate aUSD')
+    },
+    {
+      index: 'confirm',
+      text: t('Confirmation')
     }
+  ], [t]);
+
+  const tips = useMemo((): string | undefined => {
+    if (step === 'select') return t('SELECT_COLLATERAL_TIPS');
 
     if (step === 'generate') {
-      return `Deposit ${getTokenName(selectedToken.asToken.toString())} as collateral to genearte ${getTokenName(stableCurrency.asToken.toString())}`;
+      return t('GENERATE_TIPS', {
+        token1: getTokenName(selectedToken.asToken.toString()),
+        token2: getTokenName(stableCurrency.asToken.toString())
+      });
     }
 
     if (step === 'confirm') {
-      return `Confirm creating a collateralized loan for ${getTokenName(stableCurrency.asToken.toString())}`;
+      return t('CONFIRM_TIPS', {
+        token: getTokenName(stableCurrency.asToken.toString())
+      });
     }
-
-    return '';
-  }, [selectedToken, stableCurrency, step]);
+  }, [selectedToken, stableCurrency, step, t]);
 
   return (
     <CreateConsoleRoot padding={false}>

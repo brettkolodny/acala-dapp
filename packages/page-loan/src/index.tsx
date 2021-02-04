@@ -6,7 +6,7 @@ import { Row, Col, Tabs, useTabs } from '@acala-dapp/ui-components';
 import { CreateConsole } from './components/create-loan';
 import { LoansConsole } from './components/loans';
 import { EmergencyShutdown } from './components/emergency-shutdown';
-import { useEmergencyShutdown } from '@acala-dapp/react-hooks';
+import { useEmergencyShutdown, useTranslation } from '@acala-dapp/react-hooks';
 
 type LoanTabType = 'shutdown' | 'loans';
 
@@ -15,6 +15,7 @@ const PageLoan: FC = () => {
   const { changeTab, currentTab: pageCurrentTab } = useTabs<LoanTabType>(
     isShutdown ? 'shutdown' : 'loans'
   );
+  const { t } = useTranslation('page-loan');
 
   return (
     <Row gutter={[24, 24]}>
@@ -26,7 +27,7 @@ const PageLoan: FC = () => {
           <Tabs.Panel
             $key='loans'
             disabled={isShutdown}
-            header='My Loans'
+            header={t('My Loans')}
           >
             <Routes>
               <Route
@@ -46,7 +47,7 @@ const PageLoan: FC = () => {
           <Tabs.Panel
             $key='shutdown'
             disabled={!isShutdown}
-            header='Emergency Shutdown'
+            header={t('Emergency Shutdown')}
           >
             <EmergencyShutdown />
           </Tabs.Panel>

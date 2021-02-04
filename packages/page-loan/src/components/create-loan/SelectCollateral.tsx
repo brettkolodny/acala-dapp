@@ -1,7 +1,7 @@
-import React, { FC, useContext, useCallback, useMemo, useRef, useEffect, ReactNode } from 'react';
+import React, { FC, useState, useContext, useCallback, useMemo, useRef, useEffect, ReactNode } from 'react';
 
 import { CurrencyId } from '@acala-network/types/interfaces';
-import { useMemState, useConstants, useAllUserLoans, useBalance, useAllBalances } from '@acala-dapp/react-hooks';
+import { useConstants, useAllUserLoans, useBalance, useAllBalances, useTranslation } from '@acala-dapp/react-hooks';
 import { Table, ColumnsType, Radio, Button, styled } from '@acala-dapp/ui-components';
 import { Token, tokenEq, UserAssetBalance, UserAssetValue, Price, StableFeeAPR, RequiredCollateralRatio, LiquidationRatio, LiquidationPenalty, isSimilarZero } from '@acala-dapp/react-components';
 
@@ -81,23 +81,19 @@ const ActionRoot = styled.div`
 
 export const SelectCollateral: FC = () => {
   const { loanCurrencies } = useConstants();
-  const loans = useAllUserLoans(true);
+  const loans = useAllUserLoans(false);
   const balances = useAllBalances();
-  const [selected, setSelected] = useMemState<CurrencyId>();
+  const [selected, setSelected] = useState<CurrencyId>();
   const { cancelCreate, setSelectedToken, setStep } = useContext(createProviderContext);
   const collateralDisabled = useRef<Map<string, boolean>>(new Map());
+  const { t } = useTranslation('page-loan');
 
   const data = useMemo(() => {
-    return loanCurrencies.map((currency) => ({ currency }));
-  }, [loanCurrencies]);
+    if (!loans) return [];
 
-  // if the loan is exit, disable select
-  useEffect(() => {
-    if (!loans) return;
-
-    loans.forEach(({ currency }) => {
-      collateralDisabled.current.set(currency.toString(), false);
-    });
+    return loans.filter((item) => {
+      return item.collateral.isEmpty && item.debit.isEmpty;
+    }).map((item) => ({ currency: item.currency }));
   }, [loans]);
 
   // if the balance is too small, disable select
@@ -152,51 +148,51 @@ export const SelectCollateral: FC = () => {
           />
         );
       },
-      title: 'Collateral Type'
+      title: t('Collateral Type')
     },
     {
       align: 'right',
       key: 'avail-balance',
       /* eslint-disable-next-line react/display-name */
       render: ({ currency }): ReactNode => <Balance currency={currency} />,
-      title: 'Avail.Balance'
+      title: t('Avail_Balance')
     },
     {
       align: 'right',
       key: 'price',
       /* eslint-disable-next-line react/display-name */
       render: ({ currency }): ReactNode => <Price currency={currency} />,
-      title: 'Price'
+      title: t('Price')
     },
     {
       align: 'right',
       key: 'interest-rate',
       /* eslint-disable-next-line react/display-name */
       render: ({ currency }): ReactNode => <StableFeeAPR currency={currency} />,
-      title: 'Interest Rate'
+      title: t('Interest Rate')
     },
     {
       align: 'right',
       key: 'min-collateral',
       /* eslint-disable-next-line react/display-name */
       render: ({ currency }): ReactNode => <RequiredCollateralRatio currency={currency} />,
-      title: 'Min.Collateral'
+      title: t('Min_Collateral')
     },
     {
       align: 'right',
       key: 'LIQ-ratio',
       /* eslint-disable-next-line react/display-name */
       render: ({ currency }): ReactNode => <LiquidationRatio currency={currency} />,
-      title: 'LIQ Ratio'
+      title: t('LIQ Ratio')
     },
     {
       align: 'right',
       key: 'LIQ-fee',
       /* eslint-disable-next-line react/display-name */
       render: ({ currency }): ReactNode => <LiquidationPenalty currency={currency} />,
-      title: 'LIQ Fee'
+      title: t('LIQ Fee')
     }
-  ], [selected, handleSelect]);
+  ], [selected, handleSelect, t]);
 
   const onRow = useCallback((row) => ({
     onClick: (): void => handleSelect(row.currency)
@@ -217,14 +213,14 @@ export const SelectCollateral: FC = () => {
           size='small'
           type='border'
         >
-          Cancel
+          {t('Cancel')}
         </Button>
         <Button
           disabled={isNextDisabled}
           onClick={handleNext}
           size='small'
         >
-          Next
+          {t('Next')}
         </Button>
       </ActionRoot>
     </SelectCollateralRoot>

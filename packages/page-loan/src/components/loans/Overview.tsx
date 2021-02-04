@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 import { DerivedUserLoan } from '@acala-network/api-derive';
 import { CurrencyId } from '@acala-network/types/interfaces';
 import { Card, ColumnsType, Table, Button, Step, styled, FlexBox } from '@acala-dapp/ui-components';
-import { useConstants, useAllUserLoans } from '@acala-dapp/react-hooks';
+import { useConstants, useAllUserLoans, useTranslation } from '@acala-dapp/react-hooks';
 import { Token, getTokenName, StableFeeAPR, CollateralRate, Collateral, DebitAmount } from '@acala-dapp/react-components';
 import { ReactComponent as GuideBG } from '../../assets/guide-bg.svg';
 
@@ -28,11 +28,12 @@ const CStep = styled(Step)`
 
 export const Guide: FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation('page-loan');
   const stepConfig = useMemo(() => [
-    { index: 'select', text: 'Select Collateral' },
-    { index: 'generate', text: 'Generate aUSD' },
-    { index: 'confirm', text: 'Confirm' }
-  ], []);
+    { index: 'select', text: t('Select Collateral') },
+    { index: 'generate', text: t('Generate aUSD') },
+    { index: 'confirm', text: t('Confirm') }
+  ], [t]);
 
   const goToCreate = useCallback((): void => {
     navigate('create');
@@ -49,7 +50,7 @@ export const Guide: FC = () => {
         onClick={goToCreate}
         size='small'
       >
-        Get Started
+        {t('Get Started')}
       </Button>
     </GuideRoot>
   );
@@ -59,6 +60,7 @@ const ManagerBtn: FC<{ currency: CurrencyId; onClick: (currency: CurrencyId) => 
   const handleClick = useCallback(() => {
     onClick(currency);
   }, [onClick, currency]);
+  const { t } = useTranslation('page-loan');
 
   return (
     <FlexBox
@@ -69,7 +71,7 @@ const ManagerBtn: FC<{ currency: CurrencyId; onClick: (currency: CurrencyId) => 
         onClick={handleClick}
         size='small'
       >
-        Manage
+        {t('Manage')}
       </Button>
     </FlexBox>
   );
@@ -79,6 +81,7 @@ export const Overview: FC = () => {
   const loans = useAllUserLoans(true);
   const { selectCurrency } = useContext(LoanContext);
   const { stableCurrency } = useConstants();
+  const { t } = useTranslation('page-loan');
 
   const tableConfig: ColumnsType<DerivedUserLoan> = [
     {
@@ -91,7 +94,7 @@ export const Overview: FC = () => {
           icon
         />
       ),
-      title: 'Token',
+      title: t('Token'),
       width: 1
     },
     {
@@ -99,7 +102,7 @@ export const Overview: FC = () => {
       key: 'interest-rate',
       /* eslint-disable-next-line react/display-name */
       render: ({ currency }): ReactNode => <StableFeeAPR currency={currency} />,
-      title: 'Interest Rate',
+      title: t('Interest Rate'),
       width: 1
     },
     {
@@ -107,7 +110,7 @@ export const Overview: FC = () => {
       key: 'deposit',
       /* eslint-disable-next-line react/display-name */
       render: ({ currency }): ReactNode => <Collateral currency={currency} />,
-      title: 'Deposit',
+      title: t('Deposit'),
       width: 1
     },
     {
@@ -115,7 +118,7 @@ export const Overview: FC = () => {
       key: 'debit',
       /* eslint-disable-next-line react/display-name */
       render: ({ currency }): ReactNode => <DebitAmount currency={currency} />,
-      title: `Debit ${getTokenName(stableCurrency.asToken.toString())}`,
+      title: t('Debit {{token}}', { token: getTokenName(stableCurrency.asToken.toString()) }),
       width: 2
     },
     {
@@ -123,7 +126,7 @@ export const Overview: FC = () => {
       key: 'current-ratio',
       /* eslint-disable-next-line react/display-name */
       render: ({ currency }): ReactNode => <CollateralRate currency={currency} />,
-      title: 'Current Ratio',
+      title: t('Current Ratio'),
       width: 2
     },
     {
@@ -136,7 +139,7 @@ export const Overview: FC = () => {
           onClick={selectCurrency}
         />
       ),
-      title: 'Action',
+      title: t('Action'),
       width: 2
     }
   ];
@@ -147,7 +150,7 @@ export const Overview: FC = () => {
 
   return (
     <Card
-      header='Overview'
+      header={t('Overview')}
       padding={false}
     >
       <Table

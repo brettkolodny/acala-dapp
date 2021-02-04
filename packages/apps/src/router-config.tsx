@@ -67,7 +67,7 @@ export const config: RouterConfigData[] = [
       },
       {
         path: '*',
-        redirectTo: 'loan'
+        redirectTo: 'wallet'
       }
     ],
     element: <Layout.Main sidebar={sideBarConfig} />,

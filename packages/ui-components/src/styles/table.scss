@@ -17,7 +17,7 @@
 }
 
 .ant-table-thead > tr > th {
-  padding: 24px 16px 16px 16px;
+  padding: 16px;
 }
 
 .ant-table-tbody > tr > td,
@@ -27,9 +27,9 @@
 }
 
 .ant-table-cell:first-child {
-  padding-left: 24px;
+  padding-left: 24px !important;
 }
 
 .ant-table-cell:last-child {
-  padding-right: 24px;
+  padding-right: 24px !important;
 }

@@ -76,15 +76,27 @@ export const useRedeemList = (): RedeemItem[] => {
 
     const duration = stakingPool.derive.bondingDuration.toNumber();
     const start = stakingPool.derive.currentEra.toNumber();
-    const eraArray = new Array(duration + 1).fill(undefined).map((_i, index) => start + index + 1);
+    const eraArray = new Array(duration + 1).fill(undefined).map((_i, index) => start + index + 2);
 
-    return combineLatest(
-      eraArray.map((era: number) => api.query.stakingPool.unbondings<Balance>(active.address, era))
-    ).pipe(
-      map((result) => eraArray.map((era, index) => ({
-        balance: result[index].isEmpty ? FixedPointNumber.ZERO : FixedPointNumber.fromInner(result[index].toString()),
-        era
-      }))),
+    return combineLatest([
+      api.query.stakingPool.nextEraUnbonds<Balance>(active.address),
+      combineLatest(eraArray.map((era: number) => api.query.stakingPool.unbondings<Balance>(active.address, era)))
+    ]).pipe(
+      map(([nextEraUnbond, list]) => {
+        const temp = [{
+          balance: FixedPointNumber.fromInner(nextEraUnbond.toString()),
+          era: start + 1
+        }];
+
+        eraArray.map((era, index) => {
+          temp.push({
+            balance: list[index].isEmpty ? FixedPointNumber.ZERO : FixedPointNumber.fromInner(list[index].toString()),
+            era
+          });
+        });
+
+        return temp;
+      }),
       map((result) => result.filter((item): boolean => !item.balance.isZero()))
     ).subscribe((result) => {
       setRedeemList(result);

@@ -104,7 +104,6 @@ export const RedeemList: FC = () => {
             dataSource={redeemList}
             pagination={false}
             showHeader
-            size='small'
           />
         </Condition>
       </Card>

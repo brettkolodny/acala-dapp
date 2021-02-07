@@ -174,7 +174,7 @@ export const DepositConsole: FC = () => {
       <Row gutter={[0, 24]}>
         <Col>
           <WithdrawnTitle>
-            Withdraw Token 1
+            Deposit Token 1
           </WithdrawnTitle>
         </Col>
         <Col span={24}>
@@ -186,7 +186,7 @@ export const DepositConsole: FC = () => {
         </Col>
         <Col>
           <WithdrawnTitle>
-            Withdraw Token 2
+            Deposit Token 2
           </WithdrawnTitle>
         </Col>
         <Col span={24}>

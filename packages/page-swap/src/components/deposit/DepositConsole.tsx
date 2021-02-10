@@ -8,7 +8,7 @@ import { BalanceInput, BalanceInputValue, tokenEq, eliminateGap, Token } from '@
 import { useInputValue } from '@acala-dapp/react-hooks/useInputValue';
 import { TokenInput } from '@acala-dapp/react-components/TokenInput';
 
-import { CardRoot, CardTitle, CardSubTitle, CTxButton, WithdrawnTitle, AmountTitle, CAlert, CMaxBtn } from '../common';
+import { CardRoot, CardTitle, CardSubTitle, CTxButton, AmountTitle, CAlert, CMaxBtn } from '../common';
 import { DepositInfo } from './DepositInfo';
 
 export const DepositConsole: FC = () => {
@@ -172,9 +172,9 @@ export const DepositConsole: FC = () => {
       <SpaceBox height={24}/>
       <Row gutter={[0, 24]}>
         <Col>
-          <WithdrawnTitle>
-            Withdraw Token 1
-          </WithdrawnTitle>
+          <AmountTitle>
+            Deposit Token 1
+          </AmountTitle>
         </Col>
         <Col span={24}>
           <TokenInput
@@ -184,9 +184,9 @@ export const DepositConsole: FC = () => {
           />
         </Col>
         <Col>
-          <WithdrawnTitle>
-            Withdraw Token 2
-          </WithdrawnTitle>
+          <AmountTitle>
+            Deposit Token 2
+          </AmountTitle>
         </Col>
         <Col span={24}>
           <TokenInput

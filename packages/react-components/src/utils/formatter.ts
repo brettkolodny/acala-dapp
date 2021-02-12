@@ -1,6 +1,7 @@
 import { get } from 'lodash';
 
 import { Codec } from '@polkadot/types/types';
+import { encodeAddress } from '@polkadot/keyring';
 import { Fixed18 } from '@acala-network/app-util';
 import { FixedPointNumber } from '@acala-network/sdk-core';
 
@@ -90,6 +91,17 @@ export const formatAddress = (address: string, isMini?: boolean): string => {
   return !isMini
     ? address.replace(/(\w{6})\w*?(\w{6}$)/, '$1......$2')
     : address.replace(/(\w{6})\w*$/, '$1...');
+};
+
+export const convertAddress = (address: string, network: 'karura' | 'acala' | 'kusama' | 'polkadot'): string => {
+  const prefixMap = {
+    acala: 10,
+    karura: 8,
+    kusama: 2,
+    polkadot: 0
+  };
+
+  return encodeAddress(address, prefixMap[network]);
 };
 
 export const formatBalance = (balance: FixedPointNumber | Fixed18 | Codec | number | string | undefined): number => {

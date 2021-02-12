@@ -267,7 +267,7 @@ export const DepositConsole: FC = () => {
             section='dex'
             size='large'
           >
-            Add Liquidty
+            Add Liquidity
           </CTxButton>
         </Col>
       </Row>

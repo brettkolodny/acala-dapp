@@ -33,7 +33,7 @@ export const Dialog: FC<Props> = ({
   withClose = false
 }) => {
   const _action = useMemo(() => {
-    if (action === null) {
+    if (action === null || (!showCancel && !onConfirm)) {
       return null;
     }
 

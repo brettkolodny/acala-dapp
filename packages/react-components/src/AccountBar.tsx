@@ -1,12 +1,13 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 
 import { styled } from '@acala-dapp/ui-components';
-import { useAccounts, useConstants } from '@acala-dapp/react-hooks';
+import { useAccounts, useConstants, HISTORY_VIEW } from '@acala-dapp/react-hooks';
 import Identicon from '@polkadot/react-identicon';
 import { FormatAddress } from './format';
 import { TokenSelector } from './TokenSelector';
 import { CurrencyId } from '@acala-network/types/interfaces';
 import { UserAssetBalance } from './Assets';
+import { useLocation } from 'react-router-dom';
 
 const AccountBarRoot = styled.div`
   display: flex;
@@ -81,14 +82,31 @@ const Asserts: FC = () => {
 };
 
 export const AccountBar: FC = () => {
-  const { active, openSelectAccount, selectAccountStatus } = useAccounts();
+  const { active, openSelectAccount, selectAccountStatus, openAccountHistory, accountHistoryStatus  } = useAccounts();
+  const location = useLocation()
+
+  const historyView = useMemo(() => {
+    // path
+    return location.pathname.split('/').filter(x => x)[0]
+  }, [location])
+
+  const handleClick = useCallback((...args) => {
+    if(HISTORY_VIEW.includes(historyView as 'wallet')) {
+      openAccountHistory(historyView as 'wallet')
+    } else {
+      // oracle governance
+      openSelectAccount()
+    }
+  }, [historyView, openAccountHistory, openSelectAccount])
+
+  const isActive = selectAccountStatus || accountHistoryStatus
 
   return (
     <AccountBarRoot>
       <Asserts />
       <Account
-        active={selectAccountStatus}
-        onClick={openSelectAccount}
+        active={isActive}
+        onClick={handleClick}
       >
         <FormatAddress address={active?.name || active?.address || ''} />
         <AccountIcon

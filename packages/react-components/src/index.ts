@@ -17,6 +17,7 @@ export * from './Network';
 export * from './AccountBar';
 
 // currency
+export * from './AccountHistory';
 export * from './BalanceInput';
 export * from './BalanceAmountInput';
 export * from './TwoWayBalanceInput';

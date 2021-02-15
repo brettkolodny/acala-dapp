@@ -5,13 +5,15 @@ import { ApiRx } from '@polkadot/api';
 import { web3Enable, web3FromAddress } from '@polkadot/extension-dapp';
 import { options } from '@acala-network/api';
 
-import { NoAccounts, NoExtensions, SelectAccount, UploadMetadata } from '@acala-dapp/react-components';
-import { useModal, useApi, useStorage } from '@acala-dapp/react-hooks';
+import { AccountHistory, NoAccounts, NoExtensions, SelectAccount, UploadMetadata } from '@acala-dapp/react-components';
+import { useModal, useApi, useStorage, HISTORY_VIEW } from '@acala-dapp/react-hooks';
 
 type AddressBook = {
   address: string;
   name?: string;
 }[]
+
+type HistoryView = typeof HISTORY_VIEW[number]
 
 export interface ExtensionData {
   isReady: boolean;
@@ -23,6 +25,9 @@ export interface ExtensionData {
   selectAccountStatus: boolean;
   addressBook: AddressBook;
   addToAddressBook: (data: { address: string; name?: string }) => void;
+  openAccountHistory: (view: HistoryView) => void;
+  closeAccountHistory: () => void;
+  accountHistoryStatus: boolean;
 }
 
 export const ExtensionContext = createContext<ExtensionData>({} as any);
@@ -62,6 +67,25 @@ export const ExtensionProvider: FC<AccountProviderProps> = ({
     open: openSelectAccount,
     status: selectAccountStatus
   } = useModal(false);
+
+  // Account Transaction History
+  const [historyView, setHistoryView] = useState<typeof HISTORY_VIEW[number]>()
+
+  const openAccountHistory = useCallback((view: typeof HISTORY_VIEW[number]) => {
+    setHistoryView(view)
+  }, [])
+
+  const closeAccountHistory = useCallback(() => {
+    setHistoryView(undefined)
+  }, [])
+
+  const switchToSelect = useCallback(() => {
+    console.log('change')
+    closeAccountHistory()
+    openSelectAccount()
+  }, [closeAccountHistory, openSelectAccount])
+
+  const accountHistoryStatus = !!historyView
 
   // upload metadata modal
   const {
@@ -246,11 +270,34 @@ export const ExtensionProvider: FC<AccountProviderProps> = ({
     closeSelectAccount,
     isReady,
     openSelectAccount,
-    selectAccountStatus
-  }), [accounts, active, isReady, authRequired, openSelectAccount, closeSelectAccount, addressBook, addToAddressBook, selectAccountStatus]);
+    selectAccountStatus,
+    closeAccountHistory,
+    openAccountHistory,
+    accountHistoryStatus
+  }), [
+    accounts,
+    active,
+    isReady,
+    authRequired,
+    openSelectAccount,
+    closeSelectAccount,
+    addressBook,
+    addToAddressBook,
+    selectAccountStatus,
+    closeAccountHistory,
+    openAccountHistory,
+    accountHistoryStatus
+  ]);
 
   return (
     <ExtensionContext.Provider value={data}>
+      <AccountHistory
+        account={active}
+        view={historyView}
+        onChange={switchToSelect}
+        onCancel={closeAccountHistory}
+        visable={accountHistoryStatus}
+      />
       <SelectAccount
         accounts={accounts}
         defaultAccount={active ? active.address : undefined}

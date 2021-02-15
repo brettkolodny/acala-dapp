@@ -11,6 +11,7 @@ export {
 };
 
 // system
+export * from './useAccountHistory';
 export * from './useAccounts';
 export * from './useApi';
 export * from './useCall';

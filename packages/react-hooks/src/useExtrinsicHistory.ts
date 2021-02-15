@@ -13,9 +13,9 @@ export interface ExtrinsicHistoryData {
   hash: string;
   method: string;
   section: string;
-  params: string[];
+  params: any[];
   signer: string;
-  time: Date;
+  time: number;
   success: boolean;
   addon?: any;
   blockNum: number;
